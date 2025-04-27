@@ -1,5 +1,77 @@
-/* styles.css */
-@import "base.css";       /* Reset e variáveis */
-@import "components.css"; /* Botões, cards */
-@import "layouts.css";    /* Header, footer */
-@import "pages.css";      /* Estilos específicos */
+/* Variáveis Globais */
+:root {
+  --primary: #2A5B84;
+  --secondary: #FF6B35;
+  --accent: #28A745;
+  --dark: #1a3a5a;
+  --light: #f9f9f9;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Reset Moderno */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: var(--light);
+}
+
+/* Componentes Reutilizáveis */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+/* Header Global */
+.global-header {
+  background: var(--dark);
+  padding: 1rem 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Main Content */
+.main-content {
+  padding: 4rem 0;
+  min-height: 60vh;
+}
+
+/* Footer Global */
+.global-footer {
+  background: var(--dark);
+  color: white;
+  padding: 3rem 0;
+  margin-top: auto;
+}
