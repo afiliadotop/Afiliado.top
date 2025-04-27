@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Metatags comuns -->
-  <!-- Incluir aqui as metatags do exemplo anterior -->
-  <link rel="stylesheet" href="CSS/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afiliado.Top - Achados, Ofertas e Ganhos Diários!</title>
+    <meta name="description" content="As melhores ofertas, achadinhos e chances de ganhar prêmios todos os dias. Afiliado.Top é sua fonte confiável de achados e oportunidades!">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/svg/logo.svg" type="image/svg+xml">
+    <script src="js/analytics.js" defer></script>
 </head>
-
 <body>
-  <!-- Header -->
-  <header class="global-header">
-    <nav class="navbar container">
-      <a href="/" class="logo">AfiliadoTOP</a>
-      <ul class="nav-menu">
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="ofertas.html">Ofertas</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contato.html">Contato</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <!-- Destaques -->
-  <main class="main-content">
-    <section class="destaques container">
-      <h1 class="page-title">Ofertas Exclusivas do Dia</h1>
-      
-      <div class="featured-grid">
-        <!-- Card Destaque -->
-        <article class="offer-card">
-          <div class="badge">🔥 Mais Vendido</div>
-          <img src="img/produto1.webp" alt="Smartphone" loading="lazy">
-          <div class="offer-content">
-            <h3>Smartphone Premium</h3>
-            <div class="price">
-              <span class="old-price">R$ 3.999</span>
-              <span class="new-price">R$ 2.799</span>
-            </div>
-            <a href="#" class="btn btn-primary">Ver Oferta</a>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="global-footer">
-    <div class="container footer-grid">
-      <!-- Seções do Footer -->
+<header>
+    <div class="container">
+        <h1>Afiliado.Top</h1>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="ofertas.html">Ofertas</a>
+            <a href="blog.html">Blog</a>
+            <a href="contato.html">Contato</a>
+        </nav>
     </div>
-  </footer>
+</header>
 
-  <script src="JS/scripts.js"></script>
+<section class="hero">
+    <div class="container">
+        <h2>Achados do Dia!</h2>
+        <p>Ofertas únicas que você só encontra aqui. <strong>Corra antes que acabe!</strong></p>
+        <a href="ofertas.html" class="btn-primary">Ver Ofertas</a>
+    </div>
+</section>
+
+<section class="highlights">
+    <div class="container">
+        <h3>Oportunidades Imperdíveis</h3>
+        <div class="cards">
+            <div class="card">
+                <h4>Melhor Oferta do Dia</h4>
+                <p>Produtos selecionados com desconto especial.</p>
+                <a href="ofertas.html" class="btn-secondary">Aproveitar</a>
+            </div>
+            <div class="card">
+                <h4>Ganhe Agora</h4>
+                <p>Cadastre-se e participe de sorteios e cashback instantâneo!</p>
+                <a href="contato.html" class="btn-secondary">Quero Participar</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>© 2025 Afiliado.Top - Todos os direitos reservados.</p>
+    </div>
+</footer>
+
 </body>
 </html>
