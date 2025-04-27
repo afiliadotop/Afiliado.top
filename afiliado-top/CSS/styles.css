@@ -1,0 +1,112 @@
+/* Estilos principais */
+:root {
+    --primary-color: #0077cc;
+    --secondary-color: #00cc66;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --card-background: #f9f9f9;
+}
+
+/* Dark mode automático */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #121212;
+        --text-color: #f1f1f1;
+        --card-background: #1e1e1e;
+    }
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 0;
+}
+
+header {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 15px 0;
+}
+
+header h1 {
+    margin: 0;
+    text-align: center;
+}
+
+nav {
+    text-align: center;
+    margin-top: 10px;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px 0;
+    background: var(--secondary-color);
+    color: #fff;
+}
+
+.btn-primary, .btn-secondary {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #fff;
+    color: var(--secondary-color);
+}
+
+.btn-secondary {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.highlights {
+    padding: 40px 0;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    background: var(--card-background);
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+footer {
+    background: var(--primary-color);
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
