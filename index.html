@@ -1,70 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afiliado.Top - Achados, Ofertas e Ganhos Diários!</title>
-    <meta name="description" content="As melhores ofertas, achadinhos e chances de ganhar prêmios todos os dias. Afiliado.Top é sua fonte confiável de achados e oportunidades!">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="img/svg/logo.svg" type="image/svg+xml">
-    <script src="js/analytics.js" defer></script>
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
 
-<!-- AOS Animation CSS -->
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Meta tags de SEO -->
+  <meta name="description" content="No Afiliado Top você encontra as melhores ofertas, promoções relâmpago e achados do dia! Economize agora mesmo com nossos links especiais e ganhe ainda mais benefícios. Atualizações diárias, confiança máxima.">
+  <meta name="keywords" content="Ofertas do dia, Promoções, Cupons de desconto, Produtos baratos, Achados online, Links de afiliado, Ganhar dinheiro online, Descontos exclusivos, Afiliado Top, Melhor preço, Cashback, Promoções Amazon, Promoções Shopee, Ganhar com CPA, Ganhar comissão online">
+  <meta name="author" content="Paulo Kenato">
+
+  <title>Afiliado Top - Achados do Dia e Promoções Imperdíveis!</title>
+
+  <!-- Link para estilos -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Fonte bonita para o site -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Biblioteca de animação -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPJC7X9N5H"></script>
+  <script src="analytics.js" defer></script>
+
 </head>
+
 <body>
 
-<header>
-    <div class="container">
-        <h1>   <body style="font-family: 'Open Sans', sans-serif;">
-  <h1 style="font-family: 'Montserrat', sans-serif;">Afiliado.Top</h1>
-        </body> </h1>
-        <nav>
-            <a href="index.html">Início</a>
-            <a href="ofertas.html">Ofertas</a>
-            <a href="blog.html">Blog</a>
-            <a href="contato.html">Contato</a>
-        </nav>
+  <!-- Cabeçalho do site -->
+  <header>
+    <div class="container" data-aos="fade-down">
+      <h1>Afiliado Top</h1>
+      <p>As melhores ofertas e achados do dia para você economizar!</p>
     </div>
-</header>
+  </header>
 
-<section class="hero">
+  <!-- Seção de Destaques -->
+  <section id="destaques" data-aos="fade-up">
     <div class="container">
-        <h2>Achados do Dia!</h2>
-        <p>Ofertas únicas que você só encontra aqui. <strong>Corra antes que acabe!</strong></p>
-        <a href="ofertas.html" class="btn-primary">Ver Ofertas</a>
-    </div>
-</section>
-
-<section class="highlights">
-    <div class="container">
-        <h3>Oportunidades Imperdíveis</h3>
-        <div class="cards">
-            <div class="card">
-                <h4>Melhor Oferta do Dia</h4>
-                <p>Produtos selecionados com desconto especial.</p>
-                <a href="ofertas.html" class="btn-secondary">Aproveitar</a>
-            </div>
-            <div class="card">
-                <h4>Ganhe Agora</h4>
-                <p>Cadastre-se e participe de sorteios e cashback instantâneo!</p>
-                <a href="contato.html" class="btn-secondary">Quero Participar</a>
-            </div>
+      <h2>Achados de Hoje</h2>
+      <!-- Cada card pode ser duplicado -->
+      <div class="cards">
+        
+        <!-- Início do card de oferta -->
+        <div class="card" data-aos="zoom-in">
+          <img src="img/webp/oferta1.webp" alt="Produto em oferta">
+          <h3>Produto Incrível</h3>
+          <p>De <del>R$199,00</del>por apenas R$99,99!</p>
+          <a href="#" class="btn">Ver Oferta</a>
         </div>
-    </div>
-</section>
+        <!-- Fim do card de oferta -->
 
-<footer>
-    <div class="container">
-        <p>© 2025 Afiliado.Top - Todos os direitos reservados.</p>
+        <!-- Duplicar os cards acima para adicionar mais ofertas -->
+        <!-- Exemplo: Copie o bloco <div class="card">...</div> -->
+
+      </div>
     </div>
-</footer>
-<!-- AOS Animation JS -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+  </section>
+
+  <!-- Chamada para Ação Rápida -->
+  <section id="cta" data-aos="fade-up">
+    <div class="container">
+      <h2>Não perca tempo!</h2>
+      <p>As melhores promoções são por tempo limitado. Garanta agora!</p>
+      <a href="ofertas.html" class="btn-cta">Ver Mais Ofertas</a>
+    </div>
+  </section>
+
+  <!-- Seção Sobre (opcional) -->
+  <section id="sobre" data-aos="fade-up">
+    <div class="container">
+      <h2>Sobre o Afiliado Top</h2>
+      <p>Somos apaixonados por encontrar as melhores promoções para você! Atualizamos nossos achados todos os dias.</p>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Afiliado Top - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Botão flutuante do WhatsApp -->
+  <a href="https://api.whatsapp.com/send?phone=SEUNUMERO&text=Quero%20aproveitar%20as%20ofertas%20do%20Afiliado%20Top!" 
+     class="whatsapp-float" target="_blank" data-aos="zoom-in">
+    <img src="img/svg/whatsapp-icon.svg" alt="Fale conosco no WhatsApp">
+  </a>
+
+  <!-- Chamada animada flutuante -->
+  <div class="cta-dinamico" data-aos="fade-up">Ganhe Descontos!</div>
+
+  <!-- Scripts principais -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="js/scripts.js" defer></script>
+
+  <!-- Inicialização do AOS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 1000, // Duração das animações
+      });
+    });
+  </script>
+
 </body>
+
 </html>
