@@ -1,63 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ofertas de Hoje - Afiliado.Top</title>
-    <meta name="description" content="Confira as melhores ofertas e promoções atualizadas diariamente. Achadinhos, descontos secretos e mais. Clique e aproveite!">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="img/svg/logo.svg" type="image/svg+xml">
-    <script src="js/analytics.js" defer></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Meta padrão de SEO -->
+  <meta name="description" content="Confira as melhores ofertas selecionadas para você no Afiliado Top! Produtos com descontos incríveis, atualizados todos os dias.">
+  <meta name="keywords" content="Ofertas, Promoções, Descontos, Produtos baratos, Achados do dia, Ganhar dinheiro, Afiliado Top, Promoções relâmpago">
+  <meta name="author" content="Paulo Kenato">
+
+  <title>Ofertas - Afiliado Top</title>
+
+  <!-- Link para estilos -->
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
+
 <body>
 
-<header>
-    <div class="container">
-        <h1>Ofertas do Dia</h1>
-        <nav>
-            <a href="index.html">Início</a>
-            <a href="ofertas.html" class="active">Ofertas</a>
-            <a href="blog.html">Blog</a>
-            <a href="contato.html">Contato</a>
-        </nav>
+  <!-- Cabeçalho simples para navegação -->
+  <header>
+    <div class="container" data-aos="fade-down">
+      <h1>Ofertas Imperdíveis</h1>
+      <p>Escolha suas promoções favoritas!</p>
     </div>
-</header>
+  </header>
 
-<section class="hero">
+  <!-- Lista de ofertas -->
+  <section id="lista-ofertas" data-aos="fade-up">
     <div class="container">
-        <h2>Ganhe Mais Gastando Menos!</h2>
-        <p>Seleção especial de achadinhos para você economizar e ganhar brindes exclusivos.</p>
-    </div>
-</section>
-
-<section class="highlights">
-    <div class="container">
-        <h3>Achadinhos Selecionados</h3>
-        <div class="cards">
-            <div class="card">
-                <h4>Oferta Relâmpago</h4>
-                <p>Produto top com 50% OFF por tempo limitado.</p>
-                <a href="https://oferta.exemplo.com" target="_blank" class="btn-primary">Aproveitar</a>
-            </div>
-            <div class="card">
-                <h4>Ganhe Cashback</h4>
-                <p>Compre e receba parte do seu dinheiro de volta!</p>
-                <a href="https://cashback.exemplo.com" target="_blank" class="btn-primary">Garantir</a>
-            </div>
-            <div class="card">
-                <h4>CPA Exclusivo</h4>
-                <p>Cadastre-se e receba até R$100 em bônus!</p>
-                <a href="https://cpa.exemplo.com" target="_blank" class="btn-primary">Participar</a>
-            </div>
+      
+      <!-- Card de oferta -->
+      <div class="cards">
+        
+        <div class="card" data-aos="zoom-in">
+          <img src="img/webp/oferta2.webp" alt="Oferta Especial">
+          <h3>Nome do Produto 1</h3>
+          <p>Oferta exclusiva por tempo limitado!</p>
+          <a href="#" class="btn">Aproveitar</a>
         </div>
-    </div>
-</section>
 
-<footer>
-    <div class="container">
-        <p>© 2025 Afiliado.Top - Achadinhos que você merece!</p>
+        <div class="card" data-aos="zoom-in">
+          <img src="img/webp/oferta3.webp" alt="Oferta Especial">
+          <h3>Nome do Produto 2</h3>
+          <p>Desconto imperdível para você!</p>
+          <a href="#" class="btn">Aproveitar</a>
+        </div>
+
+        <!-- Copiar e colar para adicionar mais produtos -->
+
+      </div>
     </div>
-</footer>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Afiliado Top - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="scripts.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({ duration: 1000 });
+    });
+  </script>
 
 </body>
+
 </html>
