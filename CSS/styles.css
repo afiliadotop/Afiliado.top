@@ -1,0 +1,5 @@
+/* styles.css */
+@import "base.css";       /* Reset e variáveis */
+@import "components.css"; /* Botões, cards */
+@import "layouts.css";    /* Header, footer */
+@import "pages.css";      /* Estilos específicos */
