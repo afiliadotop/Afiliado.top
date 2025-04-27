@@ -110,3 +110,35 @@ footer {
     padding: 20px 0;
     margin-top: 40px;
 }
+:root {
+  --primary-color: #0066ff;
+  --secondary-color: #ffc107;
+  --highlight-color: #32cd32;
+  --white-color: #ffffff;
+}
+
+body {
+  background-color: var(--white-color);
+  color: #333;
+}
+
+h1, h2, h3 {
+  color: var(--primary-color);
+}
+
+.button {
+  background: linear-gradient(90deg, var(--primary-color), var(--highlight-color));
+  color: var(--white-color);
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, var(--highlight-color), var(--primary-color));
+}
