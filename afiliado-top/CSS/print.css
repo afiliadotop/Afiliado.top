@@ -1,0 +1,21 @@
+/* Estilos para impressão */
+body {
+    background: none;
+    color: #000;
+}
+
+header, footer, nav, .hero {
+    display: none;
+}
+
+section {
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+}
+
+h1, h2, h3 {
+    color: #000;
+}
