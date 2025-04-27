@@ -133,3 +133,29 @@ footer {
 #btn-topo:hover {
   background: #388E3C;
 }
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+  header {
+    padding: 1.5rem 1rem;
+    font-size: 1.2rem;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card img {
+    height: 180px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  #btn-topo {
+    bottom: 20px;
+    right: 20px;
+    padding: 0.6rem;
+  }
+}
