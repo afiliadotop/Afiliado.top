@@ -43,3 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+// Script para botão de voltar ao topo
+const btnTopo = document.getElementById('btn-topo');
+
+window.onscroll = function() {
+  if (document.documentElement.scrollTop > 200) {
+    btnTopo.style.display = "block";
+  } else {
+    btnTopo.style.display = "none";
+  }
+};
+
+btnTopo.addEventListener('click', function() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
