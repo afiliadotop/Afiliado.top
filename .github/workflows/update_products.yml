@@ -2,45 +2,45 @@
 
 name: Update Shopee Products
 
-# Quando este workflow será executado
 on:
-  workflow_dispatch: # Permite acionar manualmente no GitHub Actions UI
+  workflow_dispatch:
   schedule:
-    # Executa todos os dias à 00:00 (meia-noite UTC)
-    # Ajuste o horário conforme sua necessidade. Ex: '0 3 * * *' para 03:00 UTC
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *' # Executa todos os dias à 00:00 (meia-noite UTC)
 
 jobs:
   update-data:
-    runs-on: ubuntu-latest # O sistema operacional onde o job será executado
+    runs-on: ubuntu-latest
+
+    # >>> ADICIONE ESTA SEÇÃO AQUI <<<
+    permissions:
+      contents: write # Dá permissão de escrita para o conteúdo do repositório
+    # >>> FIM DA SEÇÃO ADICIONADA <<<
 
     steps:
-    - name: Checkout repository # Pega o código do seu repositório
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Python # Configura o ambiente Python
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x' # Usa a versão mais recente do Python 3
+        python-version: '3.x'
 
-    - name: Install dependencies # Instala as bibliotecas Python necessárias
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pandas requests
 
-    - name: Run Python script to process datafeed # Executa o script que você criou
+    - name: Run Python script to process datafeed
       env:
-        # AQUI é onde seu link do datafeed é passado de forma segura
-        # 'SHOPEE_DATAFEED_URL' deve ser adicionado como um Secret no GitHub
         SHOPEE_DATAFEED_URL: ${{ secrets.SHOPEE_DATAFEED_URL }}
       run: python process_shopee_datafeed.py
 
-    - name: Commit and Push changes # Commita o arquivo JSON gerado de volta para o repositório
+    - name: Commit and Push changes
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git add . # Adiciona todos os arquivos alterados/novos (incluindo produtos_shopee.json)
-        git commit -m "Automated: Update Shopee products data" || echo "No changes to commit" # Commita se houver mudanças
-        git push # Envia as mudanças para o GitHub
+        git add .
+        git commit -m "Automated: Update Shopee products data" || echo "No changes to commit"
+        git push
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token automático para push
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
