@@ -1,73 +1,199 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-BR" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="x-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Meta de SEO para blog -->
-  <meta name="description" content="Dicas de como aproveitar melhor as promoções e achados do dia no Afiliado Top. Atualizações diárias para você economizar de verdade!">
-  <meta name="keywords" content="Dicas de compra, Como economizar, Promoções, Afiliado Top, Blog de ofertas, Economizar online, Cupons de desconto">
-  <meta name="author" content="Paulo Kenato">
-
-  <title>Blog - Dicas para Economizar | Afiliado Top</title>
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ofertas Shopee | Afiliado.Top</title>
+  <meta name="description" content="Encontre as melhores ofertas da Shopee diretamente no Afiliado.Top! Milhares de produtos com descontos e seus links de afiliado. Compre com segurança!" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en,es,fr,it,de,pt'}, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
-
-<body>
-
-  <!-- Cabeçalho -->
-  <header>
-    <div class="container" data-aos="fade-down">
-      <h1>Blog Afiliado Top</h1>
-      <p>Dicas rápidas para você economizar ainda mais!</p>
-    </div>
+<body class="bg-gray-900 text-white font-sans">
+  <header class="bg-red-700 p-4 text-center shadow-md">
+    <h1 class="text-3xl font-bold mb-2">🛍️ Ofertas Exclusivas Shopee no Afiliado.Top</h1>
+    <p class="text-lg mb-3">Milhares de produtos, com seus links de afiliado, atualizados diariamente!</p>
+    <div id="google_translate_element" class="mt-2 inline-block bg-white p-2 rounded-md shadow-sm"></div>
+    <nav class="mt-4">
+      <ul class="flex justify-center space-x-6 text-lg">
+        <li><a href="index.html" class="text-white hover:text-gray-300 transition-colors">Início</a></li>
+        <li><a href="#" class="text-white font-semibold border-b-2 border-white">Shopee</a></li>
+        </ul>
+    </nav>
   </header>
 
-  <!-- Área de posts -->
-  <section id="posts" data-aos="fade-up">
-    <div class="container">
+  <main class="max-w-7xl mx-auto py-10 px-4">
+    <div class="mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <input type="text" id="searchBar" placeholder="Pesquisar produtos na Shopee..." class="flex-grow p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      <select id="categoryFilter" class="p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="">Todas as Categorias</option>
+        </select>
+      </div>
 
-      <!-- Post de blog -->
-      <article class="post" data-aos="fade-up">
-        <h2>Como Aproveitar Melhor os Cupons de Desconto</h2>
-        <p>Quer saber como aplicar cupons corretamente e garantir descontos máximos? Veja nossas dicas!</p>
-        <a href="#" class="btn">Ler Mais</a>
-      </article>
+    <div id="shopeeProductList" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      </div>
 
-      <article class="post" data-aos="fade-up">
-        <h2>Top 5 Sites para Comprar com Cashback</h2>
-        <p>Conheça as melhores plataformas para ganhar parte do seu dinheiro de volta em cada compra.</p>
-        <a href="#" class="btn">Ler Mais</a>
-      </article>
-
-      <!-- Você pode copiar e duplicar outros <article> para adicionar novos posts -->
-
+    <div class="text-center mt-10">
+      <button id="loadMoreBtn" class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 transform hover:scale-105" style="display: none;">Carregar Mais Produtos</button>
     </div>
-  </section>
-
-  <!-- Rodapé -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Afiliado Top - Todos os direitos reservados.</p>
-    </div>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
-  <script src="scripts.js" defer></script>
+  </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      AOS.init({ duration: 1000 });
-    });
+    const shopeeProductListContainer = document.getElementById('shopeeProductList');
+    const searchBar = document.getElementById('searchBar');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+    let allShopeeProducts = []; // Para armazenar todos os produtos carregados do JSON
+    let filteredShopeeProducts = []; // Produtos após aplicar filtros e pesquisa
+    const productsPerPage = 20; // Quantos produtos exibir por vez
+    let currentPage = 0; // Página atual
+
+    // --- Lógica de Animação ao Rolar a Página (Intersection Observer) ---
+    // Mantenha o observer fora da função de carregamento, mas o 'observe' será chamado após renderizar.
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate__fadeInUp', 'opacity-100'); // Ou outra animação
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // Função para renderizar os produtos na página
+    function renderProducts(productsToRender) {
+      // Limpa o contêiner antes de adicionar novos produtos (para filtros/pesquisa)
+      if (currentPage === 0) { // Limpa apenas na primeira carga ou ao aplicar filtro/pesquisa
+          shopeeProductListContainer.innerHTML = '';
+      }
+
+      productsToRender.forEach((produto) => {
+        const card = document.createElement('div');
+        // Adicione as classes de animação e opacidade inicial
+        card.className = 'bg-gray-800 p-5 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out flex flex-col items-center text-center animate__animated opacity-0 animated-item';
+
+        // Adapte os nomes das propriedades para o seu JSON (se for diferente de nome, imagem, etc.)
+        // Lembre-se que no script Python definimos 'nome', 'imagem', 'descricao', 'link', 'categoria', 'preco'
+        card.innerHTML = `
+          <img src="${produto.imagem}" alt="${produto.nome}" class="mb-4 w-48 h-auto object-contain rounded-md shadow-md" loading="lazy">
+          <h2 class="text-xl font-semibold mb-2">${produto.nome}</h2>
+          <p class="text-gray-400 text-sm mb-4 flex-grow">${produto.descricao}</p>
+          <p class="text-xs text-gray-500 mb-2">Categoria: ${produto.categoria}</p>
+          <p class="text-lg font-bold text-green-400 mb-4">R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}</p>
+          <a href="${produto.link}" target="_blank" rel="noopener noreferrer" class="mt-auto bg-orange-600 hover:bg-orange-800 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 transform hover:scale-105 inline-block w-full">
+            Comprar na Shopee
+          </a>
+        `;
+        shopeeProductListContainer.appendChild(card);
+        observer.observe(card); // Observa o novo card para animação
+      });
+
+      // Mostra/Esconde o botão "Carregar Mais"
+      if ((currentPage + 1) * productsPerPage < filteredShopeeProducts.length) {
+          loadMoreBtn.style.display = 'block';
+      } else {
+          loadMoreBtn.style.display = 'none';
+      }
+    }
+
+    // Função para carregar os produtos do JSON
+    async function loadShopeeProducts() {
+      try {
+        const response = await fetch('/produtos_shopee.json'); // Caminho para o JSON
+        if (!response.ok) {
+          throw new Error(`Erro ao carregar produtos Shopee: ${response.statusText}`);
+        }
+        allShopeeProducts = await response.json(); // Carrega todos os produtos
+        filteredShopeeProducts = [...allShopeeProducts]; // Inicia os produtos filtrados com todos
+        populateCategories(); // Preenche o filtro de categorias
+        renderNextPage(); // Renderiza a primeira página
+      } catch (error) {
+        console.error("Erro ao carregar ou processar produtos Shopee:", error);
+        shopeeProductListContainer.innerHTML = '<p class="text-red-500 text-center col-span-full">Não foi possível carregar as ofertas da Shopee no momento.</p>';
+        loadMoreBtn.style.display = 'none';
+      }
+    }
+
+    // Função para popular o filtro de categorias
+    function populateCategories() {
+        const categories = new Set();
+        allShopeeProducts.forEach(p => {
+            if (p.categoria) { // Certifica-se de que a categoria existe
+                categories.add(p.categoria);
+            }
+        });
+        categoryFilter.innerHTML = '<option value="">Todas as Categorias</option>'; // Reseta
+        Array.from(categories).sort().forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            categoryFilter.appendChild(option);
+        });
+    }
+
+    // Função para renderizar a próxima página de produtos
+    function renderNextPage() {
+        const startIndex = currentPage * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsToRender = filteredShopeeProducts.slice(startIndex, endIndex);
+        renderProducts(productsToRender);
+        currentPage++;
+    }
+
+    // Função para aplicar filtros e pesquisa
+    function applyFiltersAndSearch() {
+        currentPage = 0; // Reseta a página ao aplicar filtros
+        const searchTerm = searchBar.value.toLowerCase();
+        const selectedCategory = categoryFilter.value;
+
+        filteredShopeeProducts = allShopeeProducts.filter(product => {
+            const matchesSearch = product.nome.toLowerCase().includes(searchTerm) ||
+                                  (product.descricao && product.descricao.toLowerCase().includes(searchTerm));
+            const matchesCategory = selectedCategory === '' || product.categoria === selectedCategory;
+            return matchesSearch && matchesCategory;
+        });
+        renderNextPage(); // Renderiza a primeira página dos resultados filtrados
+    }
+
+    // Event Listeners
+    searchBar.addEventListener('keyup', applyFiltersAndSearch);
+    categoryFilter.addEventListener('change', applyFiltersAndSearch);
+    loadMoreBtn.addEventListener('click', renderNextPage);
+
+    // Função para mostrar um alerta SweetAlert2 com animação Anime.js (mantida para referência)
+    function showProductInfo(nomeProduto) {
+      Swal.fire({
+        title: nomeProduto,
+        html: 'Você será redirecionado para a página de compra.<br>Ao comprar, você apoia nosso projeto!',
+        icon: 'info',
+        confirmButtonText: 'Entendi',
+        didOpen: (popup) => {
+          anime({
+            targets: popup,
+            scale: [0.5, 1],
+            opacity: [0, 1],
+            duration: 800,
+            easing: 'easeOutElastic(1, .8)'
+          });
+        }
+      });
+    }
+
+    // Inicia o carregamento dos produtos quando a página é carregada
+    document.addEventListener('DOMContentLoaded', loadShopeeProducts);
   </script>
 
+  <footer class="bg-gray-800 text-center p-4 mt-10 shadow-inner">
+    <p class="text-gray-400 text-sm">&copy; 2025 Afiliado.Top - Todos os direitos reservados.
+      <br>Ao clicar nos links de afiliado e realizar uma compra, podemos receber uma comissão sem custo adicional para você.
+    </p>
+  </footer>
 </body>
-
 </html>
