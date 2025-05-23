@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Site afiliado.top carregado com sucesso!');
 
     // Scroll suave para âncoras
-    const links = document.querySelectorAll('a[href^="#"]');
+    const links = document.querySelectorAll('a[href^="Ofertas_Shopee.html"]');
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
