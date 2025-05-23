@@ -1,123 +1,151 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-BR" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="x-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Meta tags de SEO -->
-  <meta name="description" content="No Afiliado Top você encontra as melhores ofertas, promoções relâmpago e achados do dia! Economize agora mesmo com nossos links especiais e ganhe ainda mais benefícios. Atualizações diárias, confiança máxima.">
-  <meta name="keywords" content="Ofertas do dia, Promoções, Cupons de desconto, Produtos baratos, Achados online, Links de afiliado, Ganhar dinheiro online, Descontos exclusivos, Afiliado Top, Melhor preço, Cashback, Promoções Amazon, Promoções Shopee, Ganhar com CPA, Ganhar comissão online">
-  <meta name="author" content="Paulo Kenato">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Afiliado.Top - As Melhores Ofertas e Descontos Online | Shopee, Amazon e Mais!</title>
+    <meta name="description" content="Seu portal definitivo para as melhores ofertas e descontos em produtos de tecnologia, casa, moda e muito mais. Encontre promoções exclusivas da Shopee, Amazon e outras grandes lojas, com links de afiliado confiáveis. Economize e descubra produtos incríveis no Afiliado.Top!">
+    <meta name="keywords" content="afiliados, ofertas, descontos, promoções, Shopee, Amazon, loja online, tecnologia, casa, moda, eletrônicos, cupons, cashback, afiliados Brasil">
+    <meta name="author" content="Afiliado.Top Team">
+    <link rel="canonical" href="https://afiliadotop.github.io/Afiliado.top/"> <meta property="og:title" content="Afiliado.Top - As Melhores Ofertas e Descontos Online">
+    <meta property="og:description" content="Encontre promoções exclusivas da Shopee, Amazon e outras grandes lojas, com links de afiliado confiáveis.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://afiliadotop.github.io/Afiliado.top/"> <meta property="og:image" content="https://afiliadotop.github.io/Afiliado.top/assets/social-share-image.jpg"> <meta property="og:site_name" content="Afiliado.Top">
 
-  <title>Afiliado Top - Achados do Dia e Promoções Imperdíveis!</title>
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
-  <!-- Link para estilos -->
-  <link rel="stylesheet" href="styles.css">
-  
-  <!-- Fonte bonita para o site -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Biblioteca de animação -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPJC7X9N5H"></script>
-  <script src="analytics.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en,es,fr,it,de,pt'}, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
-
-<body>
-
-  <!-- Cabeçalho do site -->
-  <header>
-    <div class="container" data-aos="fade-down">
-      <h1>Afiliado Top</h1>
-      <p>As melhores ofertas e achados do dia para você economizar!</p>
-    </div>
-  </header>
-    <section class="text-center py-10 bg-gray-800">
-  <h2 class="text-2xl font-bold mb-6">Explore as Ofertas Shopee</h2>
-    <a href="Ofertas_Shopee.html" class="inline-block bg-orange-600 hover:bg-orange-800 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition-colors duration-300 transform hover:scale-105">
-        Ver Todas as Ofertas da Shopee 🛍️
-    </a>
-</section>
-
-<button id="btn-topo" class="fixed bottom-5 right-5 p-3 rounded-full bg-blue-600 text-white shadow-lg hidden">
-    ⬆️ Voltar ao Topo
-</button>
-
-  <!-- Seção de Destaques -->
-  <section id="destaques" data-aos="fade-up">
-    <div class="container">
-      <h2>Achados de Hoje</h2>
-      <!-- Cada card pode ser duplicado -->
-      <div class="cards">
-        
-        <!-- Início do card de oferta -->
-        <div class="card" data-aos="zoom-in">
-          <img src="img/webp/oferta1.webp" alt="Produto em oferta">
-          <h3>Produto Incrível</h3>
-          <p>De <del>R$199,00</del> por apenas R$99,99!</p>
-          <a href="#" class="btn">Ver Oferta</a>
+<body class="bg-gray-900 text-white font-sans antialiased">
+    <header class="bg-gray-800 shadow-lg py-4 px-6 md:px-10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="assets/logo.png" alt="Afiliado.Top Logo" class="h-10">
+                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Afiliado.Top</h1>
+            </a>
+            
+            <nav>
+                <ul class="flex items-center space-x-6">
+                    <li><a href="index.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Início</a></li>
+                    <li><a href="Ofertas_Shopee.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Ofertas Shopee</a></li>
+                    <li><a href="contato.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Contato</a></li>
+                    
+                    <li class="hidden md:block"> <div id="google_translate_element" class="bg-gray-700 p-2 rounded-md text-sm shadow-sm"></div>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <!-- Fim do card de oferta -->
+    </header>
 
-        <!-- Duplicar os cards acima para adicionar mais ofertas -->
-        <!-- Exemplo: Copie o bloco <div class="card">...</div> -->
+    <main>
+        <section class="relative bg-gradient-to-r from-purple-800 to-indigo-900 py-20 px-6 md:py-32 md:px-10 text-center overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-pattern-dots"></div> <div class="relative max-w-4xl mx-auto z-10">
+                <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate__animated animate__fadeInDown">
+                    Sua Busca por Economia Termina Aqui!
+                </h2>
+                <p class="text-xl md:text-2xl text-gray-200 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
+                    Descubra as melhores ofertas e descontos exclusivos das suas lojas favoritas.
+                    Economize de verdade com os links de afiliado mais confiáveis do mercado.
+                </p>
+                <a href="Ofertas_Shopee.html" class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate__animated animate__zoomIn animate__delay-2s">
+                    🔥 Ver Ofertas Shopee AGORA!
+                </a>
+            </div>
+        </section>
 
-      </div>
-    </div>
-  </section>
+        <section class="py-16 px-6 md:px-10 bg-gray-900">
+            <div class="max-w-7xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-12">Por que Escolher o Afiliado.Top?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="text-5xl mb-4">💰</div>
+                        <h4 class="text-xl font-semibold mb-3">Economia Garantida</h4>
+                        <p class="text-gray-400">Encontre descontos exclusivos que você não acharia em outro lugar, atualizados diariamente.</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="text-5xl mb-4">✅</div>
+                        <h4 class="text-xl font-semibold mb-3">Links Confiáveis</h4>
+                        <p class="text-gray-400">Trabalhamos apenas com programas de afiliados de lojas renomadas e seguras.</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="text-5xl mb-4">🔄</div>
+                        <h4 class="text-xl font-semibold mb-3">Atualização Constante</h4>
+                        <p class="text-gray-400">Nosso sistema automatizado garante que você veja sempre as últimas promoções.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Chamada para Ação Rápida -->
-  <section id="cta" data-aos="fade-up">
-    <div class="container">
-      <h2>Não perca tempo!</h2>
-      <p>As melhores promoções são por tempo limitado. Garanta agora!</p>
-      <a href="ofertas.html" class="btn-cta">Ver Mais Ofertas</a>
-    </div>
-  </section>
+        <section class="py-16 px-6 md:px-10 bg-gray-800">
+            <div class="max-w-7xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-12">Explore por Categorias Populares</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <a href="Ofertas_Shopee.html?category=eletronicos" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-eletronicos.png" alt="Eletrônicos" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                        <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Eletrônicos</h4>
+                    </a>
+                    <a href="Ofertas_Shopee.html?category=moda" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-moda.png" alt="Moda" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                        <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Moda</h4>
+                    </a>
+                    <a href="Ofertas_Shopee.html?category=casa" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-casa.png" alt="Casa e Cozinha" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                        <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Casa e Cozinha</h4>
+                    </a>
+                    <a href="Ofertas_Shopee.html?category=saude" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-saude.png" alt="Saúde e Beleza" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                        <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Saúde e Beleza</h4>
+                    </a>
+                    </div>
+            </div>
+        </section>
 
-  <!-- Seção Sobre (opcional) -->
-  <section id="sobre" data-aos="fade-up">
-    <div class="container">
-      <h2>Sobre o Afiliado Top</h2>
-      <p>Somos apaixonados por encontrar as melhores promoções para você! Atualizamos nossos achados todos os dias.</p>
-    </div>
-  </section>
+        <section class="bg-purple-700 py-16 px-6 md:px-10 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold mb-6">Não Perca Nenhuma Oferta!</h3>
+                <p class="text-lg text-gray-200 mb-8">Inscreva-se em nossa newsletter para receber as melhores promoções diretamente no seu e-mail.</p>
+                <form action="#" method="POST" class="flex flex-col md:flex-row justify-center items-center gap-4">
+                    <input type="email" placeholder="Seu melhor e-mail" class="flex-grow p-4 rounded-lg border-2 border-purple-500 focus:outline-none focus:border-white text-gray-900 placeholder-gray-500" required>
+                    <button type="submit" class="bg-white text-purple-700 font-bold py-4 px-8 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105">
+                        Inscrever-se
+                    </button>
+                </form>
+                <p class="text-sm text-gray-300 mt-4">Prometemos não enviar spam. Você pode cancelar a qualquer momento.</p>
+            </div>
+        </section>
+    </main>
 
-  <!-- Rodapé -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Afiliado Top - Todos os direitos reservados.</p>
-    </div>
-  </footer>
+    <footer class="bg-gray-800 py-8 px-6 md:px-10 text-center text-gray-400">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2025 Afiliado.Top - Todos os direitos reservados.</p>
+            <p class="text-sm mt-2">Ao clicar nos links de afiliado e realizar uma compra, podemos receber uma comissão sem custo adicional para você.</p>
+            <div class="mt-4 flex justify-center space-x-6">
+                <a href="#" class="hover:text-white transition-colors duration-300">Política de Privacidade</a>
+                <span class="text-gray-600">|</span>
+                <a href="contato.html" class="hover:text-white transition-colors duration-300">Contato</a>
+                <span class="text-gray-600">|</span>
+                <a href="#" class="hover:text-white transition-colors duration-300">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Botão flutuante do WhatsApp -->
-  <a href="https://api.whatsapp.com/send?phone=SEUNUMERO&text=Quero%20aproveitar%20as%20ofertas%20do%20Afiliado%20Top!" 
-     class="whatsapp-float" target="_blank" data-aos="zoom-in">
-    <img src="img/svg/whatsapp-icon.svg" alt="Fale conosco no WhatsApp">
-  </a>
+    <button id="btn-topo" class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hidden opacity-0 animate__animated">
+        ⬆️
+    </button>
 
-  <!-- Chamada animada flutuante -->
-  <div class="cta-dinamico" data-aos="fade-up">Ganhe Descontos!</div>
-<!-- Botão Voltar ao Topo -->
-<button id="btn-topo" title="Voltar ao Topo">↑</button>
-  <!-- Scripts principais -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
-  <script src="scripts.js" defer></script>
-
-  <!-- Inicialização do AOS -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      AOS.init({
-        duration: 1000, // Duração das animações
-      });
-    });
-  </script>
-
-</body>
-
+    <script src="js/scripts.js"></script>
+    </body>
 </html>
