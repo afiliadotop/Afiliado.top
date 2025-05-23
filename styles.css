@@ -37,7 +37,14 @@ header {
 section {
   padding: 2rem 0;
 }
+.text-center py-10 bg-gray-800 {
+background: linear-gradient(to right, #4CAF50, #66BB6A);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1rem;
+  border-bottom: 4px solid #388E3C;
 
+}
 /* Cards de produtos */
 .cards {
   display: grid;
