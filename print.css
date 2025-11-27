@@ -1,21 +1,33 @@
 /* Estilos para impressão */
-body {
-    background: none;
-    color: #000;
-}
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
 
-header, footer, nav, .hero {
-    display: none;
-}
+    header, footer, nav, button, .hero {
+        display: none !important;
+    }
 
-section {
-    padding: 0;
-}
+    section {
+        padding: 10px !important;
+    }
 
-.container {
-    width: 100%;
-}
+    .container {
+        width: 100% !important;
+    }
 
-h1, h2, h3 {
-    color: #000;
+    h1, h2, h3 {
+        color: black !important;
+    }
+
+    a {
+        text-decoration: underline !important;
+        color: blue !important;
+    }
+
+    img {
+        max-width: 100px !important;
+        height: auto !important;
+    }
 }
