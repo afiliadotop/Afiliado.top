@@ -1,46 +1,54 @@
-# .github/workflows/update_products.yml
-
 name: Update Shopee Products
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Executa todos os dias à 00:00 (meia-noite UTC)
+    - cron: '0 0 * * *'  # Todo dia à meia-noite UTC
 
 jobs:
-  update-data:
+  update-shopee:
     runs-on: ubuntu-latest
 
-    # >>> ADICIONE ESTA SEÇÃO AQUI <<<
     permissions:
-      contents: write # Dá permissão de escrita para o conteúdo do repositório
-    # >>> FIM DA SEÇÃO ADICIONADA <<<
+      contents: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pandas requests
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests
 
-    - name: Run Python script to process datafeed
-      env:
-        SHOPEE_DATAFEED_URL: ${{ secrets.SHOPEE_DATAFEED_URL }}
-      run: python process_shopee_datafeed.py
+      - name: Process Shopee datafeed
+        env:
+          SHOPEE_DATAFEED_URL: ${{ secrets.SHOPEE_DATAFEED_URL }}
+        run: python scripts/shopee/process_shopee_datafeed.py
 
-    - name: Commit and Push changes
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
-        git commit -m "Automated: Update Shopee products data" || echo "No changes to commit"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate Shopee HTML page
+        run: python scripts/shopee/generate_shopee_page.py
+
+      - name: Commit and Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/shopee_products.json Ofertas_Shopee.html
+          
+          if git diff --staged --quiet; then
+            echo "✅ Nenhuma mudança detectada."
+          else
+            git commit -m "🤖 Atualização Shopee - $(date +'%d/%m/%Y %H:%M')"
+            git push
+            echo "✅ Ofertas da Shopee atualizadas!"
+          fi
