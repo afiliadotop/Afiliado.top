@@ -1,6 +1,6 @@
-/* Custom CSS para Afiliado.Top - Pode ser usado para sobrepor Tailwind ou estilos específicos */
+/* Custom CSS para Afiliado.Top - Sobrepõe Tailwind ou adiciona estilos específicos */
 
-/* Exemplo: Estilo para o tradutor do Google */
+/* ===== Tradutor Google ===== */
 #google_translate_element .skiptranslate.goog-te-gadget {
     font-size: 0.875rem !important; /* Tailwind text-sm */
     color: #fff !important;
@@ -14,16 +14,15 @@
 .goog-te-banner-frame {
     display: none !important;
 }
+
 body {
     top: 0px !important; /* Corrige o espaçamento que o tradutor pode adicionar */
 }
 
-/* Estilo para um fundo com padrão de pontos (se você tiver uma imagem ou SVG) */
+/* Fundo com padrão de pontos usado no HERO */
 .bg-pattern-dots {
-    /* Exemplo: Substitua pela sua imagem ou padrão SVG */
-    background-image: url('data:image/svg+xml;utf8,<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="%23ffffff" opacity="0.1"></circle></svg>');
+    background-image: url("data:image/svg+xml;utf8,<svg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'><circle cx='2' cy='2' r='1' fill='%23ffffff' opacity='0.1'></circle></svg>");
     background-size: 10px 10px;
 }
 
-/* Animações customizadas se precisar de algo além do animate.css */
-/* @keyframes slideInFromLeft { ... } */
+/* Ajustes gerais de responsividade e detalhes visuais da home podem entrar aqui depois, se quiser */
