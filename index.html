@@ -5,47 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Afiliado.Top - As Melhores Ofertas e Descontos Online | Shopee, Amazon e Mais!</title>
-    <meta name="description" content="Seu portal definitivo para as melhores ofertas e descontos em produtos de tecnologia, casa, moda e muito mais. Encontre promoções exclusivas da Shopee, Amazon e outras grandes lojas, com links de afiliado confiáveis. Economize e descubra produtos incríveis no Afiliado.Top!">
-    <meta name="keywords" content="afiliados, ofertas, descontos, promoções, Shopee, Amazon, loja online, tecnologia, casa, moda, eletrônicos, cupons, cashback, afiliados Brasil">
+    <meta name="description" content="Seu portal definitivo para encontrar as melhores ofertas, cupons e descontos em Shopee, Amazon e outras grandes lojas. Economize em eletrônicos, moda, casa, beleza e muito mais com links de afiliado confiáveis.">
+    <meta name="keywords" content="afiliados, ofertas, descontos, promoções, Shopee, Amazon, cupons, cashback, eletrônicos, casa, moda, afiliados Brasil">
     <meta name="author" content="Afiliado.Top Team">
-    <link rel="canonical" href="https://afiliadotop.github.io/Afiliado.top/"> <meta property="og:title" content="Afiliado.Top - As Melhores Ofertas e Descontos Online">
+
+    <link rel="canonical" href="https://afiliadotop.github.io/Afiliado.top/">
+
+    <meta property="og:title" content="Afiliado.Top - As Melhores Ofertas e Descontos Online">
     <meta property="og:description" content="Encontre promoções exclusivas da Shopee, Amazon e outras grandes lojas, com links de afiliado confiáveis.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://afiliadotop.github.io/Afiliado.top/"> <meta property="og:image" content="https://afiliadotop.github.io/Afiliado.top/assets/social-share-image.jpg"> <meta property="og:site_name" content="Afiliado.Top">
+    <meta property="og:url" content="https://afiliadotop.github.io/Afiliado.top/">
+    <meta property="og:image" content="https://afiliadotop.github.io/Afiliado.top/assets/social-share-image.jpg">
+    <meta property="og:site_name" content="Afiliado.Top">
 
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
+    <!-- Tailwind + CSS custom -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="CSS/styles.css">
 
+    <!-- Libs -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
+    <!-- Google Translate -->
     <script>
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en,es,fr,it,de,pt'}, 'google_translate_element');
+            new google.translate.TranslateElement(
+                {pageLanguage: 'pt', includedLanguages: 'en,es,fr,it,de,pt'},
+                'google_translate_element'
+            );
         }
     </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9910874980055059"
-     crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
 </head>
 <body class="bg-gray-900 text-white font-sans antialiased">
-    <header class="bg-gray-800 shadow-lg py-4 px-6 md:px-10 sticky top-0 z-50">
+    <!-- HEADER -->
+    <header class="bg-gray-800/95 backdrop-blur shadow-lg py-4 px-6 md:px-10 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-3">
-                <img src="assets/logo.png" alt="Afiliado.Top Logo" class="h-10">
-                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Afiliado.Top</h1>
+                <img src="assets/logo.png" alt="Afiliado.Top Logo" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
+                        Afiliado.<span class="text-orange-400">Top</span>
+                    </h1>
+                    <p class="text-xs md:text-sm text-gray-300 -mt-1">
+                        Ofertas selecionadas diariamente
+                    </p>
+                </div>
             </a>
             
             <nav>
-                <ul class="flex items-center space-x-6">
+                <ul class="flex items-center space-x-6 text-sm md:text-base">
                     <li><a href="index.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Início</a></li>
                     <li><a href="Ofertas_Shopee.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Ofertas Shopee</a></li>
+                    <!-- Pensando no futuro: outras lojas -->
+                    <li><a href="#lojas" class="text-gray-300 hover:text-white transition duration-300 font-medium">Lojas</a></li>
+                    <li><a href="#como-funciona" class="text-gray-300 hover:text-white transition duration-300 font-medium">Como funciona</a></li>
                     <li><a href="contato.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Contato</a></li>
                     
-                    <li class="hidden md:block"> <div id="google_translate_element" class="bg-gray-700 p-2 rounded-md text-sm shadow-sm"></div>
+                    <li class="hidden md:block">
+                        <div id="google_translate_element" class="bg-gray-700 p-2 rounded-md text-xs shadow-sm"></div>
                     </li>
                 </ul>
             </nav>
@@ -53,47 +77,114 @@
     </header>
 
     <main>
-        <section class="relative bg-gradient-to-r from-purple-800 to-indigo-900 py-20 px-6 md:py-32 md:px-10 text-center overflow-hidden">
-            <div class="absolute inset-0 opacity-20 bg-pattern-dots"></div> <div class="relative max-w-4xl mx-auto z-10">
-                <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate__animated animate__fadeInDown">
-                    Sua Busca por Economia Termina Aqui!
-                </h2>
-                <p class="text-xl md:text-2xl text-gray-200 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
-                    Descubra as melhores ofertas e descontos exclusivos das suas lojas favoritas.
-                    Economize de verdade com os links de afiliado mais confiáveis do mercado.
+        <!-- HERO -->
+        <section class="relative bg-gradient-to-r from-purple-800 via-indigo-900 to-gray-900 py-20 px-6 md:py-28 md:px-10 text-center overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-pattern-dots pointer-events-none"></div>
+            
+            <div class="relative max-w-5xl mx-auto z-10">
+                <p class="inline-flex items-center px-4 py-1 rounded-full bg-black/40 text-xs md:text-sm text-gray-200 mb-4 border border-purple-500/60">
+                    🔥 Atualizado diariamente com as melhores ofertas da Shopee e outras lojas
                 </p>
-                <a href="Ofertas_Shopee.html" class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate__animated animate__zoomIn animate__delay-2s">
-                    🔥 Ver Ofertas Shopee AGORA!
-                </a>
-            </div>
-        </section>
+                <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                    Economize tempo e dinheiro encontrando <span class="text-orange-400">as melhores ofertas</span> em um só lugar.
+                </h2>
+                <p class="text-lg md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                    O Afiliado.Top garimpa cupons, promoções e produtos com alta avaliação na Shopee, Amazon
+                    e outras grandes lojas para você comprar com confiança e pagar menos.
+                </p>
 
-        <section class="py-16 px-6 md:px-10 bg-gray-900">
-            <div class="max-w-7xl mx-auto">
-                <h3 class="text-3xl md:text-4xl font-bold text-center mb-12">Por que Escolher o Afiliado.Top?</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
-                        <div class="text-5xl mb-4">💰</div>
-                        <h4 class="text-xl font-semibold mb-3">Economia Garantida</h4>
-                        <p class="text-gray-400">Encontre descontos exclusivos que você não acharia em outro lugar, atualizados diariamente.</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-6">
+                    <a href="Ofertas_Shopee.html" class="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                        🔍 Ver Ofertas Shopee Agora
+                    </a>
+                    <a href="#newsletter" class="inline-flex items-center justify-center bg-transparent border border-gray-500 hover:border-white text-gray-200 hover:text-white font-medium py-3 px-8 rounded-full text-base shadow-md hover:shadow-lg transition-all duration-300">
+                        ✉️ Receber ofertas por e-mail
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-sm md:text-base">
+                    <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
+                        <p class="font-semibold text-orange-300 mb-1">+ de 100 ofertas ativas</p>
+                        <p class="text-gray-200 text-xs md:text-sm">Produtos selecionados com base em desconto, avaliação e relevância.</p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
-                        <div class="text-5xl mb-4">✅</div>
-                        <h4 class="text-xl font-semibold mb-3">Links Confiáveis</h4>
-                        <p class="text-gray-400">Trabalhamos apenas com programas de afiliados de lojas renomadas e seguras.</p>
+                    <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
+                        <p class="font-semibold text-green-300 mb-1">4.5★ ou mais</p>
+                        <p class="text-gray-200 text-xs md:text-sm">Priorizamos produtos com boas avaliações reais dos usuários.</p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
-                        <div class="text-5xl mb-4">🔄</div>
-                        <h4 class="text-xl font-semibold mb-3">Atualização Constante</h4>
-                        <p class="text-gray-400">Nosso sistema automatizado garante que você veja sempre as últimas promoções.</p>
+                    <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
+                        <p class="font-semibold text-blue-300 mb-1">Links oficiais e seguros</p>
+                        <p class="text-gray-200 text-xs md:text-sm">Você sempre é redirecionado para o site oficial da loja.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-16 px-6 md:px-10 bg-gray-800">
+        <!-- POR QUE ESCOLHER / BENEFÍCIOS -->
+        <section class="py-16 px-6 md:px-10 bg-gray-900" id="beneficios">
             <div class="max-w-7xl mx-auto">
-                <h3 class="text-3xl md:text-4xl font-bold text-center mb-12">Explore por Categorias Populares</h3>
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-4">Por que escolher o Afiliado.Top?</h3>
+                <p class="text-center text-gray-300 max-w-3xl mx-auto mb-12 text-sm md:text-base">
+                    Não somos apenas mais um site de links. Nosso foco é ajudar você a tomar decisões melhores na hora de comprar
+                    online, com curadoria, transparência e foco em economia real.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="text-5xl mb-4">💰</div>
+                        <h4 class="text-xl font-semibold mb-3">Economia Garantida</h4>
+                        <p class="text-gray-400 text-sm md:text-base">
+                            Destaque para produtos com grande percentual de desconto, frete grátis e cupons ativos,
+                            sempre que possível.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="text-5xl mb-4">✅</div>
+                        <h4 class="text-xl font-semibold mb-3">Curadoria e Confiança</h4>
+                        <p class="text-gray-400 text-sm md:text-base">
+                            Trabalhamos apenas com programas de afiliados oficiais, como Shopee, Amazon e outras lojas seguras.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="text-5xl mb-4">🤖</div>
+                        <h4 class="text-xl font-semibold mb-3">Atualização Automática</h4>
+                        <p class="text-gray-400 text-sm md:text-base">
+                            Scripts automatizados mantêm as ofertas atualizadas, evitando produtos esgotados
+                            ou links quebrados sempre que possível.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOJAS / DESTINOS -->
+        <section class="py-16 px-6 md:px-10 bg-gray-800" id="lojas">
+            <div class="max-w-7xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-10">Lojas em destaque</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <a href="Ofertas_Shopee.html" class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
+                        <div class="text-5xl mb-3">🛍️</div>
+                        <h4 class="text-2xl font-semibold mb-2 group-hover:text-orange-300">Shopee</h4>
+                        <p class="text-gray-300 text-sm mb-3">Ofertas diárias em todas as categorias, com forte foco em eletrônicos, casa, moda e utilidades.</p>
+                        <span class="text-orange-400 text-sm font-semibold mt-2">Ver ofertas da Shopee →</span>
+                    </a>
+                    <!-- Espaço reservado para futuras lojas -->
+                    <div class="bg-gray-700/60 p-8 rounded-xl border border-dashed border-gray-600 flex flex-col items-center justify-center text-center">
+                        <span class="text-4xl mb-3">🚧</span>
+                        <h4 class="text-xl font-semibold mb-2">Em breve: Amazon</h4>
+                        <p class="text-gray-400 text-sm">Estamos preparando uma página dedicada com ofertas selecionadas da Amazon.</p>
+                    </div>
+                    <div class="bg-gray-700/60 p-8 rounded-xl border border-dashed border-gray-600 flex flex-col items-center justify-center text-center">
+                        <span class="text-4xl mb-3">🚧</span>
+                        <h4 class="text-xl font-semibold mb-2">Mais lojas parceiras</h4>
+                        <p class="text-gray-400 text-sm">Outras grandes lojas serão adicionadas conforme os programas de afiliado forem aprovados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIAS POPULARES -->
+        <section class="py-16 px-6 md:px-10 bg-gray-900">
+            <div class="max-w-7xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-12">Explore por categorias populares</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <a href="Ofertas_Shopee.html?category=eletronicos" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
                         <img src="assets/cat-eletronicos.png" alt="Eletrônicos" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
@@ -111,30 +202,82 @@
                         <img src="assets/cat-saude.png" alt="Saúde e Beleza" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
                         <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Saúde e Beleza</h4>
                     </a>
-                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="bg-purple-700 py-16 px-6 md:px-10 text-center">
+        <!-- COMO FUNCIONA -->
+        <section class="py-16 px-6 md:px-10 bg-gray-800" id="como-funciona">
+            <div class="max-w-5xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-6">Como funciona o Afiliado.Top?</h3>
+                <p class="text-gray-300 text-center mb-10 max-w-3xl mx-auto text-sm md:text-base">
+                    Nosso objetivo é simples: ajudar você a encontrar rapidamente produtos com bom custo-benefício.
+                    Para isso, combinamos automação com uma curadoria básica de qualidade.
+                </p>
+
+                <ol class="space-y-4 text-gray-200 text-sm md:text-base">
+                    <li><span class="font-semibold text-orange-300">1.</span> Nossos sistemas automatizados leem periodicamente feeds de produtos das lojas parceiras (como a Shopee).</li>
+                    <li><span class="font-semibold text-orange-300">2.</span> Filtramos itens com boas avaliações, descontos relevantes e categorias populares.</li>
+                    <li><span class="font-semibold text-orange-300">3.</span> Organizamos tudo em páginas fáceis de navegar, como a página de <a href="Ofertas_Shopee.html" class="text-orange-300 underline hover:text-orange-200">Ofertas Shopee</a>.</li>
+                    <li><span class="font-semibold text-orange-300">4.</span> Você escolhe o produto, clica no link e finaliza a compra diretamente no site oficial da loja, com toda a segurança.</li>
+                </ol>
+
+                <p class="text-gray-400 text-xs mt-6">
+                    Transparência: ao comprar pelos nossos links de afiliado, você não paga nada a mais por isso.
+                    Em alguns casos, recebemos uma pequena comissão da loja, o que nos ajuda a manter o site no ar.
+                </p>
+            </div>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section id="newsletter" class="bg-purple-700 py-16 px-6 md:px-10 text-center">
             <div class="max-w-3xl mx-auto">
-                <h3 class="text-3xl md:text-4xl font-bold mb-6">Não Perca Nenhuma Oferta!</h3>
-                <p class="text-lg text-gray-200 mb-8">Inscreva-se em nossa newsletter para receber as melhores promoções diretamente no seu e-mail.</p>
+                <h3 class="text-3xl md:text-4xl font-bold mb-6">Não perca nenhuma oferta!</h3>
+                <p class="text-lg text-gray-200 mb-8">Inscreva-se para receber alertas de promoções selecionadas diretamente no seu e-mail.</p>
                 <form action="#" method="POST" class="flex flex-col md:flex-row justify-center items-center gap-4">
                     <input type="email" placeholder="Seu melhor e-mail" class="flex-grow p-4 rounded-lg border-2 border-purple-500 focus:outline-none focus:border-white text-gray-900 placeholder-gray-500" required>
                     <button type="submit" class="bg-white text-purple-700 font-bold py-4 px-8 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105">
                         Inscrever-se
                     </button>
                 </form>
-                <p class="text-sm text-gray-300 mt-4">Prometemos não enviar spam. Você pode cancelar a qualquer momento.</p>
+                <p class="text-sm text-gray-300 mt-4">Nada de spam. Apenas ofertas relevantes de tempos em tempos. Você pode cancelar quando quiser.</p>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="py-16 px-6 md:px-10 bg-gray-900" id="faq">
+            <div class="max-w-5xl mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-8">Perguntas frequentes</h3>
+                <div class="space-y-6 text-sm md:text-base text-gray-200">
+                    <div>
+                        <h4 class="font-semibold text-lg mb-1">O Afiliado.Top vende produtos?</h4>
+                        <p class="text-gray-300">Não. Somos um portal de ofertas. Você sempre conclui a compra diretamente no site oficial da loja (como Shopee, Amazon, etc.).</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg mb-1">Pagar pelo link de afiliado é mais caro?</h4>
+                        <p class="text-gray-300">Não. O preço é o mesmo (ou até menor, quando há cupons ou promoções exclusivas). A loja apenas nos paga uma comissão pela indicação.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg mb-1">As ofertas são realmente atualizadas?</h4>
+                        <p class="text-gray-300">Sim. Utilizamos scripts automáticos que atualizam as páginas com frequência, principalmente a parte de Shopee. Ainda assim, algumas promoções podem expirar rapidamente.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg mb-1">Quais lojas vocês pretendem adicionar?</h4>
+                        <p class="text-gray-300">Além da Shopee, nossa intenção é incluir páginas com ofertas da Amazon e outras grandes varejistas, conforme os programas de afiliados forem aprovados.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- FOOTER -->
     <footer class="bg-gray-800 py-8 px-6 md:px-10 text-center text-gray-400">
         <div class="max-w-7xl mx-auto">
             <p>&copy; 2025 Afiliado.Top - Todos os direitos reservados.</p>
-            <p class="text-sm mt-2">Ao clicar nos links de afiliado e realizar uma compra, podemos receber uma comissão sem custo adicional para você.</p>
-            <div class="mt-4 flex justify-center space-x-6">
+            <p class="text-sm mt-2">
+                Este site contém links de afiliados. Ao comprar por eles, podemos receber uma comissão, sem custo adicional para você.
+            </p>
+            <div class="mt-4 flex justify-center space-x-6 text-sm">
                 <a href="#" class="hover:text-white transition-colors duration-300">Política de Privacidade</a>
                 <span class="text-gray-600">|</span>
                 <a href="contato.html" class="hover:text-white transition-colors duration-300">Contato</a>
@@ -144,10 +287,11 @@
         </div>
     </footer>
 
-    <button id="btn-topo" class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hidden opacity-0 animate__animated">
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <button id="btn-topo" class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hidden opacity-0">
         ⬆️
     </button>
 
     <script src="JS/scripts.js"></script>
-    </body>
+</body>
 </html>
