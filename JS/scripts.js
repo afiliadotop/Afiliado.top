@@ -1,41 +1,53 @@
+// Afiliado.Top - scripts globais
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Afiliado.Top - Site carregado com sucesso!');
 
-    // --- Lógica Unificada do Botão "Voltar ao Topo" ---
-    const btnTopo = document.getElementById('btn-topo'); // Busca o botão pelo ID
+    // --- Botão "Voltar ao Topo" ---
+    const btnTopo = document.getElementById('btn-topo');
 
-    if (btnTopo) { // Garante que o botão existe no HTML
-        // Mostra/Esconde o botão ao rolar a página
+    if (btnTopo) {
+        // Mostrar / esconder botão conforme o scroll
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) { // Mostra após rolar 300px
+            if (window.scrollY > 300) {
                 if (btnTopo.style.display === 'none' || btnTopo.style.display === '') {
                     btnTopo.style.display = 'block';
-                    // Adicionar animação de entrada com Anime.js se quiser
-                    anime({
-                        targets: btnTopo,
-                        opacity: [0,1],
-                        translateY: [20,0],
-                        duration: 500,
-                        easing: 'easeOutQuad'
-                    });
+
+                    // Animação de entrada com Anime.js (se carregado)
+                    if (window.anime) {
+                        anime({
+                            targets: btnTopo,
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            duration: 500,
+                            easing: 'easeOutQuad'
+                        });
+                    } else {
+                        btnTopo.style.opacity = '1';
+                    }
                 }
             } else {
                 if (btnTopo.style.display === 'block') {
-                    anime({
-                        targets: btnTopo,
-                        opacity: [1,0],
-                        translateY: [0,20],
-                        duration: 500,
-                        easing: 'easeOutQuad',
-                        complete: () => {
-                            btnTopo.style.display = 'none';
-                        }
-                    });
+                    if (window.anime) {
+                        anime({
+                            targets: btnTopo,
+                            opacity: [1, 0],
+                            translateY: [0, 20],
+                            duration: 500,
+                            easing: 'easeOutQuad',
+                            complete: () => {
+                                btnTopo.style.display = 'none';
+                            }
+                        });
+                    } else {
+                        btnTopo.style.opacity = '0';
+                        btnTopo.style.display = 'none';
+                    }
                 }
             }
         });
 
-        // Comportamento de clique para voltar ao topo
+        // Clique para voltar ao topo
         btnTopo.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -44,23 +56,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// A função showProductInfo (usada para pop-ups de produtos)
-// pode ficar aqui se for usada globalmente, ou ser movida para shopee.html se for específica de lá.
-// Se usada em ambos, considere um arquivo 'utils.js' e importá-lo.
+/**
+ * Exibe um pop-up com informações do produto.
+ * Pode ser usada em qualquer página (Shopee, Amazon, etc.).
+ * Depende de SweetAlert2 (Swal) e, opcionalmente, de Anime.js.
+ */
 function showProductInfo(nomeProduto) {
+    if (!window.Swal) {
+        alert(nomeProduto + "\n\nVocê será redirecionado para a página de compra.\nAo comprar, você apoia nosso projeto!");
+        return;
+    }
+
     Swal.fire({
         title: nomeProduto,
-        html: 'Você será redirecionado para a página de compra.<br>Ao comprar, você apoia nosso projeto!',
+        html: 'Você será redirecionado para a página de compra.<br>Ao comprar, você apoia nosso projeto! 💜',
         icon: 'info',
         confirmButtonText: 'Entendi',
         didOpen: (popup) => {
-            anime({
-                targets: popup,
-                scale: [0.5, 1],
-                opacity: [0, 1],
-                duration: 800,
-                easing: 'easeOutElastic(1, .8)'
-            });
+            if (window.anime) {
+                anime({
+                    targets: popup,
+                    scale: [0.5, 1],
+                    opacity: [0, 1],
+                    duration: 800,
+                    easing: 'easeOutElastic(1, .8)'
+                });
+            }
         }
     });
 }
