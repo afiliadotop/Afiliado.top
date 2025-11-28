@@ -11,36 +11,90 @@ PROJECT_ROOT = SCRIPT_DIR.parent.parent
 DATA_FILE = PROJECT_ROOT / 'data' / 'shopee_products.json'
 OUTPUT_FILE = PROJECT_ROOT / 'Ofertas_Shopee.html'
 
+# Mapeamento de categorias EN → PT-BR
+CATEGORY_LABELS = {
+    "Watches": "Relógios",
+    "Home Appliances": "Eletrodomésticos",
+    "Men Bags": "Bolsas Masculinas",
+    "Men Clothes": "Roupas Masculinas",
+    "Women Clothes": "Roupas Femininas",
+    "Women Shoes": "Sapatos Femininos",
+    "Men Shoes": "Sapatos Masculinos",
+    "Mobile & Gadgets": "Celulares e Gadgets",
+    "Health": "Saúde",
+    "Beauty": "Beleza",
+    "Home & Living": "Casa e Decoração",
+    "Hobbies & Collections": "Hobbies e Coleções",
+    "Food & Beverages": "Alimentos e Bebidas",
+    "Pet Care": "Pet Care",
+    "Sports & Outdoors": "Esportes",
+    "Gaming & Consoles": "Games e Consoles",
+    "Toys & Games": "Brinquedos",
+    "Baby & Kids": "Bebês e Crianças",
+    "Automotive": "Automotivo",
+    "Travel & Luggage": "Viagem e Bagagem",
+    "Stationery": "Papelaria",
+    "Accessories": "Acessórios",
+    "Electronics": "Eletrônicos",
+}
+
+
+def translate_category(cat_en):
+    """Traduz categoria do inglês para português."""
+    return CATEGORY_LABELS.get(cat_en, cat_en)
+
+
+def format_price(value):
+    """Formata preço para padrão brasileiro (R$ X.XXX,XX)."""
+    if not value:
+        return "R$ 0,00"
+    try:
+        val = float(value)
+        # Se o valor vier em centavos (ex: 1999 = R$ 19,99), divida por 100
+        # Caso contrário, comente a linha abaixo
+        # val = val / 100
+        return f"R$ {val:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    except:
+        return "R$ 0,00"
+
 
 def product_card_html(p):
     nome = p.get('nome', 'Produto sem título')
     imagem = p.get('imagem', 'assets/placeholder.png')
     descricao = p.get('descricao', '')
-    link = p.get('link', '#')
-    categoria = p.get('categoria', 'Geral')
+    
+    # PRIORIZA product_short_link (link de afiliado)
+    link = p.get('product_short_link') or p.get('link', '#')
+    
+    # Categoria traduzida
+    categoria_raw = p.get('categoria', 'Geral')
+    categoria = translate_category(categoria_raw)
+    
+    # Preços
     preco = float(p.get('preco', 0) or 0)
     preco_promo = float(p.get('preco_promocional', 0) or 0)
     desconto = int(p.get('desconto', 0) or 0)
     avaliacao = p.get('avaliacao', '')
 
+    # Define preço final
     preco_final = preco_promo if preco_promo > 0 and preco_promo < preco else preco
 
-    preco_original_html = (
-        f'<span class="text-gray-400 line-through text-sm">R$ {preco:.2f}</span><br>'
-        if preco_promo > 0 and preco_promo < preco
-        else ''
-    )
+    # HTML do preço original (riscado)
+    preco_original_html = ''
+    if preco_promo > 0 and preco_promo < preco:
+        preco_original_html = f'<span class="text-gray-400 line-through text-sm">{format_price(preco)}</span><br>'
 
-    desconto_badge = (
-        f'<span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">-{desconto}%</span>'
-        if desconto > 0 else ''
-    )
+    # Badge de desconto
+    desconto_badge = ''
+    if desconto > 0:
+        desconto_badge = f'<span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">-{desconto}%</span>'
 
-    rating_html = (
-        f'<span class="text-yellow-400 text-sm">⭐ {avaliacao}</span>'
-        if avaliacao not in ('', '0', 0) else ''
-    )
+    # Avaliação (estrelas)
+    rating_html = ''
+    if avaliacao not in ('', '0', 0):
+        rating_html = f'<span class="text-yellow-400 text-sm">⭐ {avaliacao}</span>'
 
+    # Sanitiza nome para onclick
     safe_nome_onclick = nome.replace("'", "").replace('"', '')
 
     return f"""
@@ -56,7 +110,7 @@ def product_card_html(p):
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         {preco_original_html}
-                        <span class="text-green-400 font-bold text-xl">R$ {preco_final:.2f}</span>
+                        <span class="text-green-400 font-bold text-xl">{format_price(preco_final)}</span>
                     </div>
                     {rating_html}
                 </div>
@@ -82,8 +136,9 @@ def generate_html():
         print("⚠️ Nenhum produto encontrado em shopee_products.json")
         return False
 
-    # Categorias únicas
-    categories = sorted(set(p.get('categoria', 'Geral') for p in products))
+    # Categorias únicas (já traduzidas)
+    categories_raw = sorted(set(p.get('categoria', 'Geral') for p in products))
+    categories = sorted(set(translate_category(c) for c in categories_raw))
 
     category_buttons = "\n".join(
         f'<button class="category-btn px-3 py-1.5 rounded-full bg-gray-700 hover:bg-orange-500 text-sm" data-category="{cat}">{cat}</button>'
@@ -108,8 +163,7 @@ def generate_html():
   <link rel="canonical" href="https://afiliadotop.github.io/Afiliado.top/Ofertas_Shopee.html">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
-  <!-- Tailwind + estilos -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <!-- Tailwind local -->
   <link rel="stylesheet" href="CSS/styles.css" />
 
   <!-- SweetAlert + Anime.js -->
@@ -220,7 +274,7 @@ def generate_html():
   <script src="JS/scripts.js"></script>
 
   <script>
-    // Filtro por categoria + busca (feito só com elementos já presentes no HTML)
+    // Filtro por categoria + busca
     const searchBar = document.getElementById('searchBar');
     const cards = Array.from(document.querySelectorAll('#productsGrid > div[data-category]'));
     const categoryButtons = document.querySelectorAll('.category-btn');
