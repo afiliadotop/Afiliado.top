@@ -63,8 +63,9 @@ def product_card_html(p):
     imagem = p.get('imagem', 'assets/placeholder.png')
     descricao = p.get('descricao', '')
     
-    # PRIORIZA product_short_link (link de afiliado)
-    link = p.get('product_short_link') or p.get('link', '#')
+   # Usa sempre o link vindo do JSON (já é o link de afiliado da Shopee)
+    
+    link = p.get('link', '#')
     
     # Categoria traduzida
     categoria_raw = p.get('categoria', 'Geral')
