@@ -1,6 +1,7 @@
 """
-Processa o datafeed da Shopee (TSV com tabs) e gera JSON otimizado
+Processa o datafeed da Shopee (CSV/TSV) e gera JSON otimizado
 para a página estática de ofertas.
+Versão robusta: tenta múltiplos formatos automaticamente.
 """
 
 import pandas as pd
@@ -17,7 +18,7 @@ PROJECT_ROOT = SCRIPT_DIR.parent.parent
 DATA_DIR = PROJECT_ROOT / 'data'
 DATA_DIR.mkdir(exist_ok=True)
 
-CSV_FILENAME = DATA_DIR / 'shopee_datafeed_temp.tsv'
+CSV_FILENAME = DATA_DIR / 'shopee_datafeed_temp.csv'
 JSON_FILENAME = DATA_DIR / 'shopee_products.json'
 
 MAX_PRODUCTS_LIMIT = 500
@@ -38,93 +39,131 @@ def download_csv(url, filename):
         return False
 
 
-def read_tsv_loose(filename):
+def read_csv_smart(filename):
     """
-    Lê o TSV de forma bem permissiva:
-    - separador: TAB
-    - não trata aspas como especiais (ignora)
-    - pula linhas muito quebradas
+    Tenta ler o CSV/TSV com múltiplas estratégias até dar certo.
     """
-    print(f"⚙️ Lendo TSV (modo tolerante) de: {filename}")
-    try:
-        df = pd.read_csv(
-            filename,
-            sep="\t",
-            encoding="utf-8",
-            engine="python",
-            quoting=csv.QUOTE_NONE,   # não tratar aspas
-            on_bad_lines="skip",      # pular linhas que não batem com o header
-        )
-        print(f"✅ TSV lido com sucesso em modo tolerante.")
-        print(f"📊 Colunas detectadas: {df.columns.tolist()}")
-        print(f"🔢 Linhas lidas: {len(df)}")
-        return df
-    except Exception as e:
-        print(f"❌ Erro ao ler TSV em modo tolerante: {e}")
-        return None
+    print(f"⚙️ Lendo arquivo de forma inteligente: {filename}")
+
+    # Estratégias: (sep, quoting, descrição)
+    strategies = [
+        (",", csv.QUOTE_MINIMAL, "CSV com vírgula e aspas padrão"),
+        (",", csv.QUOTE_ALL, "CSV com vírgula e todas as aspas"),
+        (",", csv.QUOTE_NONE, "CSV com vírgula sem aspas"),
+        ("\t", csv.QUOTE_MINIMAL, "TSV com tab e aspas padrão"),
+        ("\t", csv.QUOTE_NONE, "TSV com tab sem aspas"),
+    ]
+
+    for sep, quoting, desc in strategies:
+        try:
+            print(f"🧪 Tentando: {desc}...")
+            df = pd.read_csv(
+                filename,
+                sep=sep,
+                encoding="utf-8",
+                engine="python",
+                quoting=quoting,
+                on_bad_lines="skip",
+            )
+            
+            # Valida se realmente leu colunas (não uma coluna gigante)
+            if len(df.columns) > 5:  # esperamos pelo menos 6+ colunas
+                print(f"✅ Sucesso com: {desc}")
+                print(f"📊 Colunas detectadas ({len(df.columns)}): {df.columns.tolist()[:10]}...")
+                print(f"🔢 Linhas lidas: {len(df)}")
+                return df
+            else:
+                print(f"⚠️ Leu apenas {len(df.columns)} coluna(s), tentando próxima estratégia...")
+        except Exception as e:
+            print(f"❌ Falhou com {desc}: {e}")
+
+    print("❌ Não foi possível ler o arquivo com nenhuma estratégia.")
+    return None
 
 
 def process_csv_to_json(csv_filename, json_filename):
-    # Verifica se não é HTML por engano
+    # Verifica se não é HTML
     with open(csv_filename, "r", encoding="utf-8", errors="ignore") as f:
         first_line = f.readline().strip().lower()
         if first_line.startswith("<!doctype") or first_line.startswith("<html"):
             print("❌ O arquivo retornado é HTML (provavelmente login/erro da Shopee).")
-            print("Verifique se o link do datafeed é realmente público ou se não exige login.")
             return False
 
-    df = read_tsv_loose(csv_filename)
+    df = read_csv_smart(csv_filename)
     if df is None or df.empty:
         print("❌ DataFrame vazio ou não pôde ser lido.")
         return False
 
-    # Aqui usamos as colunas que você mostrou do feed:
-    # shop_rating	itemid	sale_price	item_rating	global_category3	cb_option
-    # discount_percentage	global_catid2	price	description	title	global_category1
-    # image_link_3	global_catid1	global_catid3	like	condition	global_category2
-    # model_ids	image_link	model_names	shop_name	product_link	product_short link
+    # Normaliza nomes de colunas (remove espaços, lowercase)
+    df.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
+    print(f"📊 Colunas normalizadas: {df.columns.tolist()[:10]}...")
 
     def get_col(col_name):
-        return df[col_name] if col_name in df.columns else None
+        col_lower = col_name.lower().replace(" ", "_")
+        return df[col_lower] if col_lower in df.columns else None
 
     df_out = pd.DataFrame()
 
     # Campos básicos
-    df_out["nome"] = get_col("title")
-    df_out["imagem"] = get_col("image_link")
-    df_out["descricao"] = get_col("description")
-    df_out["categoria"] = get_col("global_category1")
+    title_col = get_col("title")
+    if title_col is not None:
+        df_out["nome"] = title_col
+    else:
+        print("⚠️ Coluna 'title' não encontrada.")
+        df_out["nome"] = ""
 
-    # Link: prioriza product_short link
-    if "product_short link" in df.columns:
-        df_out["link"] = df["product_short link"]
-    elif "product_link" in df.columns:
-        df_out["link"] = df["product_link"]
+    image_col = get_col("image_link")
+    if image_col is not None:
+        df_out["imagem"] = image_col
+    else:
+        df_out["imagem"] = ""
+
+    desc_col = get_col("description")
+    if desc_col is not None:
+        df_out["descricao"] = desc_col
+    else:
+        df_out["descricao"] = ""
+
+    cat_col = get_col("global_category1")
+    if cat_col is not None:
+        df_out["categoria"] = cat_col
+    else:
+        df_out["categoria"] = "Geral"
+
+    # Link: prioriza product_short_link
+    link_short = get_col("product_short_link")
+    link_normal = get_col("product_link")
+    if link_short is not None:
+        df_out["link"] = link_short
+    elif link_normal is not None:
+        df_out["link"] = link_normal
     else:
         df_out["link"] = ""
 
     # Preços
-    df_out["preco"] = pd.to_numeric(get_col("price"), errors="coerce").fillna(0.0)
-    if "sale_price" in df.columns:
-        df_out["preco_promocional"] = pd.to_numeric(
-            get_col("sale_price"), errors="coerce"
-        ).fillna(0.0)
+    price_col = get_col("price")
+    if price_col is not None:
+        df_out["preco"] = pd.to_numeric(price_col, errors="coerce").fillna(0.0)
+    else:
+        df_out["preco"] = 0.0
+
+    sale_col = get_col("sale_price")
+    if sale_col is not None:
+        df_out["preco_promocional"] = pd.to_numeric(sale_col, errors="coerce").fillna(0.0)
     else:
         df_out["preco_promocional"] = 0.0
 
     # Avaliação
-    if "item_rating" in df.columns:
-        df_out["avaliacao"] = pd.to_numeric(
-            get_col("item_rating"), errors="coerce"
-        ).fillna(0.0)
+    rating_col = get_col("item_rating")
+    if rating_col is not None:
+        df_out["avaliacao"] = pd.to_numeric(rating_col, errors="coerce").fillna(0.0)
     else:
         df_out["avaliacao"] = 0.0
 
-    # Desconto: se houver discount_percentage, usamos
-    if "discount_percentage" in df.columns:
-        df_out["desconto"] = pd.to_numeric(
-            get_col("discount_percentage"), errors="coerce"
-        ).fillna(0).astype(int)
+    # Desconto
+    discount_col = get_col("discount_percentage")
+    if discount_col is not None:
+        df_out["desconto"] = pd.to_numeric(discount_col, errors="coerce").fillna(0).astype(int)
     else:
         def calc_desconto(row):
             preco = row["preco"]
@@ -135,12 +174,12 @@ def process_csv_to_json(csv_filename, json_filename):
 
         df_out["desconto"] = df_out.apply(calc_desconto, axis=1)
 
-    # Limpeza básica
+    # Limpeza
     df_out = df_out.fillna("")
     df_out = df_out[df_out["preco"] > 0]
     df_out = df_out[df_out["link"] != ""]
 
-    # Ordenação: maior desconto + melhor avaliação
+    # Ordenação
     df_out = df_out.sort_values(
         by=["desconto", "avaliacao"], ascending=[False, False]
     )
