@@ -1,12 +1,13 @@
 """
 Processa o datafeed da Shopee (TSV com tabs) e gera JSON otimizado
-para gerar a página estática de ofertas.
+para a página estática de ofertas.
 """
 
 import pandas as pd
 import requests
 import json
 import os
+import csv
 from pathlib import Path
 
 SHOPEE_DATAFEED_URL = os.environ.get('SHOPEE_DATAFEED_URL')
@@ -37,34 +38,52 @@ def download_csv(url, filename):
         return False
 
 
-def process_csv_to_json(csv_filename, json_filename):
-    print(f"⚙️ Lendo datafeed TS V: {csv_filename}")
-
-    # Seu feed é TAB-SEPARATED (delimitador = '\t')
+def read_tsv_loose(filename):
+    """
+    Lê o TSV de forma bem permissiva:
+    - separador: TAB
+    - não trata aspas como especiais (ignora)
+    - pula linhas muito quebradas
+    """
+    print(f"⚙️ Lendo TSV (modo tolerante) de: {filename}")
     try:
         df = pd.read_csv(
-            csv_filename,
+            filename,
             sep="\t",
             encoding="utf-8",
-            engine="python"
+            engine="python",
+            quoting=csv.QUOTE_NONE,   # não tratar aspas
+            on_bad_lines="skip",      # pular linhas que não batem com o header
         )
+        print(f"✅ TSV lido com sucesso em modo tolerante.")
+        print(f"📊 Colunas detectadas: {df.columns.tolist()}")
+        print(f"🔢 Linhas lidas: {len(df)}")
+        return df
     except Exception as e:
-        print(f"❌ Erro ao ler TSV: {e}")
+        print(f"❌ Erro ao ler TSV em modo tolerante: {e}")
+        return None
+
+
+def process_csv_to_json(csv_filename, json_filename):
+    # Verifica se não é HTML por engano
+    with open(csv_filename, "r", encoding="utf-8", errors="ignore") as f:
+        first_line = f.readline().strip().lower()
+        if first_line.startswith("<!doctype") or first_line.startswith("<html"):
+            print("❌ O arquivo retornado é HTML (provavelmente login/erro da Shopee).")
+            print("Verifique se o link do datafeed é realmente público ou se não exige login.")
+            return False
+
+    df = read_tsv_loose(csv_filename)
+    if df is None or df.empty:
+        print("❌ DataFrame vazio ou não pôde ser lido.")
         return False
 
-    print(f"📊 Colunas detectadas: {df.columns.tolist()}")
+    # Aqui usamos as colunas que você mostrou do feed:
+    # shop_rating	itemid	sale_price	item_rating	global_category3	cb_option
+    # discount_percentage	global_catid2	price	description	title	global_category1
+    # image_link_3	global_catid1	global_catid3	like	condition	global_category2
+    # model_ids	image_link	model_names	shop_name	product_link	product_short link
 
-    # Normaliza nomes (só por segurança)
-    df.columns = [str(c).strip() for c in df.columns]
-
-    # Conferindo colunas que vamos usar
-    needed = ["title", "image_link", "description", "global_category1", "price",
-              "sale_price", "item_rating", "discount_percentage", "product_link", "product_short link"]
-    missing = [c for c in needed if c not in df.columns]
-    if missing:
-        print(f"⚠️ Algumas colunas não existem (isso é esperado em alguns feeds): {missing}")
-
-    # Construção do DataFrame final, usando .get em cada coluna
     def get_col(col_name):
         return df[col_name] if col_name in df.columns else None
 
@@ -76,7 +95,7 @@ def process_csv_to_json(csv_filename, json_filename):
     df_out["descricao"] = get_col("description")
     df_out["categoria"] = get_col("global_category1")
 
-    # Link: prioriza product_short link, senão product_link
+    # Link: prioriza product_short link
     if "product_short link" in df.columns:
         df_out["link"] = df["product_short link"]
     elif "product_link" in df.columns:
@@ -101,7 +120,7 @@ def process_csv_to_json(csv_filename, json_filename):
     else:
         df_out["avaliacao"] = 0.0
 
-    # Desconto: se vier pronto, usamos; senão calculamos
+    # Desconto: se houver discount_percentage, usamos
     if "discount_percentage" in df.columns:
         df_out["desconto"] = pd.to_numeric(
             get_col("discount_percentage"), errors="coerce"
@@ -116,17 +135,16 @@ def process_csv_to_json(csv_filename, json_filename):
 
         df_out["desconto"] = df_out.apply(calc_desconto, axis=1)
 
-    # Limpa NaNs/string vazia
+    # Limpeza básica
     df_out = df_out.fillna("")
     df_out = df_out[df_out["preco"] > 0]
     df_out = df_out[df_out["link"] != ""]
 
-    # Ordenar: maior desconto + melhor rating
+    # Ordenação: maior desconto + melhor avaliação
     df_out = df_out.sort_values(
         by=["desconto", "avaliacao"], ascending=[False, False]
     )
 
-    # Limitar para não ficar gigante
     total = len(df_out)
     if total > MAX_PRODUCTS_LIMIT:
         print(f"⚠️ Limitando produtos de {total} para {MAX_PRODUCTS_LIMIT}")
@@ -152,7 +170,6 @@ def main():
 
     ok = process_csv_to_json(CSV_FILENAME, JSON_FILENAME)
 
-    # Remove arquivo temporário
     if CSV_FILENAME.exists():
         CSV_FILENAME.unlink()
         print(f"🗑️ Arquivo temporário removido: {CSV_FILENAME.name}")
