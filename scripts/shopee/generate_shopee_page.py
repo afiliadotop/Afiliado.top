@@ -58,13 +58,12 @@ def format_price(value):
         return "R$ 0,00"
 
 
-def product_card_html(p):
+  def product_card_html(p):
     nome = p.get('nome', 'Produto sem título')
     imagem = p.get('imagem', 'assets/placeholder.png')
     descricao = p.get('descricao', '')
     
-   # Usa sempre o link vindo do JSON (já é o link de afiliado da Shopee)
-    
+    # Usa sempre o link vindo do JSON (já é o link de afiliado da Shopee)
     link = p.get('link', '#')
     
     # Categoria traduzida
@@ -101,13 +100,18 @@ def product_card_html(p):
     return f"""
         <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300" data-category="{categoria}">
             <div class="relative">
-                <img src="{imagem}" alt="{nome}" class="w-full h-48 object-cover" loading="lazy">
+                <a href="{link}" target="_blank" rel="noopener noreferrer sponsored"
+                   onclick="showProductInfo('{safe_nome_onclick}')">
+                    <img src="{imagem}" alt="{nome}" class="w-full h-48 object-cover" loading="lazy">
+                </a>
                 {desconto_badge}
                 <span class="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold">{categoria}</span>
             </div>
             <div class="p-4 flex flex-col h-full">
                 <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2 h-14">{nome}</h3>
-                <p class="text-gray-400 text-sm mb-3 line-clamp-3 flex-grow">{descricao}</p>
+                <p class="text-gray-400 text-sm mb-3 flex-grow line-clamp-3 cursor-pointer description-collapsible">
+                    {descricao}
+                </p>
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         {preco_original_html}
