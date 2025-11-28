@@ -332,6 +332,16 @@ def generate_html():
         alert(nomeProduto + '\\n\\nVocê será redirecionado para a página de compra. Ao comprar, você apoia nosso projeto!');
       }}
     }}
+    // Descrição expansível ao clicar
+    document.addEventListener('DOMContentLoaded', () => {
+      const descriptions = document.querySelectorAll('.description-collapsible');
+      
+      descriptions.forEach(desc => {
+        desc.addEventListener('click', () => {
+          desc.classList.toggle('line-clamp-3');
+        });
+      });
+    });
   </script>
 </body>
 </html>
