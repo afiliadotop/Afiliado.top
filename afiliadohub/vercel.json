@@ -3,11 +3,21 @@
   "functions": {
     "api/index.py": {
       "runtime": "python3.11",
-      "memory": 1024,
+      "memory": 2048,
       "maxDuration": 60,
       "includeFiles": "api/**"
     }
   },
+  "builds": [
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "dashboard/**",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
@@ -22,6 +32,14 @@
       "src": "/docs",
       "dest": "/api/index.py"
     },
+    {
+      "src": "/dashboard",
+      "dest": "/dashboard/main.py",
+      "headers": {
+        "Content-Type": "text/html"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.py"
     }
@@ -30,11 +48,5 @@
     "PYTHONPATH": "/var/task",
     "PYTHONUNBUFFERED": "true"
   },
-  "builds": [
-    {
-      "src": "api/**/*.py",
-      "use": "@vercel/python"
-    }
-  ],
   "installCommand": "pip install -r requirements.txt"
 }
