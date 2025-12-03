@@ -14,6 +14,11 @@ from pydantic import BaseModel, Field, validator
 
 from telegram import Bot, Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
+# Adicione estas importações no topo do arquivo
+from api.handlers.commission import CommissionSystem
+from api.handlers.competition_analysis import CompetitionAnalyzer
+from api.handlers.advanced_analytics import AdvancedAnalytics
+from api.handlers.export_reports import ReportExporter
 
 # Configuração de logging
 logging.basicConfig(
@@ -93,6 +98,18 @@ async def verify_cron_token(request: Request):
     return True
 
 # ==================== ROTAS DA API ====================
+@app.post("/api/commission/calculate", dependencies=[Depends(verify_admin_token)])
+async def calculate_commission(commission_data: dict):
+    """Calcula comissão para uma venda"""
+    try:
+        commission_system = CommissionSystem()
+        result = await commission_system.calculate_commission(
+            commission_data.get("product_id"),
+            commission_data.get("sale_amount")
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
 async def root():
