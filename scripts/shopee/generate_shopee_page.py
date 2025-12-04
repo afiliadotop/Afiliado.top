@@ -58,43 +58,35 @@ def format_price(value):
         return "R$ 0,00"
 
 
-  def product_card_html(p):
+ def product_card_html(p):
     nome = p.get('nome', 'Produto sem título')
     imagem = p.get('imagem', 'assets/placeholder.png')
     descricao = p.get('descricao', '')
     
-    # Usa sempre o link vindo do JSON (já é o link de afiliado da Shopee)
+    # Link de afiliado
     link = p.get('link', '#')
     
-    # Categoria traduzida
     categoria_raw = p.get('categoria', 'Geral')
     categoria = translate_category(categoria_raw)
     
-    # Preços
     preco = float(p.get('preco', 0) or 0)
     preco_promo = float(p.get('preco_promocional', 0) or 0)
     desconto = int(p.get('desconto', 0) or 0)
     avaliacao = p.get('avaliacao', '')
-
-    # Define preço final
     preco_final = preco_promo if preco_promo > 0 and preco_promo < preco else preco
 
-    # HTML do preço original (riscado)
     preco_original_html = ''
     if preco_promo > 0 and preco_promo < preco:
         preco_original_html = f'<span class="text-gray-400 line-through text-sm">{format_price(preco)}</span><br>'
 
-    # Badge de desconto
     desconto_badge = ''
     if desconto > 0:
         desconto_badge = f'<span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">-{desconto}%</span>'
 
-    # Avaliação (estrelas)
     rating_html = ''
     if avaliacao not in ('', '0', 0):
         rating_html = f'<span class="text-yellow-400 text-sm">⭐ {avaliacao}</span>'
 
-    # Sanitiza nome para onclick
     safe_nome_onclick = nome.replace("'", "").replace('"', '')
 
     return f"""
