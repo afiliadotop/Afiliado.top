@@ -334,6 +334,16 @@ def generate_html():
         });
       });
     });
+    // Descrição expansível ao clicar
+    document.addEventListener('DOMContentLoaded', () => {
+      const descriptions = document.querySelectorAll('.description-collapsible');
+      
+      descriptions.forEach(desc => {
+        desc.addEventListener('click', () => {
+          desc.classList.toggle('line-clamp-3');
+        });
+      });
+    });
   </script>
 </body>
 </html>
