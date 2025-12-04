@@ -1,520 +1,210 @@
 #!/usr/bin/env python3
 """
-Script de monitoramento do AfiliadoHub
+Script de monitoramento do AfiliadoHub - Versão Corrigida
 """
 import os
 import sys
 import json
 import time
-import smtplib
-from datetime import datetime, timedelta
+import subprocess
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any
-import requests
-import pandas as pd
 
-# Adiciona o diretório raiz ao path
-sys.path.append(str(Path(__file__).parent.parent))
+def check_file_exists(file_path):
+    """Verifica se um arquivo existe"""
+    return os.path.exists(file_path)
 
-from api.utils.supabase_client import get_supabase_manager
+def check_directory_exists(dir_path):
+    """Verifica se um diretório existe"""
+    return os.path.isdir(dir_path)
 
-class SystemMonitor:
-    def __init__(self):
-        self.supabase = get_supabase_manager()
-        self.checks = []
-        self.alerts = []
-        
-        # Configurações
-        self.thresholds = {
-            "database_latency": 1000,  # ms
-            "api_response_time": 5000,  # ms
-            "product_count_warning": 100000,
-            "product_count_critical": 900000,
-            "error_rate": 0.05,  # 5%
-            "memory_usage": 90,  # %
-            "disk_usage": 90,    # %
-        }
+def check_python_import(module_name):
+    """Verifica se um módulo Python está instalado"""
+    try:
+        __import__(module_name)
+        return True
+    except ImportError:
+        return False
+
+def check_system_health():
+    """Verifica a saúde do sistema"""
+    print("🔍 Monitorando saúde do sistema AfiliadoHub...")
+    print("=" * 60)
     
-    def check_database_connection(self) -> Dict[str, Any]:
-        """Verifica conexão com o banco de dados"""
-        check_name = "database_connection"
-        start_time = time.time()
-        
-        try:
-            # Testa uma consulta simples
-            response = self.supabase.client.table("products").select("count", count="exact").limit(1).execute()
-            
-            latency = (time.time() - start_time) * 1000  # ms
-            
-            status = "healthy" if response.count is not None else "unhealthy"
-            
-            result = {
-                "check": check_name,
-                "status": status,
-                "latency_ms": round(latency, 2),
-                "message": f"Conexão estabelecida ({latency:.0f}ms)",
-                "details": {
-                    "product_count": response.count or 0
-                }
-            }
-            
-            if latency > self.thresholds["database_latency"]:
-                result["status"] = "degraded"
-                result["message"] = f"Latência alta: {latency:.0f}ms"
-                self.alerts.append(result)
-            
-            return result
-            
-        except Exception as e:
-            return {
-                "check": check_name,
-                "status": "critical",
-                "error": str(e),
-                "message": f"Falha na conexão: {e}",
-                "latency_ms": None
-            }
+    checks = []
     
-    def check_api_health(self) -> Dict[str, Any]:
-        """Verifica saúde da API"""
-        check_name = "api_health"
-        api_url = os.getenv("VERCEL_URL", "https://afiliadohub.vercel.app")
-        
-        if not api_url:
-            return {
-                "check": check_name,
-                "status": "unknown",
-                "message": "URL da API não configurada"
-            }
-        
-        start_time = time.time()
-        
-        try:
-            response = requests.get(f"{api_url}/health", timeout=10)
-            latency = (time.time() - start_time) * 1000  # ms
-            
-            if response.status_code == 200:
-                data = response.json()
-                status = data.get("status", "unknown")
-                
-                result = {
-                    "check": check_name,
-                    "status": status,
-                    "latency_ms": round(latency, 2),
-                    "http_status": response.status_code,
-                    "message": f"API {status} ({latency:.0f}ms)",
-                    "details": data
-                }
-                
-                if latency > self.thresholds["api_response_time"]:
-                    result["status"] = "degraded"
-                    result["message"] = f"Resposta lenta: {latency:.0f}ms"
-                    self.alerts.append(result)
-                
-                return result
-            else:
-                return {
-                    "check": check_name,
-                    "status": "unhealthy",
-                    "latency_ms": round(latency, 2),
-                    "http_status": response.status_code,
-                    "message": f"API retornou {response.status_code}",
-                    "details": response.text[:500]
-                }
-                
-        except requests.exceptions.Timeout:
-            return {
-                "check": check_name,
-                "status": "critical",
-                "message": "Timeout na conexão com a API",
-                "latency_ms": None
-            }
-        except Exception as e:
-            return {
-                "check": check_name,
-                "status": "critical",
-                "error": str(e),
-                "message": f"Erro na verificação da API: {e}",
-                "latency_ms": None
-            }
+    # 1. Verificação de diretórios essenciais
+    essential_dirs = [
+        "api",
+        "api/handlers",
+        "api/utils",
+        "api/models",
+        "dashboard",
+        "dashboard/components",
+        "dashboard/pages",
+        "dashboard/utils",
+        "scripts"
+    ]
     
-    def check_telegram_bot(self) -> Dict[str, Any]:
-        """Verifica status do bot Telegram"""
-        check_name = "telegram_bot"
-        bot_token = os.getenv("BOT_TOKEN")
-        
-        if not bot_token:
-            return {
-                "check": check_name,
-                "status": "disabled",
-                "message": "Bot Token não configurado"
-            }
-        
-        start_time = time.time()
-        
-        try:
-            response = requests.get(
-                f"https://api.telegram.org/bot{bot_token}/getMe",
-                timeout=10
-            )
-            latency = (time.time() - start_time) * 1000
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                if data.get("ok"):
-                    bot_info = data.get("result", {})
-                    
-                    return {
-                        "check": check_name,
-                        "status": "healthy",
-                        "latency_ms": round(latency, 2),
-                        "message": f"Bot {bot_info.get('first_name', 'Unknown')} online",
-                        "details": bot_info
-                    }
-                else:
-                    return {
-                        "check": check_name,
-                        "status": "unhealthy",
-                        "latency_ms": round(latency, 2),
-                        "message": "Resposta inválida do Telegram",
-                        "details": data
-                    }
-            else:
-                return {
-                    "check": check_name,
-                    "status": "critical",
-                    "latency_ms": round(latency, 2),
-                    "http_status": response.status_code,
-                    "message": f"Telegram API retornou {response.status_code}"
-                }
-                
-        except Exception as e:
-            return {
-                "check": check_name,
-                "status": "critical",
-                "error": str(e),
-                "message": f"Erro na verificação do bot: {e}",
-                "latency_ms": None
-            }
-    
-    def check_product_count(self) -> Dict[str, Any]:
-        """Verifica contagem de produtos"""
-        check_name = "product_count"
-        
-        try:
-            response = self.supabase.client.table("products")\
-                .select("count", count="exact")\
-                .eq("is_active", True)\
-                .execute()
-            
-            count = response.count or 0
-            
-            result = {
-                "check": check_name,
-                "status": "healthy",
-                "message": f"{count:,} produtos ativos",
-                "details": {"count": count}
-            }
-            
-            if count > self.thresholds["product_count_critical"]:
-                result["status"] = "critical"
-                result["message"] = f"⚠️ ALTO: {count:,} produtos (limite: {self.thresholds['product_count_critical']:,})"
-                self.alerts.append(result)
-            elif count > self.thresholds["product_count_warning"]:
-                result["status"] = "warning"
-                result["message"] = f"⚠️ Alto: {count:,} produtos (limite: {self.thresholds['product_count_warning']:,})"
-                self.alerts.append(result)
-            
-            return result
-            
-        except Exception as e:
-            return {
-                "check": check_name,
-                "status": "critical",
-                "error": str(e),
-                "message": f"Erro ao contar produtos: {e}"
-            }
-    
-    def check_recent_errors(self) -> Dict[str, Any]:
-        """Verifica erros recentes no sistema"""
-        check_name = "recent_errors"
-        
-        try:
-            # Busca logs de erro das últimas 24 horas
-            day_ago = (datetime.now() - timedelta(hours=24)).isoformat()
-            
-            response = self.supabase.client.table("product_logs")\
-                .select("*")\
-                .gte("created_at", day_ago)\
-                .execute()
-            
-            error_logs = [log for log in response.data if log.get("change_type") == "error"]
-            total_logs = len(response.data) if response.data else 0
-            
-            error_count = len(error_logs)
-            error_rate = error_count / total_logs if total_logs > 0 else 0
-            
-            result = {
-                "check": check_name,
-                "status": "healthy",
-                "message": f"{error_count} erros nas últimas 24h ({error_rate:.1%})",
-                "details": {
-                    "error_count": error_count,
-                    "total_logs": total_logs,
-                    "error_rate": error_rate
-                }
-            }
-            
-            if error_rate > self.thresholds["error_rate"]:
-                result["status"] = "warning"
-                result["message"] = f"⚠️ Alta taxa de erro: {error_rate:.1%}"
-                self.alerts.append(result)
-            
-            return result
-            
-        except Exception as e:
-            return {
-                "check": check_name,
-                "status": "critical",
-                "error": str(e),
-                "message": f"Erro ao verificar logs: {e}"
-            }
-    
-    def check_system_resources(self) -> Dict[str, Any]:
-        """Verifica uso de recursos do sistema"""
-        check_name = "system_resources"
-        
-        try:
-            # Simulação - em produção você usaria psutil ou APIs do provedor
-            import psutil
-            
-            # CPU
-            cpu_percent = psutil.cpu_percent(interval=1)
-            
-            # Memória
-            memory = psutil.virtual_memory()
-            memory_percent = memory.percent
-            
-            # Disco
-            disk = psutil.disk_usage('/')
-            disk_percent = disk.percent
-            
-            result = {
-                "check": check_name,
-                "status": "healthy",
-                "message": f"CPU: {cpu_percent}%, Mem: {memory_percent}%, Disco: {disk_percent}%",
-                "details": {
-                    "cpu_percent": cpu_percent,
-                    "memory_percent": memory_percent,
-                    "disk_percent": disk_percent,
-                    "memory_used_gb": memory.used / (1024**3),
-                    "memory_total_gb": memory.total / (1024**3),
-                    "disk_used_gb": disk.used / (1024**3),
-                    "disk_total_gb": disk.total / (1024**3)
-                }
-            }
-            
-            # Verifica thresholds
-            alerts = []
-            if memory_percent > self.thresholds["memory_usage"]:
-                result["status"] = "warning"
-                alerts.append(f"Memória alta: {memory_percent}%")
-            
-            if disk_percent > self.thresholds["disk_usage"]:
-                result["status"] = "warning"
-                alerts.append(f"Disco quase cheio: {disk_percent}%")
-            
-            if alerts:
-                result["message"] = " | ".join(alerts)
-                self.alerts.append(result)
-            
-            return result
-            
-        except ImportError:
-            # psutil não disponível
-            return {
-                "check": check_name,
-                "status": "unknown",
-                "message": "psutil não instalado",
-                "details": {"note": "Instale psutil para monitoramento de recursos"}
-            }
-        except Exception as e:
-            return {
-                "check": check_name,
-                "status": "unknown",
-                "error": str(e),
-                "message": f"Erro ao verificar recursos: {e}"
-            }
-    
-    def run_all_checks(self) -> List[Dict[str, Any]]:
-        """Executa todas as verificações"""
-        checks = [
-            self.check_database_connection(),
-            self.check_api_health(),
-            self.check_telegram_bot(),
-            self.check_product_count(),
-            self.check_recent_errors(),
-            self.check_system_resources()
-        ]
-        
-        self.checks = checks
-        
-        # Determina status geral
-        statuses = [check.get("status") for check in checks]
-        
-        if "critical" in statuses:
-            overall_status = "critical"
-        elif "unhealthy" in statuses:
-            overall_status = "unhealthy"
-        elif "warning" in statuses:
-            overall_status = "warning"
-        elif "degraded" in statuses:
-            overall_status = "degraded"
+    for dir_path in essential_dirs:
+        if check_directory_exists(dir_path):
+            checks.append({"item": f"Diretório {dir_path}", "status": "✅ OK"})
         else:
-            overall_status = "healthy"
-        
-        return {
-            "timestamp": datetime.now().isoformat(),
-            "overall_status": overall_status,
-            "checks": checks,
-            "alerts": self.alerts,
-            "summary": self._generate_summary(checks)
-        }
+            checks.append({"item": f"Diretório {dir_path}", "status": "❌ FALTANDO"})
     
-    def _generate_summary(self, checks: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Gera resumo das verificações"""
-        total_checks = len(checks)
-        healthy_checks = sum(1 for c in checks if c.get("status") == "healthy")
-        unhealthy_checks = total_checks - healthy_checks
-        
-        # Coleta métricas
-        latencies = [c.get("latency_ms") for c in checks if c.get("latency_ms")]
-        avg_latency = sum(latencies) / len(latencies) if latencies else 0
-        
-        return {
-            "total_checks": total_checks,
-            "healthy_checks": healthy_checks,
-            "unhealthy_checks": unhealthy_checks,
-            "avg_latency_ms": round(avg_latency, 2),
-            "alert_count": len(self.alerts)
-        }
+    # 2. Verificação de arquivos essenciais
+    essential_files = [
+        "api/main.py",
+        "api/handlers/products.py",
+        "dashboard/Home.py",
+        "requirements.txt",
+        ".env.example",
+        ".gitignore"
+    ]
     
-    def generate_report(self, output_format: str = "text") -> str:
-        """Gera relatório de monitoramento"""
-        results = self.run_all_checks()
-        
-        if output_format == "json":
-            return json.dumps(results, indent=2, ensure_ascii=False)
-        
-        # Formato texto
-        report = []
-        report.append("=" * 80)
-        report.append("🔍 RELATÓRIO DE MONITORAMENTO - AFILIADOHUB")
-        report.append("=" * 80)
-        report.append(f"Data: {results['timestamp']}")
-        report.append(f"Status Geral: {results['overall_status'].upper()}")
-        report.append("")
-        
-        # Resumo
-        summary = results["summary"]
-        report.append("📊 RESUMO:")
-        report.append(f"  • Verificações: {summary['total_checks']}")
-        report.append(f"  • Saudáveis: {summary['healthy_checks']}")
-        report.append(f"  • Com problemas: {summary['unhealthy_checks']}")
-        report.append(f"  • Latência média: {summary['avg_latency_ms']}ms")
-        report.append(f"  • Alertas: {summary['alert_count']}")
-        report.append("")
-        
-        # Verificações detalhadas
-        report.append("📋 VERIFICAÇÕES DETALHADAS:")
-        for check in results["checks"]:
-            status_emoji = {
-                "healthy": "✅",
-                "degraded": "⚠️",
-                "warning": "⚠️",
-                "unhealthy": "❌",
-                "critical": "🛑",
-                "unknown": "❓",
-                "disabled": "⚪"
-            }.get(check.get("status"), "❓")
-            
-            report.append(f"  {status_emoji} {check['check']}: {check['message']}")
-            
-            if "latency_ms" in check and check["latency_ms"]:
-                report.append(f"     Latência: {check['latency_ms']}ms")
-        
-        # Alertas
-        if results["alerts"]:
-            report.append("")
-            report.append("🚨 ALERTAS:")
-            for alert in results["alerts"]:
-                report.append(f"  ⚠️ {alert['check']}: {alert['message']}")
-        
-        report.append("")
-        report.append("=" * 80)
-        report.append("🎯 RECOMENDAÇÕES:")
-        
-        # Gera recomendações baseadas nos checks
-        recommendations = self._generate_recommendations(results["checks"])
-        for rec in recommendations:
-            report.append(f"  • {rec}")
-        
-        report.append("=" * 80)
-        
-        return "\n".join(report)
+    for file_path in essential_files:
+        if check_file_exists(file_path):
+            file_size = os.path.getsize(file_path) if os.path.exists(file_path) else 0
+            if file_size > 100:
+                checks.append({"item": f"Arquivo {file_path}", "status": "✅ OK"})
+            else:
+                checks.append({"item": f"Arquivo {file_path}", "status": "⚠️  MUITO PEQUENO"})
+        else:
+            checks.append({"item": f"Arquivo {file_path}", "status": "❌ FALTANDO"})
     
-    def _generate_recommendations(self, checks: List[Dict[str, Any]]) -> List[str]:
-        """Gera recomendações baseadas nas verificações"""
-        recommendations = []
-        
-        for check in checks:
-            status = check.get("status")
-            check_name = check.get("check")
-            
-            if status == "critical":
-                if check_name == "database_connection":
-                    recommendations.append("Verifique a conexão com o Supabase e as credenciais")
-                elif check_name == "api_health":
-                    recommendations.append("Verifique se a API está online e acessível")
-                elif check_name == "telegram_bot":
-                    recommendations.append("Verifique o token do bot e a conexão com o Telegram")
-            
-            elif status == "warning":
-                if check_name == "product_count":
-                    recommendations.append("Considere arquivar produtos antigos ou migrar para plano superior")
-                elif check_name == "recent_errors":
-                    recommendations.append("Analise os logs de erro para identificar problemas recorrentes")
-                elif check_name == "system_resources":
-                    if check.get("details", {}).get("memory_percent", 0) > 80:
-                        recommendations.append("Considere otimizar o uso de memória ou aumentar os recursos")
-                    if check.get("details", {}).get("disk_percent", 0) > 80:
-                        recommendations.append("Faça limpeza de arquivos temporários ou aumente o espaço em disco")
-        
-        if not recommendations:
-            recommendations.append("Sistema operando normalmente. Continue monitorando.")
-        
-        return recommendations
+    # 3. Verificação de dependências Python
+    essential_modules = [
+        "fastapi",
+        "uvicorn",
+        "streamlit",
+        "pandas",
+        "supabase",
+        "plotly"
+    ]
     
-    def send_email_alert(self, to_email: str, subject: str = None):
-        """Envia alerta por email"""
-        if not self.alerts:
-            print("📭 Nenhum alerta para enviar")
-            return
+    for module in essential_modules:
+        if check_python_import(module):
+            checks.append({"item": f"Módulo {module}", "status": "✅ INSTALADO"})
+        else:
+            checks.append({"item": f"Módulo {module}", "status": "❌ NÃO INSTALADO"})
+    
+    # 4. Verificação de scripts
+    essential_scripts = [
+        "scripts/backup.py",
+        "scripts/monitor.py",
+        "scripts/shopee_scraper.py"
+    ]
+    
+    for script in essential_scripts:
+        if check_file_exists(script):
+            # Verifica sintaxe Python
+            try:
+                result = subprocess.run(
+                    [sys.executable, "-m", "py_compile", script],
+                    capture_output=True,
+                    text=True
+                )
+                if result.returncode == 0:
+                    checks.append({"item": f"Script {script}", "status": "✅ SINTAXE OK"})
+                else:
+                    checks.append({"item": f"Script {script}", "status": "❌ ERRO SINTAXE"})
+            except:
+                checks.append({"item": f"Script {script}", "status": "⚠️  NÃO VERIFICADO"})
+        else:
+            checks.append({"item": f"Script {script}", "status": "❌ FALTANDO"})
+    
+    return checks
+
+def generate_report(checks):
+    """Gera relatório de monitoramento"""
+    print("\n📊 RESULTADO DAS VERIFICAÇÕES:")
+    print("=" * 60)
+    
+    ok_count = 0
+    warning_count = 0
+    error_count = 0
+    
+    for check in checks:
+        status = check["status"]
+        print(f"{status} - {check['item']}")
         
-        smtp_server = os.getenv("SMTP_SERVER")
-        smtp_port = os.getenv("SMTP_PORT", 587)
-        smtp_user = os.getenv("SMTP_USERNAME")
-        smtp_pass = os.getenv("SMTP_PASSWORD")
+        if "✅" in status:
+            ok_count += 1
+        elif "⚠️" in status:
+            warning_count += 1
+        elif "❌" in status:
+            error_count += 1
+    
+    print("\n" + "=" * 60)
+    print("📈 ESTATÍSTICAS:")
+    print(f"  ✅ OK: {ok_count}")
+    print(f"  ⚠️  AVISOS: {warning_count}")
+    print(f"  ❌ ERROS: {error_count}")
+    
+    total = ok_count + warning_count + error_count
+    success_rate = (ok_count / total * 100) if total > 0 else 0
+    
+    print(f"\n  📊 TAXA DE SUCESSO: {success_rate:.1f}%")
+    
+    return {
+        "timestamp": datetime.now().isoformat(),
+        "ok": ok_count,
+        "warnings": warning_count,
+        "errors": error_count,
+        "success_rate": success_rate,
+        "checks": checks
+    }
+
+def save_json_report(report):
+    """Salva relatório em JSON"""
+    os.makedirs("logs", exist_ok=True)
+    
+    filename = f"logs/monitor_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+    
+    print(f"\n💾 Relatório salvo: {filename}")
+    return filename
+
+def main():
+    """Função principal"""
+    print("🚀 AFILIADOHUB MONITOR v1.1")
+    print("=" * 60)
+    print("Sistema de monitoramento e verificação de integridade")
+    print("=" * 60)
+    
+    start_time = time.time()
+    
+    try:
+        # Executa verificações
+        checks = check_system_health()
         
-        if not all([smtp_server, smtp_user, smtp_pass]):
-            print("⚠️ Configuração de email não encontrada")
-            return
+        # Gera relatório
+        report = generate_report(checks)
         
-        if not subject:
-            subject = f"🚨 Alertas AfiliadoHub - {datetime.now().strftime('%d/%m/%Y %H:%M')}"
+        # Salva relatório
+        report_file = save_json_report(report)
         
-        report = self.generate_report("text")
+        # Tempo de execução
+        elapsed = time.time() - start_time
+        print(f"\n⏱️  Tempo total: {elapsed:.2f} segundos")
         
-        try:
-            # Cria mensagem
-            from email.mime
+        # Status final
+        if report["errors"] == 0:
+            print("\n🎉 TODAS AS VERIFICAÇÕES PASSARAM!")
+            return 0
+        else:
+            print(f"\n⚠️  {report['errors']} ERRO(S) ENCONTRADO(S)")
+            print("\n🔧 RECOMENDAÇÕES:")
+            print("1. Execute: pip install -r requirements.txt")
+            print("2. Verifique os arquivos faltantes")
+            print("3. Execute o script de verificação novamente")
+            return 1
+            
+    except Exception as e:
+        print(f"\n💥 ERRO CRÍTICO: {e}")
+        return 2
+
+if __name__ == "__main__":
+    sys.exit(main())
