@@ -9,4 +9,3 @@ venv/
 logs/
 backups/
 .DS_Store
-*.log
