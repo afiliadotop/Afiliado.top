@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 
-from dashboard.utils.supabase_client import get_supabase_client
+from utils.supabase_client import get_supabase_client
 
 st.set_page_config(
     page_title="Configurar Telegram - AfiliadoHub",

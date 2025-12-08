@@ -57,7 +57,7 @@ def show_header():
 def get_product_count():
     """Obtém contagem de produtos (mock por enquanto)"""
     try:
-        from dashboard.utils.supabase_client import get_supabase_client
+        from utils.supabase_client import get_supabase_client
         supabase = get_supabase_client()
         response = supabase.table("products").select("count", count="exact").execute()
         return f"{response.count:,}"

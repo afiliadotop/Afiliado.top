@@ -4,7 +4,7 @@ import numpy as np
 from datetime import datetime
 import plotly.express as px
 
-from dashboard.utils.supabase_client import get_supabase_client
+from utils.supabase_client import get_supabase_client
 
 st.set_page_config(
     page_title="Gerenciar Produtos - AfiliadoHub",
