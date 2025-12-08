@@ -253,7 +253,7 @@ with tab4:
         """)
         
         # Gerar nova chave
-        if st.button("🆕 Gerar Nova Chave API"):
+        if st.form_submit_button("🆕 Gerar Nova Chave API"):
             import secrets
             new_key = secrets.token_urlsafe(32)
             st.success(f"Nova chave gerada: `{new_key}`")

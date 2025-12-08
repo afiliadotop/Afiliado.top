@@ -296,7 +296,7 @@ with tab3:
         batch_size = st.slider("Tamanho do lote:", 10, 1000, 100, 10)
         delay_between_batches = st.slider("Delay entre lotes (segundos):", 0, 10, 1)
         
-        st.info(f"⚡ Processamento: {batch_size} produtos por lote com {delay_batches} segundos de intervalo")
+        st.info(f"⚡ Processamento: {batch_size} produtos por lote com {delay_between_batches} segundos de intervalo")
     
     # Configurações de mapeamento
     with st.expander("🗺️ Mapeamento de Campos"):

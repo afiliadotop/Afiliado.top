@@ -128,7 +128,7 @@ with tab2:
         
         with col2:
             current_price = st.number_input("Preço Atual (R$)*", min_value=0.01, value=99.90, step=0.01)
-            original_price = st.number_input("Preço Original (R$)", min_value=0.01, value=0.00, step=0.01)
+            original_price = st.number_input("Preço Original (R$)", min_value=0.00, value=0.00, step=0.01)
             category = st.text_input("Categoria")
             image_url = st.text_input("URL da Imagem")
         
