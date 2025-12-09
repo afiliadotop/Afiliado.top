@@ -1,8 +1,17 @@
+import sys
+import os
+
+# Adiciona a raiz ao path se necessário
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(os.path.dirname(current_dir)) # Raiz do projeto
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+# Import padronizado
+from dashboard.utils.supabase_client import get_supabase_client
 import streamlit as st
 import json
 from datetime import datetime
-
-from utils.supabase_client import get_supabase_client
 
 st.set_page_config(
     page_title="Configurações - AfiliadoHub",
