@@ -8,32 +8,71 @@ from typing import Dict, Any, Optional, List
 import uvicorn
 from fastapi import FastAPI, Request, HTTPException, Depends, UploadFile, File, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
+from contextlib import asynccontextmanager
 
 from telegram import Bot, Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
-# Adicione estas importações no topo do arquivo
+from telegram.ext import Application
+
+# Imports Internos
 from api.handlers.commission import CommissionSystem
 from api.handlers.competition_analysis import CompetitionAnalyzer
 from api.handlers.advanced_analytics import AdvancedAnalytics
 from api.handlers.export_reports import ReportExporter
+from api.utils.supabase_client import get_supabase_manager
+from api.utils.logger import setup_logger
+from api.utils.scheduler import scheduler
 
 # Configuração de logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+logger = setup_logger()
+
+# Configurações de Ambiente
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CRON_TOKEN = os.getenv("CRON_TOKEN")
+ADMIN_API_KEY = os.getenv("ADMIN_API_KEY")
+
+# Variáveis Globais
+bot = Bot(BOT_TOKEN) if BOT_TOKEN else None
+telegram_app = None
+
+# Security
+security = HTTPBearer()
+
+# --- LIFECYCLE (Inicialização Inteligente) ---
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # 1. Startup
+    logger.info("🚀 Iniciando AfiliadoHub API...")
+    
+    # Inicia Scheduler (apenas se não estiver em ambiente serverless como Vercel)
+    # Se estiver no Vercel, o GitHub Actions (cron.yml) fará o trabalho.
+    if os.getenv("RUN_SCHEDULER", "False").lower() == "true":
+        await scheduler.start()
+
+    # Inicializa Bot Telegram
+    if BOT_TOKEN:
+        from api.handlers.telegram import setup_telegram_handlers
+        global telegram_app
+        telegram_app = await setup_telegram_handlers(BOT_TOKEN)
+        
+        # Se estiver em modo Polling (VPS local), descomente abaixo:
+        # asyncio.create_task(telegram_app.updater.start_polling())
+        # asyncio.create_task(telegram_app.start())
+        
+    yield
+    
+    # 2. Shutdown
+    logger.info("🛑 Encerrando serviços...")
+    await scheduler.stop()
 
 # Inicialização do FastAPI
 app = FastAPI(
     title="AfiliadoHub API",
-    description="API completa para gestão de produtos de afiliados",
+    description="API para gestão de afiliados (Shopee/AliExpress/Amazon)",
     version="1.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    lifespan=lifespan
 )
 
 # CORS
@@ -45,305 +84,170 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configurações
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-CRON_TOKEN = os.getenv("CRON_TOKEN")
-ADMIN_API_KEY = os.getenv("ADMIN_API_KEY")
-
-# Inicialização do bot Telegram
-bot = Bot(BOT_TOKEN) if BOT_TOKEN else None
-telegram_app = None
-
-# Security
-security = HTTPBearer()
-
 # ==================== MODELOS PYDANTIC ====================
 
 class ProductCreate(BaseModel):
-    store: str = Field(..., description="Loja: shopee, aliexpress, amazon, temu, shein, magalu, mercado_livre")
+    store: str = Field(..., description="Loja: shopee, aliexpress, etc")
     name: str = Field(..., min_length=3, max_length=500)
     affiliate_link: str = Field(..., min_length=10)
     current_price: float = Field(..., gt=0)
     original_price: Optional[float] = None
     category: Optional[str] = None
-    subcategory: Optional[str] = None
     image_url: Optional[str] = None
     coupon_code: Optional[str] = None
-    coupon_expiry: Optional[datetime] = None
     tags: Optional[List[str]] = []
-
-class CSVImportRequest(BaseModel):
-    store: str
-    source_file: Optional[str] = None
-    replace_existing: bool = False
 
 class TelegramMessage(BaseModel):
     chat_id: str
-    message: str
-    parse_mode: Optional[str] = "HTML"
+    message: Optional[str] = None
+    product_id: Optional[int] = None
 
-# ==================== DEPENDÊNCIAS ====================
+# ==================== DEPENDÊNCIAS DE SEGURANÇA ====================
 
 async def verify_admin_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Verifica token Bearer para ações administrativas"""
+    if not ADMIN_API_KEY:
+        return True # Modo dev inseguro se não houver chave
     if credentials.credentials != ADMIN_API_KEY:
         raise HTTPException(status_code=403, detail="Token de administração inválido")
     return credentials.credentials
 
 async def verify_cron_token(request: Request):
+    """Verifica token no Header para ações agendadas (GitHub Actions)"""
     token = request.headers.get("X-CRON-TOKEN")
+    if not CRON_TOKEN:
+        return True # Modo dev
     if not token or token != CRON_TOKEN:
         raise HTTPException(status_code=403, detail="Token CRON inválido")
     return True
 
-# ==================== ROTAS DA API ====================
-@app.post("/api/commission/calculate", dependencies=[Depends(verify_admin_token)])
-async def calculate_commission(commission_data: dict):
-    """Calcula comissão para uma venda"""
-    try:
-        commission_system = CommissionSystem()
-        result = await commission_system.calculate_commission(
-            commission_data.get("product_id"),
-            commission_data.get("sale_amount")
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+# ==================== ROTAS PRINCIPAIS ====================
 
 @app.get("/")
 async def root():
     return {
         "status": "online",
-        "service": "AfiliadoHub",
-        "version": "1.0.0",
+        "service": "AfiliadoHub API",
         "timestamp": datetime.now().isoformat(),
-        "endpoints": {
-            "api": "/docs",
-            "health": "/health",
-            "products": "/api/products",
-            "import": "/api/import",
-            "telegram": "/api/telegram/webhook",
-            "stats": "/api/stats"
-        }
+        "docs": "/docs"
     }
 
 @app.get("/health")
 async def health_check():
+    # Verifica conexão com Supabase
+    supabase = get_supabase_manager()
+    db_status = "disconnected"
+    try:
+        supabase.client.table("products").select("count", count="exact").limit(1).execute()
+        db_status = "connected"
+    except:
+        pass
+
     return {
         "status": "healthy",
-        "timestamp": datetime.now().isoformat(),
-        "services": {
-            "database": "connected",  # Verificar conexão Supabase
-            "telegram": "connected" if bot else "disconnected"
-        }
+        "database": db_status,
+        "bot": "ready" if telegram_app else "not_configured"
     }
 
 # ==================== ROTAS DE PRODUTOS ====================
 
 @app.post("/api/products", dependencies=[Depends(verify_admin_token)])
 async def create_product(product: ProductCreate):
-    """Adiciona um produto manualmente"""
     from api.handlers.products import add_product
-    try:
-        product_id = await add_product(product.dict())
-        return {"status": "success", "id": product_id}
-    except Exception as e:
-        logger.error(f"Erro ao criar produto: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    result = await add_product(product.dict())
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error"))
+    return result
 
 @app.get("/api/products")
 async def get_products(
     store: Optional[str] = None,
-    category: Optional[str] = None,
-    min_price: Optional[float] = None,
-    max_price: Optional[float] = None,
-    min_discount: Optional[int] = None,
     limit: int = 50,
-    offset: int = 0
+    min_discount: int = 0
 ):
-    """Busca produtos com filtros"""
     from api.handlers.products import search_products
-    try:
-        filters = {
-            "store": store,
-            "category": category,
-            "min_price": min_price,
-            "max_price": max_price,
-            "min_discount": min_discount,
-            "limit": limit,
-            "offset": offset
-        }
-        products = await search_products(filters)
-        return {"products": products, "count": len(products)}
-    except Exception as e:
-        logger.error(f"Erro ao buscar produtos: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    filters = {"store": store, "limit": limit, "min_discount": min_discount}
+    return await search_products(filters)
 
-# ==================== ROTA DE IMPORTAR CSV ====================
+# ==================== IMPORTAÇÃO CSV ====================
 
 @app.post("/api/import/csv", dependencies=[Depends(verify_admin_token)])
 async def import_csv(
     file: UploadFile = File(...),
     store: str = "shopee",
-    replace_existing: bool = False,
     background_tasks: BackgroundTasks = BackgroundTasks()
 ):
-    """Importa um arquivo CSV com produtos"""
     from api.handlers.csv_import import process_csv_upload
     
     if not file.filename.endswith('.csv'):
-        raise HTTPException(status_code=400, detail="Apenas arquivos CSV são suportados")
+        raise HTTPException(status_code=400, detail="Apenas CSV permitido")
     
-    # Processa em background
-    background_tasks.add_task(
-        process_csv_upload,
-        file.file,
-        store,
-        replace_existing
-    )
+    content = await file.read()
+    import io
+    file_obj = io.BytesIO(content)
     
-    return {
-        "status": "processing",
-        "message": f"Arquivo {file.filename} está sendo processado",
-        "store": store,
-        "timestamp": datetime.now().isoformat()
-    }
+    background_tasks.add_task(process_csv_upload, file_obj, store)
+    
+    return {"status": "processing", "message": "Importação iniciada em background"}
 
-# ==================== ROTAS DO TELEGRAM ====================
+# ==================== WEBHOOK & AUTOMAÇÃO TELEGRAM ====================
 
 @app.post("/api/telegram/webhook")
 async def telegram_webhook(request: Request):
-    """Webhook do Telegram"""
+    """Recebe atualizações do Telegram (Mensagens dos usuários)"""
     try:
         data = await request.json()
-        update = Update.de_json(data, bot)
-        
-        # Processa a atualização
-        if telegram_app:
+        if bot and telegram_app:
+            update = Update.de_json(data, bot)
             await telegram_app.process_update(update)
-        
         return {"status": "ok"}
     except Exception as e:
-        logger.error(f"Erro no webhook Telegram: {e}")
-        return JSONResponse(
-            status_code=500,
-            content={"error": "Internal server error"}
-        )
+        logger.error(f"Webhook error: {e}")
+        return {"status": "error", "detail": str(e)}
 
 @app.post("/api/telegram/send", dependencies=[Depends(verify_cron_token)])
-async def send_telegram_message(message: TelegramMessage):
-    """Envia mensagem para o Telegram (usado pelo cron)"""
+async def send_cron_message(payload: TelegramMessage):
+    """Endpoint chamado pelo GitHub Actions para enviar promoções"""
+    from api.handlers.telegram import TelegramBot
+    
     try:
-        from api.handlers.telegram import send_product_to_channel
-        
-        # Busca um produto para enviar
-        product = await get_random_product_for_telegram()
-        if product:
-            await send_product_to_channel(
-                chat_id=message.chat_id,
-                product=product
-            )
-            return {"status": "sent", "product_id": product["id"]}
-        else:
-            return {"status": "no_products"}
+        # Se o payload vier com product_id, busca o produto
+        if payload.product_id:
+            supabase = get_supabase_manager()
+            res = supabase.client.table("products").select("*").eq("id", payload.product_id).single().execute()
+            if not res.data:
+                return {"status": "skipped", "reason": "product_not_found"}
+            
+            # Instancia bot helper
+            tg_helper = TelegramBot(BOT_TOKEN)
+            tg_helper.application = telegram_app
+            
+            await tg_helper.send_product_to_channel(payload.chat_id, res.data)
+            return {"status": "sent", "product": res.data["name"]}
+            
+        # Caso contrário, envia mensagem de texto pura
+        elif payload.message and bot:
+            await bot.send_message(chat_id=payload.chat_id, text=payload.message, parse_mode=payload.parse_mode)
+            return {"status": "sent", "type": "text"}
+            
     except Exception as e:
-        logger.error(f"Erro ao enviar para Telegram: {e}")
+        logger.error(f"Send error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# ==================== ROTAS DE ESTATÍSTICAS ====================
+# ==================== ANALYTICS & COMISSÃO ====================
 
 @app.get("/api/stats")
-async def get_system_stats():
-    """Retorna estatísticas do sistema"""
+async def stats_endpoint():
     from api.handlers.analytics import get_system_statistics
-    
-    try:
-        stats = await get_system_statistics()
-        return stats
-    except Exception as e:
-        logger.error(f"Erro ao buscar estatísticas: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    return await get_system_statistics()
 
-@app.get("/api/stats/daily")
-async def get_daily_stats(date: Optional[str] = None):
-    """Estatísticas diárias"""
-    from api.handlers.analytics import get_daily_statistics
-    
-    try:
-        stats_date = datetime.strptime(date, "%Y-%m-%d") if date else datetime.now()
-        stats = await get_daily_statistics(stats_date.date())
-        return stats
-    except Exception as e:
-        logger.error(f"Erro ao buscar estatísticas diárias: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ==================== UTILITÁRIOS ====================
-
-async def get_random_product_for_telegram():
-    """Seleciona um produto aleatório para enviar no Telegram"""
-    from api.handlers.products import get_random_product
-    
-    try:
-        product = await get_random_product(
-            min_discount=20,
-            max_sent_last_days=7
-        )
-        return product
-    except Exception as e:
-        logger.error(f"Erro ao buscar produto aleatório: {e}")
-        return None
-
-# ==================== INICIALIZAÇÃO ====================
-
-@app.on_event("startup")
-async def startup_event():
-    """Executa na inicialização do servidor"""
-    logger.info("🚀 Iniciando AfiliadoHub API")
-    
-    # Inicializa o bot Telegram
-    if BOT_TOKEN:
-        from api.handlers.telegram import setup_telegram_handlers
-        global telegram_app
-        telegram_app = await setup_telegram_handlers(BOT_TOKEN)
-        logger.info("✅ Bot Telegram inicializado")
-    
-    # Verifica conexão com Supabase
-    from api.utils.supabase_client import get_supabase
-    try:
-        supabase = get_supabase()
-        # Testa a conexão
-        response = supabase.table("products").select("count", count="exact").limit(1).execute()
-        logger.info(f"✅ Conectado ao Supabase. Produtos: {response.count}")
-    except Exception as e:
-        logger.error(f"❌ Erro ao conectar ao Supabase: {e}")
-    
-    logger.info("✅ AfiliadoHub API está pronto!")
-
-# ==================== HANDLER PARA VERCEL ====================
-
-async def handler(request: Request):
-    """
-    Handler principal para compatibilidade com Vercel
-    """
-    # Roteia requisições para o FastAPI
-    from starlette.requests import Request as StarletteRequest
-    
-    # Converte request do Vercel para Starlette
-    scope = request.scope
-    starlette_request = StarletteRequest(scope, request.receive)
-    
-    # Processa com o FastAPI
-    response = await app(scope, request.receive, request.send)
-    
-    return response
-
-# Para desenvolvimento local
-if __name__ == "__main__":
-    uvicorn.run(
-        "api.index:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        log_level="info"
+@app.post("/api/commission/calculate", dependencies=[Depends(verify_admin_token)])
+async def commission_calc(data: dict):
+    commission_system = CommissionSystem()
+    return await commission_system.calculate_commission(
+        data.get("product_id"), data.get("sale_amount")
     )
+
+# ==================== EXECUÇÃO LOCAL ====================
+if __name__ == "__main__":
+    uvicorn.run("api.main:app", host="0.0.0.0", port=8000, reload=True)
