@@ -1,10 +1,12 @@
 import streamlit as st
 from datetime import datetime
+import sys
+import os
 
 def show_header():
     """Componente de cabeçalho do dashboard"""
     
-    # CSS personalizado para o header
+    # CSS personalizado
     st.markdown("""
     <style>
         .header-container {
@@ -12,54 +14,51 @@ def show_header():
             padding: 1.5rem;
             border-radius: 10px;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             color: white;
         }
-        .header-title {
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .header-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
+        .header-title { font-size: 2.2rem; font-weight: bold; }
         .status-badge {
-            display: inline-block;
             background: rgba(255,255,255,0.2);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
         }
     </style>
     """, unsafe_allow_html=True)
     
-    # Header HTML
+    # Busca contagem de forma segura
+    count = get_product_count()
+    
     st.markdown(f"""
     <div class="header-container">
         <div class="header-title">🚀 AfiliadoHub Dashboard</div>
-        <div class="header-subtitle">
-            Sistema Completo de Gestão de Afiliados | {datetime.now().strftime('%d/%m/%Y %H:%M')}
-        </div>
-        
-        <div style="margin-top: 1rem;">
+        <div>Sistema de Gestão | {datetime.now().strftime('%d/%m/%Y %H:%M')}</div>
+        <div style="margin-top: 10px;">
             <span class="status-badge">✅ Online</span>
-            <span class="status-badge">📊 {get_product_count()} Produtos</span>
-            <span class="status-badge">🏪 7 Lojas</span>
+            <span class="status-badge">📦 {count} Produtos</span>
             <span class="status-badge">🤖 Bot Ativo</span>
-            <span class="status-badge">⚡ v1.0.0</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 def get_product_count():
-    """Obtém contagem de produtos (mock por enquanto)"""
+    """Busca contagem com importação segura"""
     try:
-        from utils.supabase_client import get_supabase_client
+        # Tenta importar do caminho absoluto (Recomendado)
+        from dashboard.utils.supabase_client import get_supabase_client
         supabase = get_supabase_client()
-        response = supabase.table("products").select("count", count="exact").execute()
-        return f"{response.count:,}"
-    except:
-        return "N/A"
+        if supabase:
+            response = supabase.table("products").select("count", count="exact").eq("is_active", True).execute()
+            return f"{response.count:,}"
+    except ImportError:
+        try:
+            # Fallback relativo
+            from utils.supabase_client import get_supabase_client
+            supabase = get_supabase_client()
+            if supabase:
+                response = supabase.table("products").select("count", count="exact").eq("is_active", True).execute()
+                return f"{response.count:,}"
+        except:
+            pass
+    return "..."
