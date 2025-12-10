@@ -1,21 +1,23 @@
 # --- Core API & Backend ---
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
 python-multipart==0.0.9
-pydantic==2.6.0
-pydantic-settings==2.1.0
+pydantic==2.6.1
+pydantic-settings==2.2.1
 python-dotenv==1.0.1
 
-# --- Database ---
-# Mantendo Supabase estável
-supabase==2.3.4
+# --- Database (A CHAVE DA SOLUÇÃO) ---
+# Versão 2.4.3 aceita httpx mais modernos
+supabase==2.4.3
+postgrest==0.16.3
+gotrue==2.4.2
 
 # --- Frontend (Dashboard) ---
-streamlit==1.31.0
-plotly==5.18.0
+streamlit==1.31.1
+plotly==5.19.0
 
 # --- Data Processing & Scripts ---
-pandas==2.2.0
+pandas==2.2.1
 numpy==1.26.4
 aiohttp==3.9.3
 requests==2.31.0
@@ -25,19 +27,19 @@ reportlab==4.0.9
 beautifulsoup4==4.12.3
 lxml==5.1.0
 
-# --- Telegram Bot (A CHAVE DA SOLUÇÃO) ---
-# A versão 20.6 usa httpx 0.25, que é PERFEITO para o Supabase
-python-telegram-bot==20.6
+# --- Telegram Bot ---
+# Versão moderna que usa httpx 0.27
+python-telegram-bot==20.8
 
 # --- Utils ---
 python-dateutil==2.8.2
 psutil==5.9.8
-setuptools>=69.0.0
-pytest==7.4.4
-black==24.1.1
+setuptools>=69.1.0
+pytest==8.0.2
+black==24.2.0
 flake8==7.0.0
 
-# --- Dependência Compartilhada ---
-# Forçamos a versão 0.25.2 que agrada a ambos (Supabase e Bot)
-httpx==0.25.2
-httpcore==0.18.0
+# --- Dependências Transversais ---
+# Deixe o pip resolver, mas o alvo é httpx 0.27.0
+httpx==0.27.0
+httpcore==1.0.4
