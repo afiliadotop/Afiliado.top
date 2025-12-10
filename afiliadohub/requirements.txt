@@ -6,8 +6,8 @@ pydantic==2.6.1
 pydantic-settings==2.2.1
 python-dotenv==1.0.1
 
-# --- Database (A CHAVE DA SOLUÇÃO) ---
-# Versão 2.4.3 aceita httpx mais modernos
+# --- Database ---
+# ATUALIZADO: Supabase 2.4.3 aceita httpx moderno (0.27+)
 supabase==2.4.3
 postgrest==0.16.3
 gotrue==2.4.2
@@ -28,7 +28,7 @@ beautifulsoup4==4.12.3
 lxml==5.1.0
 
 # --- Telegram Bot ---
-# Versão moderna que usa httpx 0.27
+# ATUALIZADO: Versão recente compatível com httpx 0.27+
 python-telegram-bot==20.8
 
 # --- Utils ---
@@ -39,7 +39,5 @@ pytest==8.0.2
 black==24.2.0
 flake8==7.0.0
 
-# --- Dependências Transversais ---
-# Deixe o pip resolver, mas o alvo é httpx 0.27.0
-httpx==0.27.0
-httpcore==1.0.4
+# --- REMOVIDO QUALQUER PINO DE HTTPX ---
+# O pip instalará automaticamente o httpx 0.27.0 que satisfaz a todos.
