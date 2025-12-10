@@ -7,7 +7,6 @@ pydantic-settings==2.1.0
 python-dotenv==1.0.1
 
 # --- Database ---
-# Supabase gerencia suas dependências internas (gotrue, postgrest, etc)
 supabase==2.3.4
 
 # --- Frontend (Dashboard) ---
@@ -25,8 +24,8 @@ reportlab==4.0.9
 beautifulsoup4==4.12.3
 lxml==5.1.0
 
-# --- Telegram Bot ---
-python-telegram-bot==20.8
+# --- Telegram Bot (VERSÃO COMPATÍVEL) ---
+python-telegram-bot==20.0
 
 # --- Utils ---
 python-dateutil==2.8.2
@@ -35,3 +34,5 @@ setuptools>=69.0.0
 pytest==7.4.4
 black==24.1.1
 flake8==7.0.0
+# Força versão do httpx compatível com ambos
+httpx==0.25.2
