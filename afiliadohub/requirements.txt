@@ -7,6 +7,7 @@ pydantic-settings==2.1.0
 python-dotenv==1.0.1
 
 # --- Database ---
+# Supabase exige httpx < 0.26
 supabase==2.3.4
 
 # --- Frontend (Dashboard) ---
@@ -25,8 +26,8 @@ beautifulsoup4==4.12.3
 lxml==5.1.0
 
 # --- Telegram Bot ---
-# Versão 20.8 suporta httpx mais novo, compatível com Supabase
-python-telegram-bot==20.8
+# Versão 20.0 é compatível com httpx 0.24/0.25
+python-telegram-bot==20.0
 
 # --- Utils ---
 python-dateutil==2.8.2
@@ -35,4 +36,8 @@ setuptools>=69.0.0
 pytest==7.4.4
 black==24.1.1
 flake8==7.0.0
-# Removida a linha httpx==... para deixar o pip resolver
+
+# --- Forçar dependências comuns ---
+# Essa versão do httpx satisfaz tanto o Supabase quanto o Bot v20
+httpx==0.24.1
+httpcore==0.17.3
