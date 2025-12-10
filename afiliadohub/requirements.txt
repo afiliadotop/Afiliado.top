@@ -7,7 +7,7 @@ pydantic-settings==2.1.0
 python-dotenv==1.0.1
 
 # --- Database ---
-# ATUALIZADO: Supabase 2.4.0 aceita httpx mais novo
+# ATUALIZADO: Versão recente que suporta httpx novo
 supabase==2.4.0
 
 # --- Frontend (Dashboard) ---
@@ -26,7 +26,7 @@ beautifulsoup4==4.12.3
 lxml==5.1.0
 
 # --- Telegram Bot ---
-# ATUALIZADO: Volta para a versão recente
+# ATUALIZADO: Versão recente que suporta httpx novo
 python-telegram-bot==20.8
 
 # --- Utils ---
@@ -37,5 +37,5 @@ pytest==7.4.4
 black==24.1.1
 flake8==7.0.0
 
-# --- HttpX ---
-# Removido a trava de versão para deixar o pip resolver (deve pegar >=0.27)
+# --- HTTPX (Removido o pino para deixar o pip resolver) ---
+# O pip vai instalar httpx>=0.27 automaticamente
