@@ -24,8 +24,9 @@ reportlab==4.0.9
 beautifulsoup4==4.12.3
 lxml==5.1.0
 
-# --- Telegram Bot (VERSÃO COMPATÍVEL) ---
-python-telegram-bot==20.0
+# --- Telegram Bot ---
+# Versão 20.8 suporta httpx mais novo, compatível com Supabase
+python-telegram-bot==20.8
 
 # --- Utils ---
 python-dateutil==2.8.2
@@ -34,5 +35,4 @@ setuptools>=69.0.0
 pytest==7.4.4
 black==24.1.1
 flake8==7.0.0
-# Força versão do httpx compatível com ambos
-httpx==0.25.2
+# Removida a linha httpx==... para deixar o pip resolver
