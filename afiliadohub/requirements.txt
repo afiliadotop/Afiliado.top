@@ -1,4 +1,4 @@
-# --- Core API & Backend ---
+# --- Core API ---
 fastapi==0.109.2
 uvicorn[standard]==0.27.1
 python-multipart==0.0.9
@@ -6,17 +6,19 @@ pydantic==2.6.1
 pydantic-settings==2.2.1
 python-dotenv==1.0.1
 
-# --- Database ---
-# ATUALIZADO: Supabase 2.4.3 aceita httpx moderno (0.27+)
+# --- Database (ATUALIZADO) ---
+# Versão 2.4+ aceita bibliotecas modernas
 supabase==2.4.3
-postgrest==0.16.3
-gotrue==2.4.2
 
-# --- Frontend (Dashboard) ---
+# --- Telegram Bot (ATUALIZADO) ---
+# Versão 20.8+ aceita bibliotecas modernas
+python-telegram-bot==20.8
+
+# --- Frontend ---
 streamlit==1.31.1
 plotly==5.19.0
 
-# --- Data Processing & Scripts ---
+# --- Data & Scripts ---
 pandas==2.2.1
 numpy==1.26.4
 aiohttp==3.9.3
@@ -27,10 +29,6 @@ reportlab==4.0.9
 beautifulsoup4==4.12.3
 lxml==5.1.0
 
-# --- Telegram Bot ---
-# ATUALIZADO: Versão recente compatível com httpx 0.27+
-python-telegram-bot==20.8
-
 # --- Utils ---
 python-dateutil==2.8.2
 psutil==5.9.8
@@ -39,5 +37,4 @@ pytest==8.0.2
 black==24.2.0
 flake8==7.0.0
 
-# --- REMOVIDO QUALQUER PINO DE HTTPX ---
-# O pip instalará automaticamente o httpx 0.27.0 que satisfaz a todos.
+# NOTA: NENHUMA linha de httpx aqui. Deixe o pip decidir a melhor (será 0.27.0).
