@@ -1,3 +1,4 @@
+pip==25.3
 # Dependências principais do projeto
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
@@ -14,7 +15,7 @@ pandas==2.2.2
 numpy==1.26.2
 
 # HTTP requests
-httpx==0.25.1
+httpx==0.24.1
 aiohttp==3.9.1
 requests==2.31.0
 
