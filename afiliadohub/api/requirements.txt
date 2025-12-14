@@ -1,0 +1,43 @@
+# Dependências principais do projeto
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Supabase
+supabase==1.1.1
+
+# Telegram
+python-telegram-bot[job-queue]==20.7
+
+# Data processing & analysis
+pandas==2.2.2
+numpy==1.26.2
+
+# HTTP requests
+httpx==0.25.1
+aiohttp==3.9.1
+requests==2.31.0
+
+# PDF/Excel generation
+reportlab==4.0.9
+openpyxl==3.1.2
+
+# Data validation
+pydantic==2.5.1
+pydantic-settings==2.1.0
+
+# Environment & configuration
+python-dotenv==1.0.0
+
+# Scheduling
+schedule==1.2.0
+
+# Logging
+structlog==23.2.0
+
+# Async utilities
+asyncio==3.4.3
+
+# Development (opcional, remova para produção)
+# pytest==7.4.3
+# pytest-asyncio==0.21.1
