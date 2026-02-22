@@ -9792,7 +9792,8 @@ medidas:
 
 comprimento: 30cm
 largura: 4,5cm
-altura: 7,7cm"</p>
+altura: 7,7cm"
+</p>
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         <span class="text-gray-400 line-through text-sm">R$ 109,90</span><br>
@@ -11623,7 +11624,8 @@ medidas:
 
 comprimento: 8cm
 largura: 1,5cm
-altura: 30cm"</p>
+altura: 30cm"
+</p>
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         <span class="text-gray-400 line-through text-sm">R$ 107,90</span><br>
@@ -13607,7 +13609,8 @@ Acabamento de luxo – Capa dura com um deslumbrante efeito holográfico.
 
 Acompanha uma folha de acetato – Para proteger suas artes e facilitar a pintura.
 
-Presenteie-se ou surpreenda alguém especial com um livro que transforma o simples ato de colorir em um verdadeiro momento de terapia e bem-estar. Relaxe, solte a criatividade e aproveite cada página!</p>
+Presenteie-se ou surpreenda alguém especial com um livro que transforma o simples ato de colorir em um verdadeiro momento de terapia e bem-estar. Relaxe, solte a criatividade e aproveite cada página!
+</p>
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         <span class="text-gray-400 line-through text-sm">R$ 239,60</span><br>
@@ -22039,6 +22042,7 @@ Fabricante: PARAMOUNT
 Conteúdo da Embalagem: 1 porta escovas.
 
 As cores do produto podem variar de acordo com o lote de fabricação.
+
 </p>
                 <div class="flex items-center justify-between mb-3">
                     <div>
@@ -26011,27 +26015,26 @@ ATENÇÃO: Produto da linha Outlet. Não possui garantia.</p>
     searchBar.addEventListener('input', applyFilters);
 
     // Função global para popup de info
-    function showProductInfo(nomeProduto) {
-      if (window.Swal && window.anime) {
-        Swal.fire({
-          title: nomeProduto,
-          html: 'Você será redirecionado para a página de compra.<br>Ao comprar, você apoia nosso projeto!',
-          icon: 'info',
-          confirmButtonText: 'Entendi',
-          didOpen: (popup) => {
-            anime({
-              targets: popup,
-              scale: [0.5, 1],
-              opacity: [0, 1],
-              duration: 800,
-              easing: 'easeOutElastic(1, .8)'
-            });
-          }
-        });
-      } else {
-        alert(nomeProduto + '\n\nVocê será redirecionado para a página de compra. Ao comprar, você apoia nosso projeto!');
+    searchBar.addEventListener('input', applyFilters);
+    // --- Imagens dos cards clicáveis (redirecionam para Shopee) ---
+    document.querySelectorAll('#productsGrid > div').forEach(function(card) {
+      var buyLink = card.querySelector('a[href]');
+      var imgWrapper = card.querySelector('.relative');
+      if (buyLink && imgWrapper) {
+        var href = buyLink.getAttribute('href');
+        var img = card.querySelector('img');
+        var productName = img ? img.getAttribute('alt') : '';
+        var overlay = document.createElement('a');
+        overlay.href = href;
+        overlay.target = '_blank';
+        overlay.rel = 'noopener noreferrer sponsored';
+        overlay.title = productName;
+        overlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;display:block;cursor:pointer;';
+        imgWrapper.style.position = 'relative';
+        imgWrapper.appendChild(overlay);
       }
-    }
+    });
+    // Função global para popup de info
   </script>
 </body>
 </html>
