@@ -1,38 +1,41 @@
 // Afiliado.Top - scripts globais
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Afiliado.Top - Site carregado com sucesso!');
+
     // --- Torna as imagens dos produtos clicáveis (redirecionam para a Shopee) ---
     document.querySelectorAll('#productsGrid > div').forEach(card => {
         const buyLink = card.querySelector('a[href]');
         const imgWrapper = card.querySelector('.relative');
-        const img = card.querySelector('img');
-        if (buyLink && imgWrapper && img) {
+
+        if (buyLink && imgWrapper) {
             const href = buyLink.getAttribute('href');
-            const productName = img.getAttribute('alt') || '';
-            // Envolve a imagem num link clicável
-            const anchor = document.createElement('a');
-            anchor.href = href;
-            anchor.target = '_blank';
-            anchor.rel = 'noopener noreferrer sponsored';
-            anchor.style.display = 'block';
-            anchor.style.cursor = 'pointer';
-            anchor.title = productName;
-            anchor.setAttribute('aria-label', 'Ver ' + productName + ' na Shopee');
-            anchor.addEventListener('click', () => {
-                window.open(href, '_blank', 'noopener,noreferrer');
-            });
-            imgWrapper.insertBefore(anchor, img);
-            anchor.appendChild(img);
+            const productName = (card.querySelector('img') || {}).alt || '';
+
+            // Overlay transparente sobre toda a área da imagem (cobre também os badges)
+            const overlay = document.createElement('a');
+            overlay.href = href;
+            overlay.target = '_blank';
+            overlay.rel = 'noopener noreferrer sponsored';
+            overlay.title = productName;
+            overlay.setAttribute('aria-label', 'Ver ' + productName + ' na Shopee');
+            overlay.style.cssText = 'position:absolute;inset:0;z-index:10;display:block;cursor:pointer;';
+
+            imgWrapper.style.position = 'relative';
+            imgWrapper.appendChild(overlay);
         }
     });
+
     // --- Botão "Voltar ao Topo" ---
     const btnTopo = document.getElementById('btn-topo');
+
     if (btnTopo) {
         // Mostrar / esconder botão conforme o scroll
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
                 if (btnTopo.style.display === 'none' || btnTopo.style.display === '') {
                     btnTopo.style.display = 'block';
+
                     // Animação de entrada com Anime.js (se carregado)
                     if (window.anime) {
                         anime({
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
         // Clique para voltar ao topo
         btnTopo.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -74,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("Botão 'Voltar ao Topo' (#btn-topo) não encontrado no HTML.");
     }
 });
+
 /**
  * Exibe um pop-up com informações do produto.
  * Pode ser usada em qualquer página (Shopee, Amazon, etc.).
@@ -84,6 +89,7 @@ function showProductInfo(nomeProduto) {
         alert(nomeProduto + "\n\nVocê será redirecionado para a página de compra.\nAo comprar, você apoia nosso projeto!");
         return;
     }
+
     Swal.fire({
         title: nomeProduto,
         html: 'Você será redirecionado para a página de compra.<br>Ao comprar, você apoia nosso projeto! 💜',
