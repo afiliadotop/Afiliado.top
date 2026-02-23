@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     // --- Botão "Voltar ao Topo" ---
     const btnTopo = document.getElementById('btn-topo');
 
