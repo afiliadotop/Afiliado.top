@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Afiliado.Top - As Melhores Ofertas e Descontos Online | Shopee, Amazon e Mais!</title>
-    <meta name="description" content="Seu portal definitivo para encontrar as melhores ofertas, cupons e descontos em Shopee, Amazon e outras grandes lojas. Economize em eletrônicos, moda, casa, beleza e muito mais com links de afiliado confiáveis.">
-    <meta name="keywords" content="afiliados, ofertas, descontos, promoções, Shopee, Amazon, cupons, cashback, eletrônicos, casa, moda, afiliados Brasil">
+    <meta name="description"
+        content="Seu portal definitivo para encontrar as melhores ofertas, cupons e descontos em Shopee, Amazon e outras grandes lojas. Economize em eletrônicos, moda, casa, beleza e muito mais com links de afiliado confiáveis.">
+    <meta name="keywords"
+        content="afiliados, ofertas, descontos, promoções, Shopee, Amazon, cupons, cashback, eletrônicos, casa, moda, afiliados Brasil">
     <meta name="author" content="Afiliado.Top Team">
 
     <link rel="canonical" href="https://afiliadotop.github.io/Afiliado.top/">
 
     <meta property="og:title" content="Afiliado.Top - As Melhores Ofertas e Descontos Online">
-    <meta property="og:description" content="Encontre promoções exclusivas da Shopee, Amazon e outras grandes lojas, com links de afiliado confiáveis.">
+    <meta property="og:description"
+        content="Encontre promoções exclusivas da Shopee, Amazon e outras grandes lojas, com links de afiliado confiáveis.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://afiliadotop.github.io/Afiliado.top/">
     <meta property="og:image" content="https://afiliadotop.github.io/Afiliado.top/assets/social-share-image.jpg">
@@ -21,7 +25,7 @@
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
     <!-- Tailwind + CSS custom -->
-    
+
     <link rel="stylesheet" href="/CSS/styles.css">
 
     <!-- Libs -->
@@ -32,7 +36,7 @@
     <script>
         function googleTranslateElementInit() {
             new google.translate.TranslateElement(
-                {pageLanguage: 'pt', includedLanguages: 'en,es,fr,it,de,pt'},
+                { pageLanguage: 'pt', includedLanguages: 'en,es,fr,it,de,pt' },
                 'google_translate_element'
             );
         }
@@ -41,63 +45,145 @@
 
     <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9910874980055059"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
+    <!-- Responsividade e hover effects -->
+    <style>
+        /* === HOVER NOS CARDS (só mouse) === */
+        @media (hover: hover) {
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        @media (hover: none) {
+            .card-hover {
+                transform: none !important;
+            }
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* === HAMBURGUER === */
+        #bar1,
+        #bar2,
+        #bar3 {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #bar1 {
+            margin-bottom: 5px;
+        }
+
+        #bar2 {
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
+
 <body class="bg-gray-900 text-white font-sans antialiased">
     <!-- HEADER -->
-    <header class="bg-gray-800/95 backdrop-blur shadow-lg py-4 px-6 md:px-10 sticky top-0 z-50">
+    <header class="bg-gray-800/95 backdrop-blur shadow-lg py-4 px-4 md:px-10 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center space-x-3 shrink-0">
                 <img src="assets/logo.png" alt="Afiliado.Top Logo" class="h-10 w-auto">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
+                    <h1 class="text-xl md:text-3xl font-bold text-white tracking-tight leading-tight">
                         Afiliado.<span class="text-orange-400">Top</span>
                     </h1>
-                    <p class="text-xs md:text-sm text-gray-300 -mt-1">
+                    <p class="text-xs text-gray-300 -mt-1 hidden sm:block">
                         Ofertas selecionadas diariamente
                     </p>
                 </div>
             </a>
-            
-            <nav>
-                <ul class="flex items-center space-x-6 text-sm md:text-base">
-                    <li><a href="index.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Início</a></li>
-                    <li><a href="Ofertas_Shopee.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Ofertas Shopee</a></li>
-                    <!-- Pensando no futuro: outras lojas -->
-                    <li><a href="#lojas" class="text-gray-300 hover:text-white transition duration-300 font-medium">Lojas</a></li>
-                    <li><a href="#como-funciona" class="text-gray-300 hover:text-white transition duration-300 font-medium">Como funciona</a></li>
-                    <li><a href="contato.html" class="text-gray-300 hover:text-white transition duration-300 font-medium">Contato</a></li>
-                    
-                    <li class="hidden md:block">
+
+            <!-- Menu Desktop -->
+            <nav class="hidden md:block">
+                <ul class="flex items-center space-x-6 text-sm">
+                    <li><a href="index.html"
+                            class="text-gray-300 hover:text-white transition duration-300 font-medium">Início</a></li>
+                    <li><a href="Ofertas_Shopee.html"
+                            class="text-orange-400 font-semibold hover:text-orange-300 transition duration-300">Ofertas
+                            Shopee</a></li>
+                    <li><a href="#lojas"
+                            class="text-gray-300 hover:text-white transition duration-300 font-medium">Lojas</a></li>
+                    <li><a href="#como-funciona"
+                            class="text-gray-300 hover:text-white transition duration-300 font-medium">Como funciona</a>
+                    </li>
+                    <li><a href="contato.html"
+                            class="text-gray-300 hover:text-white transition duration-300 font-medium">Contato</a></li>
+                    <li>
                         <div id="google_translate_element" class="bg-gray-700 p-2 rounded-md text-xs shadow-sm"></div>
                     </li>
                 </ul>
             </nav>
+
+            <!-- Botão Hamburguer (mobile) -->
+            <button id="menu-toggle"
+                class="md:hidden flex flex-col justify-center items-center p-2 rounded-lg hover:bg-gray-700 transition"
+                aria-label="Abrir menu">
+                <span id="bar1"></span>
+                <span id="bar2"></span>
+                <span id="bar3"></span>
+            </button>
         </div>
+
+        <!-- Menu Mobile -->
+        <nav id="mobile-menu" class="hidden md:hidden mt-3 pb-3 border-t border-gray-700">
+            <ul class="flex flex-col gap-1 pt-3 px-2 text-sm">
+                <li><a href="index.html"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition">🏠
+                        Início</a></li>
+                <li><a href="Ofertas_Shopee.html"
+                        class="block py-2 px-3 rounded-lg text-orange-400 font-semibold hover:bg-gray-700 transition">🛍️
+                        Ofertas Shopee</a></li>
+                <li><a href="#lojas"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition">🏪
+                        Lojas</a></li>
+                <li><a href="#como-funciona"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition">❓
+                        Como funciona</a></li>
+                <li><a href="contato.html"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition">✉️
+                        Contato</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
         <!-- HERO -->
-        <section class="relative bg-gradient-to-r from-purple-800 via-indigo-900 to-gray-900 py-20 px-6 md:py-28 md:px-10 text-center overflow-hidden">
+        <section
+            class="relative bg-gradient-to-r from-purple-800 via-indigo-900 to-gray-900 py-20 px-6 md:py-28 md:px-10 text-center overflow-hidden">
             <div class="absolute inset-0 opacity-20 bg-pattern-dots pointer-events-none"></div>
-            
+
             <div class="relative max-w-5xl mx-auto z-10">
-                <p class="inline-flex items-center px-4 py-1 rounded-full bg-black/40 text-xs md:text-sm text-gray-200 mb-4 border border-purple-500/60">
+                <p
+                    class="inline-flex items-center px-4 py-1 rounded-full bg-black/40 text-xs md:text-sm text-gray-200 mb-4 border border-purple-500/60">
                     🔥 Atualizado diariamente com as melhores ofertas da Shopee e outras lojas
                 </p>
-                <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-                    Economize tempo e dinheiro encontrando <span class="text-orange-400">as melhores ofertas</span> em um só lugar.
+                <h2 class="text-2xl sm:text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                    Economize tempo e dinheiro encontrando <span class="text-orange-400">as melhores ofertas</span> em
+                    um só lugar.
                 </h2>
-                <p class="text-lg md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                <p class="text-base md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
                     O Afiliado.Top garimpa cupons, promoções e produtos com alta avaliação na Shopee, Amazon
                     e outras grandes lojas para você comprar com confiança e pagar menos.
                 </p>
 
                 <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-6">
-                    <a href="Ofertas_Shopee.html" class="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <a href="Ofertas_Shopee.html"
+                        class="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                         🔍 Ver Ofertas Shopee Agora
                     </a>
-                    <a href="#newsletter" class="inline-flex items-center justify-center bg-transparent border border-gray-500 hover:border-white text-gray-200 hover:text-white font-medium py-3 px-8 rounded-full text-base shadow-md hover:shadow-lg transition-all duration-300">
+                    <a href="#newsletter"
+                        class="inline-flex items-center justify-center bg-transparent border border-gray-500 hover:border-white text-gray-200 hover:text-white font-medium py-3 px-8 rounded-full text-base shadow-md hover:shadow-lg transition-all duration-300">
                         ✉️ Receber ofertas por e-mail
                     </a>
                 </div>
@@ -105,15 +191,18 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-sm md:text-base">
                     <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
                         <p class="font-semibold text-orange-300 mb-1">+ de 100 ofertas ativas</p>
-                        <p class="text-gray-200 text-xs md:text-sm">Produtos selecionados com base em desconto, avaliação e relevância.</p>
+                        <p class="text-gray-200 text-xs md:text-sm">Produtos selecionados com base em desconto,
+                            avaliação e relevância.</p>
                     </div>
                     <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
                         <p class="font-semibold text-green-300 mb-1">4.5★ ou mais</p>
-                        <p class="text-gray-200 text-xs md:text-sm">Priorizamos produtos com boas avaliações reais dos usuários.</p>
+                        <p class="text-gray-200 text-xs md:text-sm">Priorizamos produtos com boas avaliações reais dos
+                            usuários.</p>
                     </div>
                     <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
                         <p class="font-semibold text-blue-300 mb-1">Links oficiais e seguros</p>
-                        <p class="text-gray-200 text-xs md:text-sm">Você sempre é redirecionado para o site oficial da loja.</p>
+                        <p class="text-gray-200 text-xs md:text-sm">Você sempre é redirecionado para o site oficial da
+                            loja.</p>
                     </div>
                 </div>
             </div>
@@ -124,11 +213,12 @@
             <div class="max-w-7xl mx-auto">
                 <h3 class="text-3xl md:text-4xl font-bold text-center mb-4">Por que escolher o Afiliado.Top?</h3>
                 <p class="text-center text-gray-300 max-w-3xl mx-auto mb-12 text-sm md:text-base">
-                    Não somos apenas mais um site de links. Nosso foco é ajudar você a tomar decisões melhores na hora de comprar
+                    Não somos apenas mais um site de links. Nosso foco é ajudar você a tomar decisões melhores na hora
+                    de comprar
                     online, com curadoria, transparência e foco em economia real.
                 </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                    <div class="bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg text-center card-hover">
                         <div class="text-5xl mb-4">💰</div>
                         <h4 class="text-xl font-semibold mb-3">Economia Garantida</h4>
                         <p class="text-gray-400 text-sm md:text-base">
@@ -136,14 +226,17 @@
                             sempre que possível.
                         </p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                    <div
+                        class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
                         <div class="text-5xl mb-4">✅</div>
                         <h4 class="text-xl font-semibold mb-3">Curadoria e Confiança</h4>
                         <p class="text-gray-400 text-sm md:text-base">
-                            Trabalhamos apenas com programas de afiliados oficiais, como Shopee, Amazon e outras lojas seguras.
+                            Trabalhamos apenas com programas de afiliados oficiais, como Shopee, Amazon e outras lojas
+                            seguras.
                         </p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
+                    <div
+                        class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition-transform duration-300">
                         <div class="text-5xl mb-4">🤖</div>
                         <h4 class="text-xl font-semibold mb-3">Atualização Automática</h4>
                         <p class="text-gray-400 text-sm md:text-base">
@@ -159,23 +252,29 @@
         <section class="py-16 px-6 md:px-10 bg-gray-800" id="lojas">
             <div class="max-w-7xl mx-auto">
                 <h3 class="text-3xl md:text-4xl font-bold text-center mb-10">Lojas em destaque</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <a href="Ofertas_Shopee.html" class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                    <a href="Ofertas_Shopee.html"
+                        class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
                         <div class="text-5xl mb-3">🛍️</div>
                         <h4 class="text-2xl font-semibold mb-2 group-hover:text-orange-300">Shopee</h4>
-                        <p class="text-gray-300 text-sm mb-3">Ofertas diárias em todas as categorias, com forte foco em eletrônicos, casa, moda e utilidades.</p>
+                        <p class="text-gray-300 text-sm mb-3">Ofertas diárias em todas as categorias, com forte foco em
+                            eletrônicos, casa, moda e utilidades.</p>
                         <span class="text-orange-400 text-sm font-semibold mt-2">Ver ofertas da Shopee →</span>
                     </a>
                     <!-- Espaço reservado para futuras lojas -->
-                    <div class="bg-gray-700/60 p-8 rounded-xl border border-dashed border-gray-600 flex flex-col items-center justify-center text-center">
+                    <div
+                        class="bg-gray-700/60 p-8 rounded-xl border border-dashed border-gray-600 flex flex-col items-center justify-center text-center">
                         <span class="text-4xl mb-3">🚧</span>
                         <h4 class="text-xl font-semibold mb-2">Em breve: Amazon</h4>
-                        <p class="text-gray-400 text-sm">Estamos preparando uma página dedicada com ofertas selecionadas da Amazon.</p>
+                        <p class="text-gray-400 text-sm">Estamos preparando uma página dedicada com ofertas selecionadas
+                            da Amazon.</p>
                     </div>
-                    <div class="bg-gray-700/60 p-8 rounded-xl border border-dashed border-gray-600 flex flex-col items-center justify-center text-center">
+                    <div
+                        class="bg-gray-700/60 p-8 rounded-xl border border-dashed border-gray-600 flex flex-col items-center justify-center text-center">
                         <span class="text-4xl mb-3">🚧</span>
                         <h4 class="text-xl font-semibold mb-2">Mais lojas parceiras</h4>
-                        <p class="text-gray-400 text-sm">Outras grandes lojas serão adicionadas conforme os programas de afiliado forem aprovados.</p>
+                        <p class="text-gray-400 text-sm">Outras grandes lojas serão adicionadas conforme os programas de
+                            afiliado forem aprovados.</p>
                     </div>
                 </div>
             </div>
@@ -185,21 +284,29 @@
         <section class="py-16 px-6 md:px-10 bg-gray-900">
             <div class="max-w-7xl mx-auto">
                 <h3 class="text-3xl md:text-4xl font-bold text-center mb-12">Explore por categorias populares</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <a href="Ofertas_Shopee.html?category=eletronicos" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
-                        <img src="assets/cat-eletronicos.png" alt="Eletrônicos" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <a href="Ofertas_Shopee.html?category=eletronicos"
+                        class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-eletronicos.png" alt="Eletrônicos"
+                            class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
                         <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Eletrônicos</h4>
                     </a>
-                    <a href="Ofertas_Shopee.html?category=moda" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
-                        <img src="assets/cat-moda.png" alt="Moda" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                    <a href="Ofertas_Shopee.html?category=moda"
+                        class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-moda.png" alt="Moda"
+                            class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
                         <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Moda</h4>
                     </a>
-                    <a href="Ofertas_Shopee.html?category=casa" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
-                        <img src="assets/cat-casa.png" alt="Casa e Cozinha" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                    <a href="Ofertas_Shopee.html?category=casa"
+                        class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-casa.png" alt="Casa e Cozinha"
+                            class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
                         <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Casa e Cozinha</h4>
                     </a>
-                    <a href="Ofertas_Shopee.html?category=saude" class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
-                        <img src="assets/cat-saude.png" alt="Saúde e Beleza" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
+                    <a href="Ofertas_Shopee.html?category=saude"
+                        class="bg-gray-700 p-6 rounded-lg shadow-md text-center hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 group">
+                        <img src="assets/cat-saude.png" alt="Saúde e Beleza"
+                            class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-purple-500 group-hover:border-orange-500 transition-colors">
                         <h4 class="text-xl font-semibold text-white group-hover:text-orange-300">Saúde e Beleza</h4>
                     </a>
                 </div>
@@ -216,10 +323,15 @@
                 </p>
 
                 <ol class="space-y-4 text-gray-200 text-sm md:text-base">
-                    <li><span class="font-semibold text-orange-300">1.</span> Nossos sistemas automatizados leem periodicamente feeds de produtos das lojas parceiras (como a Shopee).</li>
-                    <li><span class="font-semibold text-orange-300">2.</span> Filtramos itens com boas avaliações, descontos relevantes e categorias populares.</li>
-                    <li><span class="font-semibold text-orange-300">3.</span> Organizamos tudo em páginas fáceis de navegar, como a página de <a href="Ofertas_Shopee.html" class="text-orange-300 underline hover:text-orange-200">Ofertas Shopee</a>.</li>
-                    <li><span class="font-semibold text-orange-300">4.</span> Você escolhe o produto, clica no link e finaliza a compra diretamente no site oficial da loja, com toda a segurança.</li>
+                    <li><span class="font-semibold text-orange-300">1.</span> Nossos sistemas automatizados leem
+                        periodicamente feeds de produtos das lojas parceiras (como a Shopee).</li>
+                    <li><span class="font-semibold text-orange-300">2.</span> Filtramos itens com boas avaliações,
+                        descontos relevantes e categorias populares.</li>
+                    <li><span class="font-semibold text-orange-300">3.</span> Organizamos tudo em páginas fáceis de
+                        navegar, como a página de <a href="Ofertas_Shopee.html"
+                            class="text-orange-300 underline hover:text-orange-200">Ofertas Shopee</a>.</li>
+                    <li><span class="font-semibold text-orange-300">4.</span> Você escolhe o produto, clica no link e
+                        finaliza a compra diretamente no site oficial da loja, com toda a segurança.</li>
                 </ol>
 
                 <p class="text-gray-400 text-xs mt-6">
@@ -233,14 +345,19 @@
         <section id="newsletter" class="bg-purple-700 py-16 px-6 md:px-10 text-center">
             <div class="max-w-3xl mx-auto">
                 <h3 class="text-3xl md:text-4xl font-bold mb-6">Não perca nenhuma oferta!</h3>
-                <p class="text-lg text-gray-200 mb-8">Inscreva-se para receber alertas de promoções selecionadas diretamente no seu e-mail.</p>
+                <p class="text-lg text-gray-200 mb-8">Inscreva-se para receber alertas de promoções selecionadas
+                    diretamente no seu e-mail.</p>
                 <form action="#" method="POST" class="flex flex-col md:flex-row justify-center items-center gap-4">
-                    <input type="email" placeholder="Seu melhor e-mail" class="flex-grow p-4 rounded-lg border-2 border-purple-500 focus:outline-none focus:border-white text-gray-900 placeholder-gray-500" required>
-                    <button type="submit" class="bg-white text-purple-700 font-bold py-4 px-8 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105">
+                    <input type="email" placeholder="Seu melhor e-mail"
+                        class="flex-grow p-4 rounded-lg border-2 border-purple-500 focus:outline-none focus:border-white text-gray-900 placeholder-gray-500"
+                        required>
+                    <button type="submit"
+                        class="bg-white text-purple-700 font-bold py-4 px-8 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105">
                         Inscrever-se
                     </button>
                 </form>
-                <p class="text-sm text-gray-300 mt-4">Nada de spam. Apenas ofertas relevantes de tempos em tempos. Você pode cancelar quando quiser.</p>
+                <p class="text-sm text-gray-300 mt-4">Nada de spam. Apenas ofertas relevantes de tempos em tempos. Você
+                    pode cancelar quando quiser.</p>
             </div>
         </section>
 
@@ -251,19 +368,24 @@
                 <div class="space-y-6 text-sm md:text-base text-gray-200">
                     <div>
                         <h4 class="font-semibold text-lg mb-1">O Afiliado.Top vende produtos?</h4>
-                        <p class="text-gray-300">Não. Somos um portal de ofertas. Você sempre conclui a compra diretamente no site oficial da loja (como Shopee, Amazon, etc.).</p>
+                        <p class="text-gray-300">Não. Somos um portal de ofertas. Você sempre conclui a compra
+                            diretamente no site oficial da loja (como Shopee, Amazon, etc.).</p>
                     </div>
                     <div>
                         <h4 class="font-semibold text-lg mb-1">Pagar pelo link de afiliado é mais caro?</h4>
-                        <p class="text-gray-300">Não. O preço é o mesmo (ou até menor, quando há cupons ou promoções exclusivas). A loja apenas nos paga uma comissão pela indicação.</p>
+                        <p class="text-gray-300">Não. O preço é o mesmo (ou até menor, quando há cupons ou promoções
+                            exclusivas). A loja apenas nos paga uma comissão pela indicação.</p>
                     </div>
                     <div>
                         <h4 class="font-semibold text-lg mb-1">As ofertas são realmente atualizadas?</h4>
-                        <p class="text-gray-300">Sim. Utilizamos scripts automáticos que atualizam as páginas com frequência, principalmente a parte de Shopee. Ainda assim, algumas promoções podem expirar rapidamente.</p>
+                        <p class="text-gray-300">Sim. Utilizamos scripts automáticos que atualizam as páginas com
+                            frequência, principalmente a parte de Shopee. Ainda assim, algumas promoções podem expirar
+                            rapidamente.</p>
                     </div>
                     <div>
                         <h4 class="font-semibold text-lg mb-1">Quais lojas vocês pretendem adicionar?</h4>
-                        <p class="text-gray-300">Além da Shopee, nossa intenção é incluir páginas com ofertas da Amazon e outras grandes varejistas, conforme os programas de afiliados forem aprovados.</p>
+                        <p class="text-gray-300">Além da Shopee, nossa intenção é incluir páginas com ofertas da Amazon
+                            e outras grandes varejistas, conforme os programas de afiliados forem aprovados.</p>
                     </div>
                 </div>
             </div>
@@ -275,7 +397,8 @@
         <div class="max-w-7xl mx-auto">
             <p>&copy; 2025 Afiliado.Top - Todos os direitos reservados.</p>
             <p class="text-sm mt-2">
-                Este site contém links de afiliados. Ao comprar por eles, podemos receber uma comissão, sem custo adicional para você.
+                Este site contém links de afiliados. Ao comprar por eles, podemos receber uma comissão, sem custo
+                adicional para você.
             </p>
             <div class="mt-4 flex justify-center space-x-6 text-sm">
                 <a href="#" class="hover:text-white transition-colors duration-300">Política de Privacidade</a>
@@ -288,10 +411,45 @@
     </footer>
 
     <!-- BOTÃO VOLTAR AO TOPO -->
-    <button id="btn-topo" class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hidden opacity-0">
+    <button id="btn-topo"
+        class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hidden opacity-0">
         ⬆️
     </button>
 
     <script src="/JS/scripts.js"></script>
+
+    <!-- Menu hamburguer mobile -->
+    <script>
+        var menuToggle = document.getElementById('menu-toggle');
+        var mobileMenu = document.getElementById('mobile-menu');
+        var bar1 = document.getElementById('bar1');
+        var bar2 = document.getElementById('bar2');
+        var bar3 = document.getElementById('bar3');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function () {
+                var isOpen = !mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                if (isOpen) {
+                    bar1.style.transform = '';
+                    bar2.style.opacity = '1';
+                    bar3.style.transform = '';
+                } else {
+                    bar1.style.transform = 'translateY(7px) rotate(45deg)';
+                    bar2.style.opacity = '0';
+                    bar3.style.transform = 'translateY(-7px) rotate(-45deg)';
+                }
+            });
+            // Fechar menu ao clicar em link
+            mobileMenu.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    mobileMenu.classList.add('hidden');
+                    bar1.style.transform = '';
+                    bar2.style.opacity = '1';
+                    bar3.style.transform = '';
+                });
+            });
+        }
+    </script>
 </body>
+
 </html>
