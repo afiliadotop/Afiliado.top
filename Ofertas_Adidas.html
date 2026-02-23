@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Outlet Adidas - Tênis com até 50% de Desconto | Afiliado.Top</title>
+    <meta name="description"
+        content="Aproveite o outlet oficial da Adidas com até 50% de desconto em tênis masculinos, femininos e infantis. Frete grátis e cashback exclusivo via Afiliado.Top.">
+    <meta name="keywords"
+        content="adidas outlet, tênis adidas desconto, adidas promoção, ultraboost, stan smith, gazelle, afiliado adidas">
+
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <style>
+        /* === ADIDAS THEME === */
+        :root {
+            --adidas-black: #000000;
+            --adidas-green: #00a862;
+            --adidas-light: #f5f5f5;
+        }
+
+        /* Card hover */
+        @media (hover: hover) {
+            .product-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 20px 40px rgba(0, 168, 98, 0.2);
+                border-color: rgba(0, 168, 98, 0.5);
+            }
+
+            .product-card:hover .card-title {
+                color: #00a862;
+            }
+
+            .product-card:hover .btn-outlet {
+                background-color: #007a48;
+                letter-spacing: 0.04em;
+            }
+        }
+
+        @media (hover: none) {
+            .product-card {
+                transform: none !important;
+            }
+        }
+
+        .product-card {
+            border: 1px solid transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card-title {
+            transition: color 0.3s ease;
+        }
+
+        .btn-outlet {
+            transition: background-color 0.3s ease, letter-spacing 0.3s ease;
+        }
+
+        /* Hamburguer */
+        #bar1,
+        #bar2,
+        #bar3 {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #bar1 {
+            margin-bottom: 5px;
+        }
+
+        #bar2 {
+            margin-bottom: 5px;
+        }
+
+        /* Badge desconto */
+        .badge-discount {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #00a862;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+
+        /* Hero gradient Adidas */
+        .hero-adidas {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #0d2b1a 100%);
+        }
+
+        /* Stripes Adidas decorativas */
+        .adidas-stripes {
+            position: absolute;
+            right: -20px;
+            top: 0;
+            bottom: 0;
+            width: 120px;
+            display: flex;
+            gap: 12px;
+            transform: skewX(-15deg);
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .adidas-stripes span {
+            display: block;
+            flex: 1;
+            background: white;
+        }
+
+        /* Scroll suave */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white font-sans antialiased">
+
+    <!-- HEADER -->
+    <header class="bg-gray-800/95 backdrop-blur shadow-lg py-4 px-4 md:px-10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 shrink-0">
+                <img src="assets/logo.png" alt="Afiliado.Top Logo" class="h-10 w-auto">
+                <div>
+                    <span class="text-xl md:text-2xl font-bold text-white tracking-tight">
+                        Afiliado.<span class="text-orange-400">Top</span>
+                    </span>
+                    <p class="text-xs text-gray-300 hidden sm:block">Ofertas selecionadas diariamente</p>
+                </div>
+            </a>
+
+            <!-- Nav Desktop -->
+            <nav class="hidden md:block">
+                <ul class="flex items-center space-x-6 text-sm">
+                    <li><a href="index.html" class="text-gray-300 hover:text-white transition font-medium">Início</a>
+                    </li>
+                    <li><a href="Ofertas_Shopee.html"
+                            class="text-gray-300 hover:text-white transition font-medium">Shopee</a></li>
+                    <li><a href="Ofertas_Adidas.html"
+                            class="text-green-400 font-semibold hover:text-green-300 transition">Adidas</a></li>
+                    <li><a href="index.html#lojas"
+                            class="text-gray-300 hover:text-white transition font-medium">Lojas</a></li>
+                    <li><a href="contato.html" class="text-gray-300 hover:text-white transition font-medium">Contato</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Hamburguer -->
+            <button id="menu-toggle"
+                class="md:hidden flex flex-col justify-center items-center p-2 rounded-lg hover:bg-gray-700 transition"
+                aria-label="Abrir menu">
+                <span id="bar1"></span>
+                <span id="bar2"></span>
+                <span id="bar3"></span>
+            </button>
+        </div>
+
+        <!-- Menu Mobile -->
+        <nav id="mobile-menu" class="hidden md:hidden mt-3 pb-3 border-t border-gray-700">
+            <ul class="flex flex-col gap-1 pt-3 px-2 text-sm">
+                <li><a href="index.html"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">🏠 Início</a></li>
+                <li><a href="Ofertas_Shopee.html"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">🛍️ Shopee</a>
+                </li>
+                <li><a href="Ofertas_Adidas.html"
+                        class="block py-2 px-3 rounded-lg text-green-400 font-semibold hover:bg-gray-700 transition">👟
+                        Adidas Outlet</a></li>
+                <li><a href="index.html#lojas"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">🏪 Lojas</a></li>
+                <li><a href="contato.html"
+                        class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">✉️ Contato</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero-adidas relative py-16 px-4 md:py-24 md:px-10 text-center overflow-hidden">
+            <!-- Stripes decorativas -->
+            <div class="adidas-stripes">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="relative max-w-4xl mx-auto z-10">
+                <span
+                    class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-green-900/60 border border-green-600/50 text-green-300 text-xs md:text-sm mb-4">
+                    👟 Outlet Oficial · Link de afiliado via Awin
+                </span>
+
+                <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4">
+                    <span class="text-white">Outlet</span>
+                    <span class="text-green-400"> Adidas</span>
+                </h1>
+                <p class="text-base md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Tênis e roupas masculinas com <strong class="text-white">até 50% de desconto</strong> no outlet
+                    oficial. Qualidade Adidas com o preço que você merece.
+                </p>
+
+                <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                    target="_blank" rel="sponsored"
+                    class="inline-flex items-center justify-center bg-green-500 hover:bg-green-400 text-black font-bold py-4 px-10 rounded-full text-lg shadow-xl transition-all duration-300 transform hover:scale-105">
+                    👟 Ver Todos os Tênis em Oferta
+                </a>
+
+                <p class="mt-4 text-xs text-gray-500">
+                    Você será redirecionado para o site oficial da Adidas · Afiliado.Top recebe comissão por indicação
+                </p>
+            </div>
+        </section>
+
+        <!-- DESTAQUES / CATEGORIAS -->
+        <section class="py-10 px-4 md:px-10 bg-gray-800">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">🏃 Categorias em destaque no outlet</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="bg-gray-700 hover:bg-green-900/40 border border-gray-600 hover:border-green-600 rounded-xl p-4 text-center transition-all duration-200 group">
+                        <div class="text-3xl mb-2">🏃</div>
+                        <p class="font-semibold text-sm group-hover:text-green-300">Running</p>
+                        <p class="text-xs text-gray-400 mt-1">Ultraboost, Runfalcon</p>
+                    </a>
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="bg-gray-700 hover:bg-green-900/40 border border-gray-600 hover:border-green-600 rounded-xl p-4 text-center transition-all duration-200 group">
+                        <div class="text-3xl mb-2">🎨</div>
+                        <p class="font-semibold text-sm group-hover:text-green-300">Lifestyle</p>
+                        <p class="text-xs text-gray-400 mt-1">Stan Smith, Gazelle</p>
+                    </a>
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="bg-gray-700 hover:bg-green-900/40 border border-gray-600 hover:border-green-600 rounded-xl p-4 text-center transition-all duration-200 group">
+                        <div class="text-3xl mb-2">⚽</div>
+                        <p class="font-semibold text-sm group-hover:text-green-300">Futebol</p>
+                        <p class="text-xs text-gray-400 mt-1">Predator, X Speedflow</p>
+                    </a>
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="bg-gray-700 hover:bg-green-900/40 border border-gray-600 hover:border-green-600 rounded-xl p-4 text-center transition-all duration-200 group">
+                        <div class="text-3xl mb-2">💪</div>
+                        <p class="font-semibold text-sm group-hover:text-green-300">Training</p>
+                        <p class="text-xs text-gray-400 mt-1">Powerlift, Dropset</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUTOS EM DESTAQUE -->
+        <section class="py-12 px-4 md:px-10 bg-gray-900">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-2">Tênis em Oferta no Outlet</h2>
+                <p class="text-center text-gray-400 text-sm mb-8">Clique em qualquer produto para comprar no site
+                    oficial da Adidas</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
+                    <!-- Ultraboost -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-gray-700 to-gray-900 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-40%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Running</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Ultraboost 22</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Amortecimento Boost™ de alta performance. Ideal
+                                para corrida e uso diário com conforto superior.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 799,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 479,99</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Stan Smith -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-gray-100 to-gray-300 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-30%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Lifestyle</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Stan Smith</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">O clássico que nunca sai de moda. Couro branco
+                                com detalhe verde, design atemporal para qualquer look.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 449,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 314,99</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Gazelle -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-indigo-900 to-gray-900 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-35%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Lifestyle</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Gazelle</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Ícone dos anos 90 reinventado. Cabedal em
+                                camurça com sola baixa e visual urbano sofisticado.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 499,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 324,99</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Forum Low -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-orange-900 to-gray-900 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-45%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Lifestyle</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Forum Low</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Estilo basquete dos anos 80. Alça cruzada no
+                                tornozelo, visual bold e muito conforto no dia a dia.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 549,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 302,49</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Runfalcon 3.0 -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-gray-700 to-blue-900 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-50%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Running</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Runfalcon 3.0</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Custo-benefício imbatível para quem quer entrar
+                                no mundo Adidas. Leve, confortável e versátil.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 299,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 149,99</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Grand Court 2.0 -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-gray-200 to-gray-400 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-38%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Lifestyle</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Grand Court 2.0</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Estilo clean inspirado no tênis de quadra.
+                                Ótimo para composições casuais e looks do dia a dia.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 379,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 235,59</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Cloudfoam Pure -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-purple-900 to-gray-900 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-42%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Training</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Cloudfoam Pure</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Palmilha Cloudfoam para máximo conforto.
+                                Perfeito para uso prolongado no trabalho ou academia.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 329,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 191,39</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Tensaur Sport -->
+                    <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                        target="_blank" rel="sponsored"
+                        class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+                        <div
+                            class="relative bg-gradient-to-br from-yellow-900 to-gray-900 p-6 flex items-center justify-center h-44">
+                            <span class="text-7xl">👟</span>
+                            <span class="badge-discount">-55%</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <p class="text-xs text-green-400 font-semibold mb-1">Training</p>
+                            <h3 class="card-title font-bold text-base mb-1">Adidas Tensaur Sport</h3>
+                            <p class="text-gray-400 text-xs mb-3 flex-1">Lançamento com foco em treinos funcionais.
+                                Sistema de cadarço reforçado e solado com tração multidirecional.</p>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-gray-500 line-through text-sm">R$ 259,99</span>
+                                <span class="text-green-400 font-bold text-lg">R$ 116,99</span>
+                            </div>
+                            <button
+                                class="btn-outlet w-full bg-green-600 text-white text-sm font-bold py-2 rounded-lg text-center">
+                                Ver na Adidas →
+                            </button>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="bg-green-900/30 border-t border-green-800 py-12 px-4 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-3">Quer ver todos os produtos?</h2>
+                <p class="text-gray-300 mb-6 text-sm md:text-base">O outlet Adidas tem centenas de opções em tênis,
+                    roupas e acessórios. Acesse e filtre por tamanho, cor e preço diretamente no site oficial.</p>
+                <a href="https://www.awin1.com/cread.php?awinmid=79926&awinaffid=1302821&campaign=CASHBACKCLUBES&clickref=Afiliado.top&ued=https%3A%2F%2Fwww.adidas.com.br%2Ftenis-homem-outlet"
+                    target="_blank" rel="sponsored"
+                    class="inline-flex items-center justify-center bg-green-500 hover:bg-green-400 text-black font-bold py-4 px-10 rounded-full text-lg shadow-xl transition-all duration-300 transform hover:scale-105">
+                    👟 Acessar Outlet Adidas Completo
+                </a>
+                <p class="mt-4 text-xs text-gray-500">
+                    Link de afiliado · Você não paga nada a mais · Afiliado.Top recebe comissão por indicação via <a
+                        href="https://www.awin.com" target="_blank" class="underline">Awin</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-800 py-8 px-6 md:px-10 text-center text-gray-400">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2025 Afiliado.Top - Todos os direitos reservados.</p>
+            <p class="text-sm mt-2">Este site contém links de afiliados. Ao comprar por eles, podemos receber uma
+                comissão, sem custo adicional para você.</p>
+            <div class="mt-4 flex justify-center space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white transition">Início</a>
+                <span class="text-gray-600">|</span>
+                <a href="Ofertas_Shopee.html" class="hover:text-white transition">Shopee</a>
+                <span class="text-gray-600">|</span>
+                <a href="contato.html" class="hover:text-white transition">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <button id="btn-topo"
+        class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-green-600 text-white shadow-xl hover:bg-green-500 transition-all duration-300 transform hover:scale-110 hidden opacity-0">
+        ⬆️
+    </button>
+
+    <script src="/JS/scripts.js"></script>
+
+    <script>
+        // Menu hamburguer
+        var menuToggle = document.getElementById('menu-toggle');
+        var mobileMenu = document.getElementById('mobile-menu');
+        var bar1 = document.getElementById('bar1');
+        var bar2 = document.getElementById('bar2');
+        var bar3 = document.getElementById('bar3');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function () {
+                var isOpen = !mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                if (isOpen) {
+                    bar1.style.transform = ''; bar2.style.opacity = '1'; bar3.style.transform = '';
+                } else {
+                    bar1.style.transform = 'translateY(7px) rotate(45deg)';
+                    bar2.style.opacity = '0';
+                    bar3.style.transform = 'translateY(-7px) rotate(-45deg)';
+                }
+            });
+            mobileMenu.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    mobileMenu.classList.add('hidden');
+                    bar1.style.transform = ''; bar2.style.opacity = '1'; bar3.style.transform = '';
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
