@@ -35,6 +35,58 @@
     <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9910874980055059"
         crossorigin="anonymous"></script>
+
+    <!-- Hover effects nos cards (apenas dispositivos com mouse) -->
+    <style>
+        /* === CARDS === */
+        #productsGrid>div {
+            border: 1px solid transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        /* Hover só em dispositivos que têm mouse (não afeta mobile/touch) */
+        @media (hover: hover) {
+            #productsGrid>div:hover {
+                transform: scale(1.04);
+                box-shadow: 0 0 24px rgba(249, 115, 22, 0.35);
+                border-color: rgba(249, 115, 22, 0.55);
+            }
+
+            /* Título fica laranja no hover */
+            #productsGrid>div:hover h3 {
+                color: #fb923c;
+                transition: color 0.3s ease;
+            }
+
+            /* Descrição expande suavemente (remove clamp) */
+            #productsGrid>div:hover p.text-gray-400 {
+                -webkit-line-clamp: unset;
+                display: block;
+                max-height: 160px;
+                overflow-y: auto;
+                transition: max-height 0.4s ease;
+            }
+
+            /* Botão de compra fica mais brilhante */
+            #productsGrid>div:hover a.bg-orange-600 {
+                background-color: #c2410c;
+                letter-spacing: 0.03em;
+                transition: background-color 0.3s ease, letter-spacing 0.3s ease;
+            }
+        }
+
+        /* Mobile: sem scale (evita tap-jank), descrição limitada a 2 linhas para economizar espaço */
+        @media (hover: none) {
+            #productsGrid>div {
+                transform: none !important;
+            }
+
+            #productsGrid>div p.text-gray-400 {
+                -webkit-line-clamp: 2;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-gray-900 text-white font-sans antialiased">
