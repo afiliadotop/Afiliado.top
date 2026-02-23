@@ -9,3 +9,7 @@ venv/
 logs/
 backups/
 .DS_Store
+
+# Feeds Awin (arquivos grandes e com chave na URL - não comitar)
+*.csv.gz
+JS/adidas_feed.csv.gz
