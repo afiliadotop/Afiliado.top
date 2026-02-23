@@ -94,9 +94,9 @@ def card(p):
     return f"""
                     <a href="{html.escape(p['link'])}" target="_blank" rel="sponsored"
                         class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
-                        <div class="relative overflow-hidden h-48 bg-gray-900">
-                            <img src="{html.escape(p['image'])}" alt="{html.escape(p['name'])}"
-                                class="w-full h-full object-contain p-3" loading="lazy"
+                        <div class="relative bg-gray-900" style="aspect-ratio:1/1">
+                            <img src="{html.escape(p['image'].replace('w=200&amp;h=200','w=600&amp;h=600').replace('w=200&h=200','w=600&h=600'))}" alt="{html.escape(p['name'])}"
+                                class="w-full h-full object-contain p-2" loading="lazy"
                                 onerror="this.src='assets/logo.png'">
                             {badge}
                         </div>
@@ -142,7 +142,9 @@ template = f"""<!DOCTYPE html>
         #bar1,#bar2,#bar3 {{ display:block;width:24px;height:2px;background:white;transition:transform .3s ease,opacity .3s ease; }}
         #bar1,#bar2 {{ margin-bottom:5px; }}
         .line-clamp-3 {{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }}
-        html {{ scroll-behavior:smooth; }}
+        .card-img-wrap {{ aspect-ratio: 1/1; background:#111; display:flex; align-items:center; justify-content:center; overflow:hidden; }}
+        .card-img-wrap img {{ width:100%; height:100%; object-fit:contain; padding:8px; transition:transform 0.4s ease; }}
+        @media (hover: hover) {{ .product-card:hover .card-img-wrap img {{ transform: scale(1.06); }} }}
     </style>
 </head>
 <body class="bg-gray-900 text-white font-sans antialiased">
@@ -173,7 +175,7 @@ template = f"""<!DOCTYPE html>
             <ul class="flex flex-col gap-1 pt-3 px-2 text-sm">
                 <li><a href="index.html" class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">🏠 Início</a></li>
                 <li><a href="Ofertas_Shopee.html" class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">🛍️ Shopee</a></li>
-                <li><a href="Ofertas_Adidas.html" class="block py-2 px-3 rounded-lg text-green-400 font-semibold hover:bg-gray-700 transition">👟 Adidas Outlet</a></li>
+                <li><a href="Ofertas_Adidas.html" class="block py-2 px-3 rounded-lg text-green-400 font-semibold hover:bg-gray-700 transition">Adidas Outlet</a></li>
                 <li><a href="contato.html" class="block py-2 px-3 rounded-lg text-gray-300 hover:bg-gray-700 transition">✉️ Contato</a></li>
             </ul>
         </nav>
