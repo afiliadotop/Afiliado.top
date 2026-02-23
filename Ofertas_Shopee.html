@@ -90,16 +90,24 @@
         }
 
         /* === FILTROS DE CATEGORIA === */
+        /* Desktop: flex wrap centralizado — botões quebram em linhas organizadas */
         #categoryFilters {
             display: flex;
-            flex-wrap: nowrap;
-            /* nunca quebra linha */
-            overflow-x: auto;
+            flex-wrap: wrap;
             gap: 0.5rem;
+            justify-content: center;
             padding-bottom: 0.5rem;
-            -webkit-overflow-scrolling: touch;
-            /* scroll suave em iOS */
-            scroll-snap-type: x mandatory;
+        }
+
+        /* Mobile: scroll horizontal — botões em linha única deslizável */
+        @media (max-width: 767px) {
+            #categoryFilters {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
         }
 
         /* Esconde scrollbar em todos os browsers */
