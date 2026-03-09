@@ -81,17 +81,121 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
-        #bar1 {
+        #bar1,
+        #bar2 {
             margin-bottom: 5px;
         }
 
-        #bar2 {
-            margin-bottom: 5px;
+        /* === ANNOUNCEMENT BAR === */
+        #announce-bar {
+            background: linear-gradient(90deg, #f97316, #ea580c, #dc2626);
+        }
+
+        #announce-bar .marquee {
+            animation: marquee-slide 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee-slide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* === HERO CTA PULSE === */
+        .cta-pulse {
+            animation: pulse-ring 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-ring {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 22, .6);
+            }
+
+            50% {
+                box-shadow: 0 0 0 14px rgba(249, 115, 22, 0);
+            }
+        }
+
+        /* === SOCIAL PROOF BADGE === */
+        .live-badge::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: blink 1.4s ease infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .3;
+            }
+        }
+
+        /* === STORE CARDS === */
+        .store-card {
+            border: 1px solid transparent;
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+        }
+
+        @media (hover:hover) {
+            .store-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
+                border-color: rgba(249, 115, 22, .4);
+            }
+        }
+
+        /* === STICKY BAR === */
+        #sticky-cta {
+            transform: translateY(80px);
+            transition: transform .4s ease;
+        }
+
+        #sticky-cta.show {
+            transform: translateY(0);
+        }
+
+        /* === PROGRESS BAR ON STORE CARDS === */
+        .pop-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #f97316, #fbbf24);
         }
     </style>
 </head>
 
 <body class="bg-gray-900 text-white font-sans antialiased">
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div id="announce-bar"
+        class="relative overflow-hidden py-2 px-4 text-center text-xs sm:text-sm font-semibold text-white z-[60]">
+        <div class="marquee inline-block">
+            🔥 OFERTAS DO DIA: Dafiti até 70% OFF &nbsp;·&nbsp; Posthaus moda feminina &nbsp;·&nbsp; Adidas Outlet até
+            50% &nbsp;·&nbsp; Monte Carlo joias com desconto &nbsp;·&nbsp;
+            🔥 OFERTAS DO DIA: Dafiti até 70% OFF &nbsp;·&nbsp; Posthaus moda feminina &nbsp;·&nbsp; Adidas Outlet até
+            50% &nbsp;·&nbsp; Monte Carlo joias com desconto &nbsp;·&nbsp;
+        </div>
+        <button onclick="this.parentElement.remove()"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white text-base leading-none"
+            aria-label="Fechar">✕</button>
+    </div>
     <!-- HEADER -->
     <header class="bg-gray-800/95 backdrop-blur shadow-lg py-4 px-4 md:px-10 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -136,9 +240,7 @@
                     </li>
                     <li><a href="contato.html"
                             class="text-gray-300 hover:text-white transition duration-300 font-medium">Contato</a></li>
-                    <li>
-                        <div id="google_translate_element" class="bg-gray-700 p-2 rounded-md text-xs shadow-sm"></div>
-                    </li>
+
                 </ul>
             </nav>
 
@@ -182,6 +284,9 @@
                 <li><a href="contato.html"
                         class="block py-2 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition">✉️
                         Contato</a></li>
+                <li class="mt-2 pt-2 border-t border-gray-700">
+                    <div id="google_translate_element" class="px-3 py-1"></div>
+                </li>
             </ul>
         </nav>
     </header>
@@ -193,45 +298,62 @@
             <div class="absolute inset-0 opacity-20 bg-pattern-dots pointer-events-none"></div>
 
             <div class="relative max-w-5xl mx-auto z-10">
-                <p
-                    class="inline-flex items-center px-4 py-1 rounded-full bg-black/40 text-xs md:text-sm text-gray-200 mb-4 border border-purple-500/60">
-                    🔥 Atualizado diariamente com as melhores ofertas da Shopee e outras lojas
-                </p>
-                <h2 class="text-2xl sm:text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+
+                <!-- Social proof ao vivo -->
+                <div class="flex flex-wrap justify-center gap-3 mb-5">
+                    <span
+                        class="live-badge inline-flex items-center px-3 py-1 rounded-full bg-green-900/60 border border-green-500/50 text-green-300 text-xs font-semibold">
+                        347 pessoas vendo ofertas agora
+                    </span>
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full bg-black/40 text-xs text-gray-200 border border-purple-500/60">
+                        🔥 Atualizado hoje às <span id="hero-hora" class="ml-1 font-bold"></span>
+                    </span>
+                </div>
+
+                <h2 class="text-2xl sm:text-4xl md:text-6xl font-extrabold leading-tight mb-5">
                     Economize tempo e dinheiro encontrando <span class="text-orange-400">as melhores ofertas</span> em
                     um só lugar.
                 </h2>
-                <p class="text-base md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
-                    O Afiliado.Top garimpa cupons, promoções e produtos com alta avaliação na Shopee, Amazon
-                    e outras grandes lojas para você comprar com confiança e pagar menos.
+                <p class="text-base md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                    Mais de <strong class="text-white">1.200 produtos</strong> com desconto real em Shopee, Adidas,
+                    Dafiti, Posthaus e Monte Carlo — atualizados automaticamente via datafeed oficial.
                 </p>
 
-                <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-6">
+                <!-- CTAs -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-7">
                     <a href="Ofertas_Shopee.html"
-                        class="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                        🔍 Ver Ofertas Shopee Agora
+                        class="cta-pulse inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-4 px-10 rounded-full text-lg shadow-xl transition-all duration-300 transform hover:scale-105">
+                        🔥 Ver Melhores Ofertas Agora
                     </a>
                     <a href="#newsletter"
-                        class="inline-flex items-center justify-center bg-transparent border border-gray-500 hover:border-white text-gray-200 hover:text-white font-medium py-3 px-8 rounded-full text-base shadow-md hover:shadow-lg transition-all duration-300">
-                        ✉️ Receber ofertas por e-mail
+                        class="inline-flex items-center justify-center bg-white/10 border border-white/30 hover:bg-white/20 text-white font-semibold py-4 px-8 rounded-full text-base shadow-md transition-all duration-300">
+                        ✉️ Receber alertas grátis
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-sm md:text-base">
-                    <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
-                        <p class="font-semibold text-orange-300 mb-1">+ de 100 ofertas ativas</p>
-                        <p class="text-gray-200 text-xs md:text-sm">Produtos selecionados com base em desconto,
-                            avaliação e relevância.</p>
+                <!-- Trust signals -->
+                <div class="flex flex-wrap justify-center gap-3 mb-8 text-xs text-gray-400">
+                    <span class="flex items-center gap-1">🔒 Links 100% seguros</span>
+                    <span class="text-gray-600">·</span>
+                    <span class="flex items-center gap-1">💸 Sem custo extra para você</span>
+                    <span class="text-gray-600">·</span>
+                    <span class="flex items-center gap-1">✅ Parceiro oficial Awin &amp; Shopee</span>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-3 mt-2 text-center">
+                    <div class="bg-black/30 border border-purple-700/40 rounded-xl p-4">
+                        <p class="text-2xl font-extrabold text-orange-300">+1.200</p>
+                        <p class="text-gray-300 text-xs mt-1">Produtos com desconto</p>
                     </div>
-                    <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
-                        <p class="font-semibold text-green-300 mb-1">4.5★ ou mais</p>
-                        <p class="text-gray-200 text-xs md:text-sm">Priorizamos produtos com boas avaliações reais dos
-                            usuários.</p>
+                    <div class="bg-black/30 border border-purple-700/40 rounded-xl p-4">
+                        <p class="text-2xl font-extrabold text-green-300">5 lojas</p>
+                        <p class="text-gray-300 text-xs mt-1">Parceiras oficiais</p>
                     </div>
-                    <div class="bg-black/30 border border-purple-700/50 rounded-xl p-4">
-                        <p class="font-semibold text-blue-300 mb-1">Links oficiais e seguros</p>
-                        <p class="text-gray-200 text-xs md:text-sm">Você sempre é redirecionado para o site oficial da
-                            loja.</p>
+                    <div class="bg-black/30 border border-purple-700/40 rounded-xl p-4">
+                        <p class="text-2xl font-extrabold text-blue-300">Diário</p>
+                        <p class="text-gray-300 text-xs mt-1">Atualização automática</p>
                     </div>
                 </div>
             </div>
@@ -280,54 +402,142 @@
         <!-- LOJAS / DESTINOS -->
         <section class="py-16 px-6 md:px-10 bg-gray-800" id="lojas">
             <div class="max-w-7xl mx-auto">
-                <h3 class="text-3xl md:text-4xl font-bold text-center mb-10">Lojas em destaque</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="text-center mb-4">
+                    <span
+                        class="inline-block px-3 py-1 rounded-full bg-orange-500/20 border border-orange-500/40 text-orange-300 text-xs font-semibold uppercase tracking-widest mb-3">Lojas
+                        parceiras</span>
+                    <h3 class="text-3xl md:text-4xl font-bold">Escolha sua loja e economize</h3>
+                    <p class="text-gray-400 mt-2 text-sm">Clique e veja centenas de ofertas com desconto real</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+
+                    <!-- Shopee -->
                     <a href="Ofertas_Shopee.html"
-                        class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
-                        <div class="text-5xl mb-3">🛍️</div>
-                        <h4 class="text-2xl font-semibold mb-2 group-hover:text-orange-300">Shopee</h4>
-                        <p class="text-gray-300 text-sm mb-3">Ofertas diárias em todas as categorias, com forte foco em
-                            eletrônicos, casa, moda e utilidades.</p>
-                        <span class="text-orange-400 text-sm font-semibold mt-2">Ver ofertas da Shopee →</span>
+                        class="store-card bg-gray-700 rounded-2xl overflow-hidden flex flex-col group">
+                        <div class="bg-gradient-to-br from-orange-600 to-orange-800 p-6 text-center">
+                            <div class="text-5xl mb-2">🛍️</div>
+                            <h4 class="text-xl font-bold text-white">Shopee</h4>
+                            <span class="inline-block mt-2 bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">🔥
+                                Alta demanda</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-gray-300 text-sm mb-3 flex-1">Eletrônicos, moda, casa e beleza com as
+                                melhores ofertas diárias. Frete grátis em muitos itens.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                    <span>Popularidade</span><span>98%</span></div>
+                                <div class="w-full bg-gray-600 rounded-full h-1">
+                                    <div class="pop-bar" style="width:98%"></div>
+                                </div>
+                            </div>
+                            <span
+                                class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-xl text-sm transition">Ver
+                                ofertas da Shopee →</span>
+                        </div>
                     </a>
-                    <!-- Adidas - Página interna com 200 produtos reais -->
+
+                    <!-- Adidas -->
                     <a href="Ofertas_Adidas.html"
-                        class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
-                        <div class="text-5xl mb-3">👟</div>
-                        <h4 class="text-2xl font-semibold mb-2 group-hover:text-green-300">Adidas Outlet</h4>
-                        <p class="text-gray-300 text-sm mb-3">200 produtos reais do outlet Adidas com até 50% de
-                            desconto.
-                            Tênis, roupas e acessórios — atualizados via datafeed Awin.</p>
-                        <span class="inline-flex items-center gap-1 text-green-400 text-sm font-semibold mt-2">
-                            Ver 200 produtos Adidas →
-                        </span>
-                        <span class="mt-3 text-xs text-gray-500 italic">200 produtos · Via Awin</span>
+                        class="store-card bg-gray-700 rounded-2xl overflow-hidden flex flex-col group">
+                        <div class="bg-gradient-to-br from-gray-900 to-gray-700 p-6 text-center">
+                            <div class="text-5xl mb-2">👟</div>
+                            <h4 class="text-xl font-bold text-white">Adidas Outlet</h4>
+                            <span
+                                class="inline-block mt-2 bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded-full">até
+                                50% OFF</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-gray-300 text-sm mb-3 flex-1">200 produtos reais — tênis, roupas e acessórios
+                                Adidas com descontos do outlet oficial.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>200
+                                        produtos</span><span>Via Awin</span></div>
+                                <div class="w-full bg-gray-600 rounded-full h-1">
+                                    <div class="pop-bar" style="width:72%"></div>
+                                </div>
+                            </div>
+                            <span
+                                class="block w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl text-sm transition">Garantir
+                                desconto Adidas →</span>
+                        </div>
                     </a>
 
-                    <!-- Monte Carlo Joias - Página interna com 200 produtos reais -->
+                    <!-- Monte Carlo -->
                     <a href="Ofertas_MonteCarlo.html"
-                        class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
-                        <div class="text-5xl mb-3">💍</div>
-                        <h4 class="text-2xl font-semibold mb-2 group-hover:text-yellow-300">Monte Carlo Joias</h4>
-                        <p class="text-gray-300 text-sm mb-3">200 produtos reais — relógios, anéis, brincos e pulseiras
-                            com os melhores preços. Atualizados via datafeed Awin.</p>
-                        <span class="inline-flex items-center gap-1 text-yellow-400 text-sm font-semibold mt-2">
-                            Ver 200 joias e relógios →
-                        </span>
-                        <span class="mt-3 text-xs text-gray-500 italic">200 produtos · Via Awin</span>
+                        class="store-card bg-gray-700 rounded-2xl overflow-hidden flex flex-col group">
+                        <div class="bg-gradient-to-br from-yellow-800 to-yellow-900 p-6 text-center">
+                            <div class="text-5xl mb-2">💍</div>
+                            <h4 class="text-xl font-bold text-white">Monte Carlo Joias</h4>
+                            <span
+                                class="inline-block mt-2 bg-yellow-400/20 text-yellow-300 text-xs px-2 py-0.5 rounded-full">Relógios
+                                &amp; Joias</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-gray-300 text-sm mb-3 flex-1">200 produtos — anéis, brincos, pulseiras e
+                                relógios com os melhores preços verificados.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>200
+                                        produtos</span><span>Via Awin</span></div>
+                                <div class="w-full bg-gray-600 rounded-full h-1">
+                                    <div class="pop-bar" style="width:65%"></div>
+                                </div>
+                            </div>
+                            <span
+                                class="block w-full text-center bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2.5 rounded-xl text-sm transition">Ver
+                                joias com desconto →</span>
+                        </div>
                     </a>
 
-                    <!-- Posthaus - Moda feminina com datafeed real -->
+                    <!-- Posthaus -->
                     <a href="Ofertas_Posthaus.html"
-                        class="bg-gray-700 p-8 rounded-xl shadow-md hover:shadow-xl hover:bg-gray-600 transition-all duration-300 flex flex-col items-center text-center group">
-                        <div class="text-5xl mb-3">👗</div>
-                        <h4 class="text-2xl font-semibold mb-2 group-hover:text-pink-300">Posthaus Moda</h4>
-                        <p class="text-gray-300 text-sm mb-3">Roupas, calçados e acessórios femininos com os melhores
-                            preços. Produtos reais via datafeed Awin.</p>
-                        <span class="inline-flex items-center gap-1 text-pink-400 text-sm font-semibold mt-2">
-                            Ver ofertas Posthaus →
-                        </span>
-                        <span class="mt-3 text-xs text-gray-500 italic">Produtos reais · Via Awin</span>
+                        class="store-card bg-gray-700 rounded-2xl overflow-hidden flex flex-col group">
+                        <div class="bg-gradient-to-br from-pink-800 to-pink-900 p-6 text-center">
+                            <div class="text-5xl mb-2">👗</div>
+                            <h4 class="text-xl font-bold text-white">Posthaus Moda</h4>
+                            <span
+                                class="inline-block mt-2 bg-pink-400/20 text-pink-300 text-xs px-2 py-0.5 rounded-full">300
+                                produtos</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-gray-300 text-sm mb-3 flex-1">Roupas, calçados e acessórios femininos com os
+                                melhores preços. Moda real via datafeed Awin.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>300
+                                        produtos</span><span>Via Awin</span></div>
+                                <div class="w-full bg-gray-600 rounded-full h-1">
+                                    <div class="pop-bar" style="width:80%"></div>
+                                </div>
+                            </div>
+                            <span
+                                class="block w-full text-center bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-xl text-sm transition">Ver
+                                moda Posthaus →</span>
+                        </div>
+                    </a>
+
+                    <!-- Dafiti -->
+                    <a href="Ofertas_Dafiti.html"
+                        class="store-card bg-gray-700 rounded-2xl overflow-hidden flex flex-col group">
+                        <div class="bg-gradient-to-br from-orange-700 to-orange-900 p-6 text-center">
+                            <div class="text-5xl mb-2">🛒</div>
+                            <h4 class="text-xl font-bold text-white">Dafiti</h4>
+                            <span
+                                class="inline-block mt-2 bg-orange-400/20 text-orange-300 text-xs px-2 py-0.5 rounded-full">até
+                                70% OFF</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-gray-300 text-sm mb-3 flex-1">300 produtos — roupas, calçados e acessórios de
+                                grandes marcas com descontos reais Dafiti.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>300
+                                        produtos</span><span>Via Awin</span></div>
+                                <div class="w-full bg-gray-600 rounded-full h-1">
+                                    <div class="pop-bar" style="width:85%"></div>
+                                </div>
+                            </div>
+                            <span
+                                class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-xl text-sm transition">Comprar
+                                com desconto Dafiti →</span>
+                        </div>
                     </a>
 
                 </div>
@@ -396,22 +606,35 @@
         </section>
 
         <!-- NEWSLETTER -->
-        <section id="newsletter" class="bg-purple-700 py-16 px-6 md:px-10 text-center">
-            <div class="max-w-3xl mx-auto">
-                <h3 class="text-3xl md:text-4xl font-bold mb-6">Não perca nenhuma oferta!</h3>
-                <p class="text-lg text-gray-200 mb-8">Inscreva-se para receber alertas de promoções selecionadas
-                    diretamente no seu e-mail.</p>
-                <form action="#" method="POST" class="flex flex-col md:flex-row justify-center items-center gap-4">
-                    <input type="email" placeholder="Seu melhor e-mail"
-                        class="flex-grow p-4 rounded-lg border-2 border-purple-500 focus:outline-none focus:border-white text-gray-900 placeholder-gray-500"
+        <section id="newsletter" class="relative overflow-hidden py-16 px-6 md:px-10 text-center"
+            style="background:linear-gradient(135deg,#4f46e5,#7e22ce,#be185d)">
+            <div class="absolute inset-0 opacity-10"
+                style="background-image:radial-gradient(circle at 20% 50%,#f97316 1px,transparent 1px),radial-gradient(circle at 80% 20%,#f97316 1px,transparent 1px);background-size:40px 40px">
+            </div>
+            <div class="relative max-w-2xl mx-auto">
+                <span class="inline-block mb-4 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-semibold">📬
+                    GRÁTIS · SEM SPAM</span>
+                <h3 class="text-3xl md:text-4xl font-extrabold mb-3">Receba as 10 melhores ofertas do dia</h3>
+                <p class="text-base text-purple-100 mb-7">Curadoria diária das melhores promoções de Shopee, Dafiti,
+                    Posthaus e muito mais — direto no seu e-mail, de graça.</p>
+                <form action="#" method="POST" class="flex flex-col sm:flex-row justify-center gap-3 mb-4">
+                    <input type="email" placeholder="📧 Seu melhor e-mail"
+                        class="flex-grow p-4 rounded-xl border-2 border-white/30 focus:outline-none focus:border-white bg-white/10 text-white placeholder-white/60 backdrop-blur"
                         required>
                     <button type="submit"
-                        class="bg-white text-purple-700 font-bold py-4 px-8 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105">
-                        Inscrever-se
+                        class="cta-pulse bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 whitespace-nowrap">
+                        Quero receber grátis →
                     </button>
                 </form>
-                <p class="text-sm text-gray-300 mt-4">Nada de spam. Apenas ofertas relevantes de tempos em tempos. Você
-                    pode cancelar quando quiser.</p>
+                <p class="text-xs text-purple-200">🔒 Seus dados estão seguros &nbsp;·&nbsp; Cancele quando quiser
+                    &nbsp;·&nbsp; Sem spam garantido</p>
+                <div class="flex justify-center gap-4 mt-5 flex-wrap">
+                    <span class="text-xs text-purple-200 flex items-center gap-1">✅ Shopee</span>
+                    <span class="text-xs text-purple-200 flex items-center gap-1">✅ Dafiti</span>
+                    <span class="text-xs text-purple-200 flex items-center gap-1">✅ Posthaus</span>
+                    <span class="text-xs text-purple-200 flex items-center gap-1">✅ Adidas</span>
+                    <span class="text-xs text-purple-200 flex items-center gap-1">✅ Monte Carlo</span>
+                </div>
             </div>
         </section>
 
@@ -466,11 +689,66 @@
 
     <!-- BOTÃO VOLTAR AO TOPO -->
     <button id="btn-topo"
-        class="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hidden opacity-0">
+        class="fixed bottom-20 right-5 z-40 p-3 rounded-full bg-orange-500 text-white shadow-xl hover:bg-orange-600 transition-all duration-300 transform hover:scale-110 hidden opacity-0"
+        title="Voltar ao topo">
         ⬆️
     </button>
 
+    <!-- STICKY CTA BAR -->
+    <div id="sticky-cta"
+        class="fixed bottom-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur border-t border-orange-500/40 px-4 py-3 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 min-w-0">
+            <span class="live-badge text-green-400 text-xs font-semibold hidden sm:flex items-center">Ao vivo</span>
+            <p class="text-sm font-semibold text-white truncate">🔥 <span id="sticky-count">1.200</span> produtos em
+                promoção agora</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+            <a href="Ofertas_Shopee.html"
+                class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2 rounded-full transition whitespace-nowrap">Ver
+                ofertas →</a>
+            <button onclick="document.getElementById('sticky-cta').remove()"
+                class="text-gray-400 hover:text-white text-lg leading-none px-1" aria-label="Fechar">✕</button>
+        </div>
+    </div>
+
     <script src="/JS/scripts.js"></script>
+
+    <script>
+        // Hora de atualização no hero
+        (function () {
+            var now = new Date();
+            var h = now.getHours().toString().padStart(2, '0');
+            var m = now.getMinutes().toString().padStart(2, '0');
+            var el = document.getElementById('hero-hora');
+            if (el) el.textContent = h + ':' + m + 'h';
+        })();
+
+        // Sticky CTA bar — aparece após 300px de scroll
+        (function () {
+            var bar = document.getElementById('sticky-cta');
+            if (!bar) return;
+            var shown = false;
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300 && !shown) { bar.classList.add('show'); shown = true; }
+                else if (window.scrollY <= 100 && shown) { bar.classList.remove('show'); shown = false; }
+            }, { passive: true });
+        })();
+
+        // Social proof counter animado
+        (function () {
+            var counts = [247, 312, 198, 381, 156, 289, 423, 174];
+            var el = document.querySelector('.live-badge');
+            if (!el) return;
+            var base = 'pessoas vendo ofertas agora';
+            setInterval(function () {
+                var n = counts[Math.floor(Math.random() * counts.length)];
+                el.textContent = n + ' ' + base;
+                el.classList.remove('live-badge');
+                void el.offsetWidth;
+                el.classList.add('live-badge');
+            }, 8000);
+        })();
+    </script>
 
     <!-- Menu hamburguer mobile -->
     <script>

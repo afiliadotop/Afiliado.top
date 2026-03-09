@@ -169,9 +169,15 @@ if not products:
     raise SystemExit("❌ Nenhum produto foi extraído! Verifique o CSV.")
 
 # ─── Card HTML ───
+import random
+
+_view_counts = [8,11,14,17,23,9,31,12,19,7,26,15]
+
 def card(p):
     badge = (f'<span class="badge-discount">-{p["discount"]}%</span>'
              if p["discount"] >= 5 else "")
+    hot_badge = ('<span class="badge-hot">&#128293; Oferta Quente</span>'
+                 if p["discount"] >= 30 else "")
     ref_str = (f'<span class="text-gray-500 line-through text-sm">R$ {p["ref_price"]:.2f}</span>'
                if p["ref_price"] > p["price"] else "")
     cat_html = (f'<p class="text-xs text-orange-400 font-semibold mb-1">{html.escape(p["cat"])}</p>'
@@ -180,6 +186,8 @@ def card(p):
                  if p["desc"] else '<p class="flex-1"></p>')
     colour_html = (f'<p class="text-xs text-gray-500 mb-1">{html.escape(p["colour"])}</p>'
                    if p["colour"] else "")
+    views = random.choice(_view_counts)
+    cta_text = "Comprar com desconto" if p["discount"] >= 20 else "Ver na Dafiti"
     return f"""
                     <a href="{html.escape(p['link'])}" target="_blank" rel="sponsored"
                         class="product-card bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
@@ -188,18 +196,20 @@ def card(p):
                                 class="w-full h-full object-contain p-2" loading="lazy"
                                 onerror="this.src='assets/logo.png'">
                             {badge}
+                            {hot_badge}
                         </div>
                         <div class="p-4 flex flex-col flex-1">
                             {cat_html}
                             <h3 class="card-title font-bold text-sm mb-1 leading-snug">{html.escape(p['name'])}</h3>
                             {colour_html}
                             {desc_html}
-                            <div class="flex items-center gap-2 mb-3 flex-wrap">
+                            <div class="flex items-center gap-2 mb-1 flex-wrap">
                                 {ref_str}
                                 <span class="text-orange-300 font-bold text-lg">R$ {p['price']:.2f}</span>
                             </div>
-                            <button class="btn-df w-full bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold py-2 rounded-lg transition">
-                                Ver na Dafiti &rarr;
+                            <p class="text-xs text-gray-500 mb-3">&#128065; {views} pessoas viram hoje</p>
+                            <button class="btn-df w-full bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold py-2.5 rounded-lg transition">
+                                {cta_text} &rarr;
                             </button>
                         </div>
                     </a>"""
@@ -266,6 +276,8 @@ template = f"""<!DOCTYPE html>
         .card-img {{ aspect-ratio:1/1; background:#111; display:flex; align-items:center; justify-content:center; overflow:hidden; }}
         .card-img img {{ width:100%; height:100%; object-fit:contain; padding:8px; transition:transform 0.4s ease; }}
         .badge-discount {{ position:absolute; top:8px; right:8px; background:#ea580c; color:white; font-weight:bold; font-size:.72rem; padding:2px 8px; border-radius:999px; }}
+        .badge-hot {{ position:absolute; top:8px; left:8px; background:linear-gradient(90deg,#f97316,#dc2626); color:white; font-weight:bold; font-size:.65rem; padding:2px 7px; border-radius:999px; animation:hotpulse 2s ease infinite; }}
+        @keyframes hotpulse {{ 0%,100%{{opacity:1;}} 50%{{opacity:.75;}} }}
         .hero-df {{ background: linear-gradient(135deg, #0a0a0a 0%, #1a0d00 40%, #1a0800 100%); }}
         #bar1,#bar2,#bar3 {{ display:block;width:24px;height:2px;background:white;transition:transform .3s ease,opacity .3s ease; }}
         #bar1,#bar2 {{ margin-bottom:5px; }}
